@@ -41,7 +41,7 @@ import PopUpNotifcationList from "./PopUpNotificationList";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import paths from "./paths";
-import LogoAndSearchModule from "./custom/UXNavbar/Homepage";
+import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 const StyledFab = styled(Fab)({
