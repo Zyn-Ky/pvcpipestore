@@ -1,0 +1,22 @@
+.WrapperList {
+  padding: 2rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  .ItemListing {
+    flex-grow: 1;
+  }
+  .FloatingPay {
+    width: 300px;
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .WrapperList {
+    flex-direction: column;
+    .FloatingPay {
+      width: 100%;
+    }
+  }
+}

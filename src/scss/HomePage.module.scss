@@ -1,0 +1,47 @@
+$padding-x-1: 48px;
+$padding-y-1: 18px;
+.HeroBox {
+  height: 60vh;
+  max-height: 720px;
+  position: relative;
+}
+.RecommendationsProd {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+}
+
+.OurServicesList {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+  min-height: 200px;
+  text-align: center;
+  .UXLists {
+    display: flex;
+    height: 250px;
+    margin-top: 1rem;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1rem;
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+      height: auto;
+      align-items: center;
+    }
+    .Item {
+      display: flex;
+      flex-direction: column;
+      width: 220px;
+      justify-content: center;
+      padding-top: $padding-y-1;
+      padding-bottom: $padding-y-1;
+      align-items: center;
+      .ItemTitle {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

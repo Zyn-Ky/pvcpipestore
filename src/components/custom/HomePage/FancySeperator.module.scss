@@ -1,0 +1,12 @@
+.ModuleHomePage {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  z-index: 1;
+  .ActualVector {
+    fill: currentColor;
+    transform: rotateX(180deg);
+  }
+}
