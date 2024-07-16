@@ -23,11 +23,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import StoreIcon from "@mui/icons-material/Store";
 import BetterAppBar from "./custom/UXNavbar/BetterAppBar";
 import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "./custom/UXNavbar/BetterSearchBar";
-import {
   BottomNavigation,
   BottomNavigationAction,
   Fab,
@@ -45,14 +40,7 @@ import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 import PopUpAccountList from "./PopUpAccountList";
-const StyledFab = styled(Fab)({
-  position: "absolute",
-  zIndex: 1,
-  top: -30,
-  left: 0,
-  right: 0,
-  margin: "0 auto",
-});
+import HomeIcon from "@mui/icons-material/Home";
 
 export default function XAppBar() {
   const router = useRouter();
@@ -63,10 +51,7 @@ export default function XAppBar() {
   const refTriggerBtnAccPopUp = React.useRef<null | HTMLElement>(null);
   const themes = useTheme();
   const ScreenUp_lg = useMediaQuery(themes.breakpoints.up("lg"));
-  const ScreenDown_lg = useMediaQuery(themes.breakpoints.down("lg"));
   const ScreenUp_md = useMediaQuery(themes.breakpoints.up("md"));
-  const ScreenDown_md = useMediaQuery(themes.breakpoints.down("md"));
-  const ScreenUp_sm = useMediaQuery(themes.breakpoints.up("sm"));
   const ScreenDown_sm = useMediaQuery(themes.breakpoints.down("sm"));
   const isBigScreen = ScreenUp_lg;
   const isMediumScreen = !isBigScreen && ScreenUp_md;
@@ -122,7 +107,7 @@ export default function XAppBar() {
                     ref={(el) => {
                       refTriggerBtnNotfPopUp.current = el;
                     }}
-                    onClick={(e) => {
+                    onClick={() => {
                       setOpenNotificationBar(!openNotificationBar);
                     }}
                   >
@@ -141,7 +126,7 @@ export default function XAppBar() {
                     ref={(el) => {
                       refTriggerBtnAccPopUp.current = el;
                     }}
-                    onClick={(e) => {
+                    onClick={() => {
                       setOpenAccountListPopup(!openNotificationBar);
                     }}
                   >
@@ -179,6 +164,11 @@ export default function XAppBar() {
           >
             <BottomNavigationAction
               value={paths.HOME_PAGE}
+              label="Home"
+              icon={<HomeIcon />}
+            />
+            <BottomNavigationAction
+              value={paths.ACTUAL_SHOP}
               label="Shop"
               icon={<StoreIcon />}
             />
@@ -186,11 +176,6 @@ export default function XAppBar() {
               value={paths.MOBILE_NOTIFICATION}
               label="Notification"
               icon={<NotificationsIcon />}
-            />
-            <BottomNavigationAction
-              label="Transaksi"
-              value={paths.TRANSACTION_LIST}
-              icon={<ReceiptIcon />}
             />
             <BottomNavigationAction
               value={paths.CARTS_ITEM_LIST}

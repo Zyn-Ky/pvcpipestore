@@ -9,6 +9,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 
 const QueenCard = styled(Card)(({ theme }) => ({
   margin: 16,
@@ -18,23 +19,28 @@ export default function ItemProductCard() {
   return (
     <>
       <QueenCard variant="outlined">
-        <CardMedia
-          sx={{ height: 140 }}
-          image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-          title="green iguana"
+        <Image
+          src="https://mui.com/static/images/cards/contemplative-reptile.jpg"
+          width={350}
+          height={140}
+          alt="Placeholder"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            Lorem Ipsum
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Voluptatibus ducimus officia, amet repellendus atque ipsa error
+            maxime corporis quia fuga placeat porro nesciunt est quam expedita
+            eveniet. Qui, modi itaque?
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Share</Button>
-          <Button size="small">Learn More</Button>
+          <Button size="small" color="primary" variant="contained">
+            Tambah ke Keranjang
+          </Button>
+          <Button size="small">Beli</Button>
         </CardActions>
       </QueenCard>
     </>

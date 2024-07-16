@@ -1,5 +1,12 @@
 import { Box, Paper, styled, Typography } from "@mui/material";
 import styles from "@/scss/custom/CartList.module.scss";
+import SITE_CONFIG from "@/components/config";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `Keranjang - ${SITE_CONFIG.SEO.Title}`,
+};
+
 export default function CartsItemList() {
   return (
     <>

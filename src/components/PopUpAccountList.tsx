@@ -1,5 +1,11 @@
 "use client";
-import { Close, Logout, PersonAdd, Settings } from "@mui/icons-material";
+import {
+  Close,
+  Logout,
+  PersonAdd,
+  Receipt as ReceiptIcon,
+  Settings,
+} from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Avatar,
@@ -83,6 +89,14 @@ export default function PopUpAccountList(props: {
               <ShoppingCartIcon fontSize="small" />
             </ListItemIcon>
             Keranjang
+          </MenuItem>
+        </Link>
+        <Link href={paths.TRANSACTION_LIST} passHref>
+          <MenuItem onClick={handleClosePopup}>
+            <ListItemIcon>
+              <ReceiptIcon fontSize="small" />
+            </ListItemIcon>
+            Transaksi
           </MenuItem>
         </Link>
         <MenuItem onClick={handleClosePopup}>
