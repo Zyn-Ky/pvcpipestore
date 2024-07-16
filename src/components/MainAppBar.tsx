@@ -44,6 +44,7 @@ import paths from "./paths";
 import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
+import PopUpAccountList from "./PopUpAccountList";
 const StyledFab = styled(Fab)({
   position: "absolute",
   zIndex: 1,
@@ -56,8 +57,10 @@ const StyledFab = styled(Fab)({
 export default function XAppBar() {
   const router = useRouter();
   const [openNotificationBar, setOpenNotificationBar] = React.useState(false);
+  const [openAccountListPopup, setOpenAccountListPopup] = React.useState(false);
   const URLPathname = usePathname();
   const refTriggerBtnNotfPopUp = React.useRef<null | HTMLElement>(null);
+  const refTriggerBtnAccPopUp = React.useRef<null | HTMLElement>(null);
   const themes = useTheme();
   const ScreenUp_lg = useMediaQuery(themes.breakpoints.up("lg"));
   const ScreenDown_lg = useMediaQuery(themes.breakpoints.down("lg"));
@@ -80,8 +83,10 @@ export default function XAppBar() {
       bootCount !== 0 ||
       (!isSmallScreen && URLPathname === paths.MOBILE_NOTIFICATION);
     const mobileMode = isSmallScreen && openNotificationBar;
+    if (isSmallScreen && openAccountListPopup) {
+      setOpenAccountListPopup(false);
+    }
     if (desktopMode) {
-      // router.back();
       router.push(paths.HOME_PAGE);
       setOpenNotificationBar(true);
     }
@@ -94,7 +99,13 @@ export default function XAppBar() {
 
     if (bootCount > 1) return;
     bootCount++;
-  }, [URLPathname, isSmallScreen, openNotificationBar, router]);
+  }, [
+    URLPathname,
+    isSmallScreen,
+    openNotificationBar,
+    openAccountListPopup,
+    router,
+  ]);
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
@@ -105,25 +116,6 @@ export default function XAppBar() {
             <Box sx={{ flexGrow: 1 }} />
             {!isSmallScreen && (
               <Box sx={{ display: "flex" }}>
-                {URLPathname.indexOf(paths.CARTS_ITEM_LIST) === -1 && (
-                  <Tooltip title="Keranjang">
-                    <IconButton
-                      size="large"
-                      aria-label="show 4 items in cart"
-                      color="inherit"
-                      href={paths.CARTS_ITEM_LIST}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        router.push(e.currentTarget.href);
-                      }}
-                      LinkComponent="a"
-                    >
-                      <Badge badgeContent={4} color="error">
-                        <ShoppingCartIcon />
-                      </Badge>
-                    </IconButton>
-                  </Tooltip>
-                )}
                 <Tooltip title="Notifikasi">
                   <IconButton
                     size="large"
@@ -148,6 +140,12 @@ export default function XAppBar() {
                     aria-label="Account of current user"
                     aria-haspopup="true"
                     color="inherit"
+                    ref={(el) => {
+                      refTriggerBtnAccPopUp.current = el;
+                    }}
+                    onClick={(e) => {
+                      setOpenAccountListPopup(!openNotificationBar);
+                    }}
                   >
                     <AccountCircle />
                   </IconButton>
@@ -158,6 +156,11 @@ export default function XAppBar() {
         </BetterAppBar>
       </Box>
       <Toolbar />
+      <PopUpAccountList
+        open={openAccountListPopup}
+        anchorElement={refTriggerBtnAccPopUp.current}
+        onClose={() => setOpenAccountListPopup(!openAccountListPopup)}
+      />
       <PopUpNotifcationList
         open={openNotificationBar}
         anchorElement={refTriggerBtnNotfPopUp.current}

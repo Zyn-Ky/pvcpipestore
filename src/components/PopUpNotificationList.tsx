@@ -1,19 +1,16 @@
 "use client";
-import { Close, Logout, PersonAdd, Settings } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import {
-  Avatar,
   Box,
   CardHeader,
-  Divider,
   IconButton,
-  ListItemIcon,
   Menu,
-  MenuItem,
   Popover,
   styled,
 } from "@mui/material";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useCallback } from "react";
 import NotificationList from "./base/NotificationList";
+import { useWindowSize } from "react-use";
 
 const OuterBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -38,20 +35,13 @@ export default function PopUpNotifcationList(props: {
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
-  const [currentHeight, setHeight] = useState(400);
-  function ResizeMenuHeight() {
+  const { height } = useWindowSize();
+  const currentHeight = useCallback(() => {
     if (!props.open) return;
-    const heightNoMarginHeader = window.innerHeight - 16 - 64 - 32;
-    setHeight(Math.min(heightNoMarginHeader, 400));
-  }
-  useEffect(() => {
-    if (!props.open) return;
-    ResizeMenuHeight();
-    window.addEventListener("resize", ResizeMenuHeight);
-    return () => {
-      window.addEventListener("resize", ResizeMenuHeight);
-    };
-  }, [ResizeMenuHeight, props.open]);
+    const heightNoMarginHeader = height - 16 - 64 - 32;
+    return Math.min(heightNoMarginHeader, 400);
+  }, [props.open, height]);
+
   return (
     <>
       <Popover
@@ -78,7 +68,7 @@ export default function PopUpNotifcationList(props: {
               </IconButton>
             }
           />
-          <WrapperBox style={{ height: currentHeight + "px" }}>
+          <WrapperBox style={{ height: currentHeight() + "px" }}>
             <NotificationList />
           </WrapperBox>
         </OuterBox>
