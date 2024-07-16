@@ -1,0 +1,3 @@
+# Say no to the crawlers for /admin
+User-agent: *
+Disallow: /admin

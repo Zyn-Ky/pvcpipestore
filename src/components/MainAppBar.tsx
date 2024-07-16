@@ -94,8 +94,6 @@ export default function XAppBar() {
       router.push(paths.MOBILE_NOTIFICATION);
       setOpenNotificationBar(false);
     }
-    console.log("Desktop :", desktopMode);
-    console.log("Mobile :", mobileMode);
 
     if (bootCount > 1) return;
     bootCount++;
@@ -109,8 +107,8 @@ export default function XAppBar() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <BetterAppBar>
-          <Toolbar>
+        <BetterAppBar role="menubar">
+          <Toolbar role="navigation">
             <LogoAndSearchModule />
             <AccessibilityJumpKey />
             <Box sx={{ flexGrow: 1 }} />

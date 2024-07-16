@@ -1,5 +1,6 @@
 "use client";
 import { Close, Logout, PersonAdd, Settings } from "@mui/icons-material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
   Avatar,
   Box,
@@ -12,8 +13,10 @@ import {
   Popover,
   styled,
 } from "@mui/material";
+import Link from "next/link";
 import { ComponentProps, useCallback, useEffect } from "react";
 import { useEffectOnce, useWindowSize } from "react-use";
+import paths from "./paths";
 
 const OuterBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -73,6 +76,15 @@ export default function PopUpAccountList(props: {
           </ListItemIcon>
           Add another account
         </MenuItem>
+        <Divider />
+        <Link href={paths.CARTS_ITEM_LIST} passHref>
+          <MenuItem onClick={handleClosePopup}>
+            <ListItemIcon>
+              <ShoppingCartIcon fontSize="small" />
+            </ListItemIcon>
+            Keranjang
+          </MenuItem>
+        </Link>
         <MenuItem onClick={handleClosePopup}>
           <ListItemIcon>
             <Settings fontSize="small" />
