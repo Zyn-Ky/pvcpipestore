@@ -2,6 +2,7 @@ $padding-x-1: 48px;
 $padding-y-1: 18px;
 .HeroBox {
   height: 60vh;
+  min-height: 400px;
   max-height: 720px;
   position: relative;
 }

@@ -50,6 +50,7 @@ export default function Home() {
             position: "relative",
             width: "100%",
             height: "60vh",
+            minHeight: "400px",
             maxHeight: "720px",
           }}
         >
