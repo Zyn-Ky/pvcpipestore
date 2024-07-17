@@ -1,16 +1,30 @@
 "use client";
-import {
-  Search,
-  SearchIconWrapper,
-  StyledInputBase,
-} from "@/components/custom/UXNavbar/BetterSearchBar";
+// import {
+//   Search,
+//   SearchIconWrapper,
+//   StyledInputBase,
+// } from "@/components/custom/UXNavbar/BetterSearchBar";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link, useTheme } from "@mui/material";
 import Image from "next/image";
 import LogoMonochrome from "../../assets/logo-monochrome.webp";
 import LogoColorful from "../../assets/logo-colorful.webp";
 import NextLink from "next/link";
-
+import dynamic from "next/dynamic";
+const Search = dynamic(
+  async () =>
+    (await import("@/components/custom/UXNavbar/BetterSearchBar")).Search
+);
+const SearchIconWrapper = dynamic(
+  async () =>
+    (await import("@/components/custom/UXNavbar/BetterSearchBar"))
+      .SearchIconWrapper
+);
+const StyledInputBase = dynamic(
+  async () =>
+    (await import("@/components/custom/UXNavbar/BetterSearchBar"))
+      .StyledInputBase
+);
 export default function LogoAndSearchModule() {
   const themes = useTheme();
   return (

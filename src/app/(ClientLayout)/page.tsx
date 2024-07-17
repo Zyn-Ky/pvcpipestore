@@ -1,4 +1,3 @@
-import Image from "next/image";
 import CSS from "@/scss/HomePage.module.scss";
 import { BetterBigCarousel, XAppBar } from "@/components";
 import {
@@ -14,16 +13,19 @@ import Image_Banner1 from "./hero-main.webp";
 import Image_Banner2 from "./hero-main-2.webp";
 import Image_Banner3 from "./hero-main-3.jpg";
 import Image_Banner4 from "./hero-main-4.jpg";
-import Carousel from "react-material-ui-carousel";
 import { ContainerItemTextCarousel } from "@/components/custom/HomePage/HeroBox";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import BetterBgImg from "@/components/custom/HomePage/BetterBgImg";
-import ProductCard from "@/components/base/ProductCard";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
 import type { StaticImport } from "next/dist/shared/lib/get-img-props";
-import FancySeperator from "@/components/custom/HomePage/FancySeperator";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
+import dynamic from "next/dynamic";
+const BetterBgImg = dynamic(
+  () => import("@/components/custom/HomePage/BetterBgImg")
+);
+const FancySeperator = dynamic(
+  () => import("@/components/custom/HomePage/FancySeperator")
+);
 
 type ItemImageCarousel = {
   src: string | StaticImport;
@@ -54,7 +56,7 @@ export default function Home() {
             maxHeight: "720px",
           }}
         >
-          <BetterBgImg src={props.src} alt={props.alt} />
+          <BetterBgImg src={props.src} alt={props.alt} priority />
           <ContainerItemTextCarousel>
             <h1>{props.title && props.title}</h1>
             <p>{props.description && props.description}</p>

@@ -1,47 +1,39 @@
 "use client";
 import * as React from "react";
 
-import { styled, alpha, useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import ReceiptIcon from "@mui/icons-material/Receipt";
-import Image from "next/image";
-import PersonIcon from "@mui/icons-material/Person";
-import StoreIcon from "@mui/icons-material/Store";
 import BetterAppBar from "./custom/UXNavbar/BetterAppBar";
 import {
-  BottomNavigation,
   BottomNavigationAction,
-  Fab,
   Portal,
   Tooltip,
   useMediaQuery,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
-import BetterBottomNavigation from "./BetterBtmBar";
-import PopUpNotifcationList from "./PopUpNotificationList";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import paths from "./paths";
 import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
-import PopUpAccountList from "./PopUpAccountList";
-import HomeIcon from "@mui/icons-material/Home";
-
+import dynamic from "next/dynamic";
+const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"));
+const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
+const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));
+const AccountCircle = dynamic(
+  () => import("@mui/icons-material/AccountCircle")
+);
+const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));
+const PersonIcon = dynamic(() => import("@mui/icons-material/Person"));
+const Badge = dynamic(() => import("@mui/material/Badge"));
+const ShoppingCartIcon = dynamic(
+  () => import("@mui/icons-material/ShoppingCart")
+);
+const NotificationsIcon = dynamic(
+  () => import("@mui/icons-material/Notifications")
+);
+const StoreIcon = dynamic(() => import("@mui/icons-material/Store"));
 export default function XAppBar() {
   const router = useRouter();
   const [openNotificationBar, setOpenNotificationBar] = React.useState(false);
