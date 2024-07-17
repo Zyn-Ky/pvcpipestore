@@ -1,15 +1,6 @@
 import CSS from "@/scss/HomePage.module.scss";
-import { BetterBigCarousel, XAppBar } from "@/components";
-import {
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Paper,
-  styled,
-  Typography,
-} from "@mui/material";
-import Image_Banner1 from "./hero-main.webp";
+import { BetterBigCarousel } from "@/components";
+import { Button, Paper, Typography } from "@mui/material";
 import Image_Banner2 from "./hero-main-2.webp";
 import Image_Banner3 from "./hero-main-3.jpg";
 import Image_Banner4 from "./hero-main-4.jpg";
@@ -60,7 +51,7 @@ export default function Home() {
           <ContainerItemTextCarousel>
             <h1>{props.title && props.title}</h1>
             <p>{props.description && props.description}</p>
-            <Button variant="outlined">Primary</Button>
+            <Button variant="outlined">Pelajari Lebih Lanjut</Button>
           </ContainerItemTextCarousel>
         </Paper>
       </>
@@ -71,7 +62,7 @@ export default function Home() {
       <div className={CSS.Item}>
         {props.icon && props.icon}
         <Typography
-          variant="h5"
+          variant="h2"
           gutterBottom
           textTransform="capitalize"
           className={CSS.ItemTitle}
