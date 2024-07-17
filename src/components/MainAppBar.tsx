@@ -84,8 +84,8 @@ export default function XAppBar() {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <BetterAppBar role="menubar">
-          <Toolbar role="navigation">
+        <BetterAppBar>
+          <Toolbar role="menubar">
             <LogoAndSearchModule />
             <AccessibilityJumpKey />
             <Box sx={{ flexGrow: 1 }} />

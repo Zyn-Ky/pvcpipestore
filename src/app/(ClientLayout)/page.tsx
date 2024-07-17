@@ -115,9 +115,7 @@ export default function Home() {
         <FancySeperator />
       </div>
       <div className={CSS.OurServicesList}>
-        <Typography variant="h6" gutterBottom>
-          Kenapa harus memilih kami?
-        </Typography>
+        <Typography gutterBottom>Kenapa harus memilih kami?</Typography>
         <div className={CSS.UXLists}>
           <OurServices
             icon={<FlightLandIcon fontSize="large" />}
