@@ -51,6 +51,7 @@ export default function PopUpNotifcationList(props: {
         onClose={props.onClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        disableScrollLock
       >
         <OuterBox>
           <Header

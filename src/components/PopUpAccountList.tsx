@@ -68,6 +68,7 @@ export default function PopUpAccountList(props: {
         onClose={props.onClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        disableScrollLock
       >
         <MenuItem onClick={handleClosePopup}>
           <Avatar /> Profile
