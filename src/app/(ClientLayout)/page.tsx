@@ -62,14 +62,16 @@ export default function Home() {
       <div className={CSS.Item}>
         {props.icon && props.icon}
         <Typography
-          variant="h2"
+          variant="body1"
+          fontSize="125%"
+          fontWeight="bold"
           gutterBottom
           textTransform="capitalize"
           className={CSS.ItemTitle}
         >
           {props.header && props.header}
         </Typography>
-        <Typography variant="caption">{props.text && props.text}</Typography>
+        <Typography variant="body2">{props.text && props.text}</Typography>
       </div>
     );
   }
@@ -127,10 +129,15 @@ export default function Home() {
       </div>
       <div className={CSS.AboutCompany}>
         {/* <Typography variant="caption">Tentang Kami</Typography> */}
-        <Typography variant="h3" gutterBottom>
+        <Typography
+          variant="body1"
+          fontSize="200%"
+          fontWeight="bold"
+          gutterBottom
+        >
           Tentang Kami
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body2">
           Distributor Pipa uPVC yang menyediakan pipa jenis Pipa uPVC yang
           berkualitas tinggi dengan harga yang terjangkau.
         </Typography>

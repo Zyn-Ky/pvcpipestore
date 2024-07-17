@@ -6,12 +6,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import BetterAppBar from "./custom/UXNavbar/BetterAppBar";
-import {
-  BottomNavigationAction,
-  Portal,
-  Tooltip,
-  useMediaQuery,
-} from "@mui/material";
+import { Portal, Tooltip, useMediaQuery } from "@mui/material";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import paths from "./paths";
@@ -19,6 +14,10 @@ import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 import dynamic from "next/dynamic";
 const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"));
+const BottomNavigationAction = dynamic(
+  () => import("@mui/material/BottomNavigationAction")
+);
+
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
 const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));
 const AccountCircle = dynamic(

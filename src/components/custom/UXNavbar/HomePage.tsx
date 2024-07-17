@@ -31,9 +31,9 @@ export default function LogoAndSearchModule() {
     <>
       <NextLink href="/" shallow>
         {themes.palette.mode === "dark" ? (
-          <Image src={LogoMonochrome} width={130} alt="Logo SIB" />
+          <Image src={LogoMonochrome} width={130} alt="Logo SIB" priority />
         ) : (
-          <Image src={LogoColorful} width={160} alt="Logo SIB" />
+          <Image src={LogoColorful} width={160} alt="Logo SIB" priority />
         )}
       </NextLink>
       <Search sx={{ ml: 2 }}>
