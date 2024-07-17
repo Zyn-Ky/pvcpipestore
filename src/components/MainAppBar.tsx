@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-
+import CSS from "@/scss/custom/AppBar.module.scss";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,7 +13,25 @@ import paths from "./paths";
 import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 import dynamic from "next/dynamic";
-const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"));
+const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
+  loading: () => (
+    <>
+      <div
+        style={{
+          position: "absolute",
+          zIndex: "99",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 64,
+          background: "white",
+        }}
+      >
+        Loading...
+      </div>
+    </>
+  ),
+});
 const BottomNavigationAction = dynamic(
   () => import("@mui/material/BottomNavigationAction")
 );
@@ -84,47 +102,49 @@ export default function XAppBar() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <BetterAppBar>
-          <Toolbar role="menubar">
+          <Toolbar role="menubar" className={CSS.NavigationPanel}>
             <LogoAndSearchModule />
             <AccessibilityJumpKey />
-            <Box sx={{ flexGrow: 1 }} />
             {!isSmallScreen && (
-              <Box sx={{ display: "flex" }}>
-                <Tooltip title="Notifikasi">
-                  <IconButton
-                    size="large"
-                    aria-label="17 notifications available"
-                    color="inherit"
-                    ref={(el) => {
-                      refTriggerBtnNotfPopUp.current = el;
-                    }}
-                    onClick={() => {
-                      setOpenNotificationBar(!openNotificationBar);
-                    }}
-                  >
-                    <Badge badgeContent={17} color="error">
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Akun saya">
-                  <IconButton
-                    size="large"
-                    edge="end"
-                    aria-label="Account of current user"
-                    aria-haspopup="true"
-                    color="inherit"
-                    ref={(el) => {
-                      refTriggerBtnAccPopUp.current = el;
-                    }}
-                    onClick={() => {
-                      setOpenAccountListPopup(!openNotificationBar);
-                    }}
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                </Tooltip>
-              </Box>
+              <>
+                <div className={CSS.Filler} />
+                <Box sx={{ display: "flex" }}>
+                  <Tooltip title="Notifikasi">
+                    <IconButton
+                      size="large"
+                      aria-label="17 notifications available"
+                      color="inherit"
+                      ref={(el) => {
+                        refTriggerBtnNotfPopUp.current = el;
+                      }}
+                      onClick={() => {
+                        setOpenNotificationBar(!openNotificationBar);
+                      }}
+                    >
+                      <Badge badgeContent={17} color="error">
+                        <NotificationsIcon />
+                      </Badge>
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Akun saya">
+                    <IconButton
+                      size="large"
+                      edge="end"
+                      aria-label="Account of current user"
+                      aria-haspopup="true"
+                      color="inherit"
+                      ref={(el) => {
+                        refTriggerBtnAccPopUp.current = el;
+                      }}
+                      onClick={() => {
+                        setOpenAccountListPopup(!openNotificationBar);
+                      }}
+                    >
+                      <AccountCircle />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </>
             )}
           </Toolbar>
         </BetterAppBar>
@@ -147,6 +167,7 @@ export default function XAppBar() {
             <Toolbar />
           </Portal>
           <BetterBottomNavigation
+            className={CSS.BottomAppBar}
             showLabels
             value={URLPathname}
             onChange={(event, newValue) => {

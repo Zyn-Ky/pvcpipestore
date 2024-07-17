@@ -1,10 +1,6 @@
 import { BottomNavigation, styled } from "@mui/material";
 
 const BetterBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
-  position: "fixed",
-  bottom: 0,
-  left: 0,
-  width: "100%",
   backgroundColor:
     theme.palette.mode === "dark"
       ? theme.palette.common.black

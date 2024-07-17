@@ -11,70 +11,16 @@ import AdsClickIcon from "@mui/icons-material/AdsClick";
 import type { StaticImport } from "next/dist/shared/lib/get-img-props";
 import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
-const BetterBgImg = dynamic(
-  () => import("@/components/custom/HomePage/BetterBgImg")
+import OurServices from "@/components/custom/HomePage/OurServices";
+
+const ItemImageCarousel = dynamic(
+  () => import("@/components/custom/HomePage/ItemImageCarousel")
 );
 const FancySeperator = dynamic(
   () => import("@/components/custom/HomePage/FancySeperator")
 );
 
-type ItemImageCarousel = {
-  src: string | StaticImport;
-  alt: string;
-  title: string;
-  description?: string;
-  nextBtn?: {
-    href: string;
-  };
-};
-
-type ItemOurServices = {
-  icon: ReactNode;
-  header: string;
-  text: string;
-};
-
 export default function Home() {
-  function ItemImageCarousel(props: ItemImageCarousel) {
-    return (
-      <>
-        <Paper
-          sx={{
-            position: "relative",
-            width: "100%",
-            height: "60vh",
-            minHeight: "400px",
-            maxHeight: "720px",
-          }}
-        >
-          <BetterBgImg src={props.src} alt={props.alt} priority />
-          <ContainerItemTextCarousel>
-            <h1>{props.title && props.title}</h1>
-            <p>{props.description && props.description}</p>
-            <Button variant="outlined">Pelajari Lebih Lanjut</Button>
-          </ContainerItemTextCarousel>
-        </Paper>
-      </>
-    );
-  }
-  function OurServices(props: ItemOurServices) {
-    return (
-      <div className={CSS.Item}>
-        {props.icon && props.icon}
-        <Typography
-          variant="body1"
-          fontSize="125%"
-          fontWeight="bold"
-          gutterBottom
-          textTransform="capitalize"
-          className={CSS.ItemTitle}
-        >
-          {props.header && props.header}
-        </Typography>
-        <Typography variant="body2">{props.text && props.text}</Typography>
-      </div>
-    );
-  }
   return (
     <>
       <div className={CSS.HeroBox}>
