@@ -12,6 +12,19 @@ import type { StaticImport } from "next/dist/shared/lib/get-img-props";
 import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import OurServices from "@/components/custom/HomePage/OurServices";
+import OurPartners from "@/components/custom/HomePage/OurPartners";
+import {
+  PartnerHocoImg,
+  PartnerItronImg,
+  PartnerKitzImg,
+  PartnerOndaImg,
+  PartnerPenguinImg,
+  PartnerPerrunoImg,
+  PartnerPolyfuseImg,
+  PartnerRucika1Img,
+  PartnerRucikaImg,
+  PartnerYutaImg,
+} from "@/components/assets/images";
 
 const ItemImageCarousel = dynamic(
   () => import("@/components/custom/HomePage/ItemImageCarousel")
@@ -54,7 +67,9 @@ export default function Home() {
         <FancySeperator />
       </div>
       <div className={CSS.OurServicesList}>
-        <Typography gutterBottom>Kenapa harus memilih kami?</Typography>
+        <Typography fontSize="150%" fontWeight="bold" gutterBottom>
+          Kenapa harus memilih kami?
+        </Typography>
         <div className={CSS.UXLists}>
           <OurServices
             icon={<FlightLandIcon fontSize="large" />}
@@ -73,17 +88,33 @@ export default function Home() {
           />
         </div>
       </div>
+      <div className={CSS.Partners}>
+        <Typography fontSize="150%" fontWeight="bold" gutterBottom>
+          Our Partners
+        </Typography>
+        <div className={CSS.LogoLists}>
+          <OurPartners nextImage={PartnerHocoImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerItronImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerKitzImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerOndaImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerPenguinImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerPerrunoImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerPolyfuseImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerRucika1Img} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerRucikaImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerYutaImg} alt="Hoco Logo" />
+        </div>
+      </div>
       <div className={CSS.AboutCompany}>
-        {/* <Typography variant="caption">Tentang Kami</Typography> */}
         <Typography
-          variant="body1"
-          fontSize="200%"
+          fontSize="150%"
           fontWeight="bold"
+          textAlign="center"
           gutterBottom
         >
           Tentang Kami
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" textAlign="center">
           Distributor Pipa uPVC yang menyediakan pipa jenis Pipa uPVC yang
           berkualitas tinggi dengan harga yang terjangkau.
         </Typography>

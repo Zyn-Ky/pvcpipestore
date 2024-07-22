@@ -63,6 +63,7 @@ export default function PopUpNotifcationList(props: {
                 aria-label="Close Notification Panel"
                 aria-haspopup="true"
                 color="inherit"
+                autoFocus
                 onClick={() => props.onClose?.({}, "backdropClick")}
               >
                 <Close />

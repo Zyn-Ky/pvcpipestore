@@ -20,11 +20,40 @@ $padding-y-1: 18px;
   padding-right: $padding-x-1;
 }
 
+.Partners {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+  text-align: center;
+  .LogoLists {
+    display: block;
+    margin-top: 1rem;
+    max-width: 960px;
+    margin-inline: auto;
+    .LogoItem {
+      line-height: 60px;
+      min-height: 60px;
+      padding: 1rem;
+      text-align: center;
+      max-width: 140px;
+      display: inline-block;
+      margin: 0.25rem;
+      vertical-align: middle;
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
 .OurServicesList {
   padding-top: $padding-y-1;
   padding-bottom: $padding-y-1;
   padding-left: $padding-x-1;
   padding-right: $padding-x-1;
+  margin-top: 1rem;
   min-height: 200px;
   text-align: center;
   .UXLists {
