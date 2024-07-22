@@ -9,6 +9,16 @@
   .FloatingPay {
     width: 300px;
     padding: 1rem;
+    .TextLR {
+      display: flex;
+      margin-bottom: 8px;
+      .Left {
+        flex: 1 1;
+      }
+      .Right {
+        font-weight: bold;
+      }
+    }
   }
 }
 

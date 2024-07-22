@@ -17,6 +17,7 @@ export default function OurPartners(props: OurPartnerProps) {
     <>
       <Item className={CSS.LogoItem}>
         <Image
+          lazyBoundary=""
           src={props.nextImage ?? ""}
           width={108}
           alt={props.alt && props.alt}

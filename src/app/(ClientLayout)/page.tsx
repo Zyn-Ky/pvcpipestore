@@ -93,16 +93,16 @@ export default function Home() {
           Our Partners
         </Typography>
         <div className={CSS.LogoLists}>
-          <OurPartners nextImage={PartnerHocoImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerItronImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerKitzImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerOndaImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerPenguinImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerPerrunoImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerPolyfuseImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerRucika1Img} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerRucikaImg} alt="Hoco Logo" />
-          <OurPartners nextImage={PartnerYutaImg} alt="Hoco Logo" />
+          <OurPartners nextImage={PartnerHocoImg} alt="Hoco® Logo" />
+          <OurPartners nextImage={PartnerItronImg} alt="Itron® Logo" />
+          <OurPartners nextImage={PartnerKitzImg} alt="Kitz® Logo" />
+          <OurPartners nextImage={PartnerOndaImg} alt="Onda® Logo" />
+          <OurPartners nextImage={PartnerPenguinImg} alt="Penguin® Logo" />
+          <OurPartners nextImage={PartnerPerrunoImg} alt="Perruno® Logo" />
+          <OurPartners nextImage={PartnerPolyfuseImg} alt="Polyfuse® Logo" />
+          <OurPartners nextImage={PartnerRucika1Img} alt="Rucika Kelen® Logo" />
+          <OurPartners nextImage={PartnerRucikaImg} alt="Hoco® Logo" />
+          <OurPartners nextImage={PartnerYutaImg} alt="Yuta© Logo" />
         </div>
       </div>
       <div className={CSS.AboutCompany}>
