@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  max-width: 1440px;
+  margin-inline: auto;
   .ItemListing {
     flex-grow: 1;
   }
@@ -25,6 +27,7 @@
 @media screen and (max-width: 600px) {
   .WrapperList {
     flex-direction: column;
+    gap: 2rem;
     .FloatingPay {
       width: 100%;
     }
