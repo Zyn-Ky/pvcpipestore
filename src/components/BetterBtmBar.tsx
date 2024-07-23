@@ -1,4 +1,8 @@
-import { BottomNavigation, styled } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  styled,
+} from "@mui/material";
 
 const BetterBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
   backgroundColor:
@@ -15,5 +19,11 @@ const BetterBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
     display: "flex",
   },
 }));
+
+export const BetterBottomNavigationAction = styled(BottomNavigationAction)(
+  ({ theme }) => ({
+    minWidth: 0,
+  })
+);
 
 export default BetterBottomNavigation;

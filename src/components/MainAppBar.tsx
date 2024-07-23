@@ -32,8 +32,8 @@ const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
     </>
   ),
 });
-const BottomNavigationAction = dynamic(
-  () => import("@mui/material/BottomNavigationAction")
+const BetterBottomNavigationAction = dynamic(
+  async () => (await import("./BetterBtmBar")).BetterBottomNavigationAction
 );
 
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
@@ -174,27 +174,27 @@ export default function XAppBar() {
               router.push(newValue);
             }}
           >
-            <BottomNavigationAction
+            <BetterBottomNavigationAction
               value={paths.HOME_PAGE}
               label="Home"
               icon={<HomeIcon />}
             />
-            <BottomNavigationAction
+            <BetterBottomNavigationAction
               value={paths.ACTUAL_SHOP}
               label="Shop"
               icon={<StoreIcon />}
             />
-            <BottomNavigationAction
+            <BetterBottomNavigationAction
               value={paths.MOBILE_NOTIFICATION}
               label="Notification"
               icon={<NotificationsIcon />}
             />
-            <BottomNavigationAction
+            <BetterBottomNavigationAction
               value={paths.CARTS_ITEM_LIST}
               label="Keranjang"
               icon={<ShoppingCartIcon />}
             />
-            <BottomNavigationAction
+            <BetterBottomNavigationAction
               label="Saya"
               value={paths.MOBILE_MY_ACCOUNT}
               icon={<PersonIcon />}
