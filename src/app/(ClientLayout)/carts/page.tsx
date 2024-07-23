@@ -1,9 +1,19 @@
-import { Box, Button, Divider, Paper, styled, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  Divider,
+  Paper,
+  styled,
+  Typography,
+} from "@mui/material";
 import styles from "@/scss/custom/CartList.module.scss";
 import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
-import { PropsWithChildren } from "react";
-
+import { PropsWithChildren, useState } from "react";
+import Image from "next/image";
+import CounterModule from "./countermodule";
 export const metadata: Metadata = {
   title: `Keranjang - ${SITE_CONFIG.SEO.Title}`,
 };
@@ -24,9 +34,22 @@ export default function CartsItemList() {
     <>
       <div className={styles.WrapperList}>
         <div className={styles.ItemListing}>
-          <Typography>No items</Typography>
+          <Typography gutterBottom>No items</Typography>
+          <Card sx={{ display: "flex", minHeight: 151 }} elevation={5}>
+            <Image
+              src="https://e-katalog.lkpp.go.id/katalog/produk/download/gambar/966388583"
+              alt="1"
+              width={151}
+              height={151}
+            />
+            <Box sx={{ flex: 1, padding: 3 }}>
+              <Typography variant="h5">Pipa PVC</Typography>
+              <Typography variant="caption">Rp 45.999</Typography>
+              <CounterModule />
+            </Box>
+          </Card>
         </div>
-        <Paper className={styles.FloatingPay}>
+        <Paper className={styles.FloatingPay} elevation={5}>
           <Typography variant="h5" fontWeight={700} gutterBottom>
             Summary
           </Typography>

@@ -15,7 +15,11 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "src", "scss")],
   },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "mui.com" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "mui.com" },
+      { protocol: "https", hostname: "d220hvstrn183r.cloudfront.net" },
+      { protocol: "https", hostname: "e-katalog.lkpp.go.id" },
+    ],
   },
 };
 

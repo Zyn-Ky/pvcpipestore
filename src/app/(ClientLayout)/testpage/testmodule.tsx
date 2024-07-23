@@ -60,7 +60,6 @@ export default function TestModule(props: { xsrf64: string }) {
             const loggedOut = await signOut();
             if (loggedOut) {
               console.log(XSRF64);
-              await AxiosFetchV1Api("DELETE", "revokeServices", XSRF64);
               setData(null);
               // window.location.reload();
             }
