@@ -18,7 +18,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "mui.com" },
       { protocol: "https", hostname: "d220hvstrn183r.cloudfront.net" },
-      { protocol: "https", hostname: "e-katalog.lkpp.go.id" },
+      { protocol: "https", hostname: "*.go.id" },
     ],
   },
 };
