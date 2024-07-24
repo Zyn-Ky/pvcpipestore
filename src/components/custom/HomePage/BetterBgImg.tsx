@@ -13,6 +13,6 @@ const BetterBgImg = styled(Image)(({ theme }) => ({
   bottom: 0,
   objectFit: "cover",
   pointerEvents: "none",
-  filter: "brightness(0.9) blur(2px)",
+  filter: "brightness(0.75) blur(2px)",
 }));
 export default BetterBgImg;

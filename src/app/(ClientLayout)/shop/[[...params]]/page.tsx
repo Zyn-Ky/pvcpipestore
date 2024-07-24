@@ -7,9 +7,10 @@ export const metadata: Metadata = {
   title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
 };
 
-export default function CartsItemList() {
+export default function CartsItemList(props: any) {
   return (
     <>
+      {JSON.stringify(props)}
       <Typography variant="h4" gutterBottom>
         Best of the Week!
       </Typography>

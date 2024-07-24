@@ -1,9 +1,6 @@
 import CSS from "@/scss/HomePage.module.scss";
 import { BetterBigCarousel } from "@/components";
 import { Button, Paper, Typography } from "@mui/material";
-import Image_Banner2 from "./hero-main-2.webp";
-import Image_Banner3 from "./hero-main-3.jpg";
-import Image_Banner4 from "./hero-main-4.jpg";
 import { ContainerItemTextCarousel } from "@/components/custom/HomePage/HeroBox";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
@@ -14,6 +11,10 @@ import dynamic from "next/dynamic";
 import OurServices from "@/components/custom/HomePage/OurServices";
 import OurPartners from "@/components/custom/HomePage/OurPartners";
 import {
+  HomePage_CoverImg,
+  HomePage_Image_Banner2,
+  HomePage_Image_Banner3,
+  HomePage_Image_Banner4,
   PartnerHocoImg,
   PartnerItronImg,
   PartnerKitzImg,
@@ -35,7 +36,7 @@ const FancySeperator = dynamic(
 
 export default function Home() {
   return (
-    <>
+    <div itemType="https://schema.org/Organization" itemScope>
       <div className={CSS.HeroBox}>
         <BetterBigCarousel
           animation="slide"
@@ -43,25 +44,64 @@ export default function Home() {
           swipe
           autoPlay
           indicators={false}
-          navButtonsAlwaysVisible
         >
           <ItemImageCarousel
-            src={Image_Banner4}
+            src={HomePage_CoverImg}
+            alt="Banner Cover uPVC"
+            title="DISTRIBUTOR PIPA uPVC TERPERCAYA"
+            description="Solusi Tahan Lama dan Terpercaya untuk Distribusi Air Bersih yang Aman, Efisien, dan Berkualitas Tinggi, Meningkatkan Kualitas Hidup dan Mendukung Kebutuhan Infrastruktur Masa Depan"
+            key={"COVER"}
+            actionButton={[
+              {
+                href: "/shop",
+                text: "Belanja Sekarang",
+                outlined: false,
+              },
+              {
+                href: "/",
+                text: "Hubungi Kami",
+                outlined: true,
+              },
+            ]}
+          />
+          <ItemImageCarousel
+            src={HomePage_Image_Banner4}
             alt="Banner Product 1 - uPVC SNI"
             title="Pipa uPVC SNI"
             description="Pipa uPVC SNI Untuk Instalasi air bersih atau air minum yang biasa di gunakan untuk PDAM"
+            actionButton={[
+              {
+                href: "/shop/pipa-pvc/sni",
+                text: "Jelajahi",
+                outlined: false,
+              },
+            ]}
           />
           <ItemImageCarousel
-            src={Image_Banner2}
+            src={HomePage_Image_Banner2}
             alt="Banner Product 2 - uPVC JIS"
             title="Pipa uPVC SDR-41"
             description="Pipa uPVC SDR-41 berkualitas tinggi"
+            actionButton={[
+              {
+                href: "/shop/pipa-pvc/jis",
+                text: "Jelajahi",
+                outlined: false,
+              },
+            ]}
           />
           <ItemImageCarousel
-            src={Image_Banner3}
+            src={HomePage_Image_Banner3}
             alt="Fitting uPVC Standard & SNI"
             title="Fitting uPVC Standard & SNI"
             description="Mulai dari Rp 1.200"
+            actionButton={[
+              {
+                href: "/shop/pipa-pvc/fitting/f=jis,sni",
+                text: "Jelajahi",
+                outlined: false,
+              },
+            ]}
           />
         </BetterBigCarousel>
         <FancySeperator />
@@ -120,6 +160,6 @@ export default function Home() {
         </Typography>
       </div>
       <div className={CSS.RecommendationsProd}></div>
-    </>
+    </div>
   );
 }
