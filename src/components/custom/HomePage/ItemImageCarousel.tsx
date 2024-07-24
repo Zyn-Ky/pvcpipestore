@@ -27,8 +27,8 @@ export default function ItemImageCarousel(props: ItemImageCarousel) {
           position: "relative",
           width: "100%",
           height: "60vh",
-          minHeight: "400px",
-          maxHeight: "720px",
+          minHeight: "500px",
+          maxHeight: "1080px",
         }}
       >
         <BetterBgImg src={props.src} alt={props.alt} priority />
