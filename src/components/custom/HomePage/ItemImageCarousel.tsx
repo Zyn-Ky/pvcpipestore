@@ -31,7 +31,13 @@ export default function ItemImageCarousel(props: ItemImageCarousel) {
           maxHeight: "1080px",
         }}
       >
-        <BetterBgImg src={props.src} alt={props.alt} priority />
+        <BetterBgImg
+          src={props.src}
+          alt={props.alt}
+          width={1406}
+          height={500}
+          priority
+        />
         <ContainerItemTextCarousel>
           <h1>{props.title && props.title}</h1>
           <p>{props.description && props.description}</p>
