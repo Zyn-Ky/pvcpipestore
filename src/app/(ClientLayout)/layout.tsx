@@ -21,6 +21,13 @@ export const metadata: Metadata = {
     description: SITE_CONFIG.SEO.Description,
   },
   generator: "Next.JS",
+  icons: [
+    { sizes: "16x16", url: "/favicon-16.ico" },
+    { sizes: "32x32", url: "/favicon-32.ico" },
+    { sizes: "48x48", url: "/favicon-48.ico" },
+    { sizes: "64x64", url: "/favicon-64.ico" },
+    { sizes: "256x256", url: "/favicon-256.ico" },
+  ],
 };
 
 export default function RootLayout({
