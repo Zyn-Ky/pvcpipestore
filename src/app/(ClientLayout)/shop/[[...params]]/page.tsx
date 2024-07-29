@@ -1,15 +1,16 @@
-import { Box, Grid, Paper, styled, Typography } from "@mui/material";
+import { Box, Button, Grid, Paper, styled, Typography } from "@mui/material";
 import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
 import ItemProductCard from "@/components/base/ProductCard";
-
+import AdvancedFilterPopUp from "@/components/custom/ShopPage/AdvancedFilterPopUp";
 export const metadata: Metadata = {
   title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
 };
 
-export default function CartsItemList(props: any) {
+export default function ShopPage(props: any) {
   return (
-    <>
+    <div>
+      <AdvancedFilterPopUp />
       {JSON.stringify(props)}
       <Typography variant="h4" gutterBottom>
         Best of the Week!
@@ -25,6 +26,6 @@ export default function CartsItemList(props: any) {
           </Grid>
         ))}
       </Grid>
-    </>
+    </div>
   );
 }

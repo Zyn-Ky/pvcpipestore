@@ -1,12 +1,9 @@
 import CSS from "@/scss/HomePage.module.scss";
 import { BetterBigCarousel } from "@/components";
 import { Button, Paper, Typography } from "@mui/material";
-import { ContainerItemTextCarousel } from "@/components/custom/HomePage/HeroBox";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
-import type { StaticImport } from "next/dist/shared/lib/get-img-props";
-import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
 import OurServices from "@/components/custom/HomePage/OurServices";
 import OurPartners from "@/components/custom/HomePage/OurPartners";
@@ -97,7 +94,7 @@ export default function Home() {
             description="Mulai dari Rp 1.200"
             actionButton={[
               {
-                href: "/shop/pipa-pvc/fitting/f=jis,sni",
+                href: "/shop/pipa-pvc/fitting?f=jis,sni",
                 text: "Jelajahi",
                 outlined: false,
               },

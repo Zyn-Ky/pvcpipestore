@@ -45,6 +45,7 @@ export default function CartsItemList() {
             <Box sx={{ flex: 1, padding: 3 }}>
               <Typography variant="h5">Pipa PVC</Typography>
               <Typography variant="caption">Rp 45.999</Typography>
+              <br />
               <CounterModule />
             </Box>
           </Card>
