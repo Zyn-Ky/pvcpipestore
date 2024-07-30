@@ -169,7 +169,7 @@ export default function XAppBar() {
           <BetterBottomNavigation
             className={CSS.BottomAppBar}
             showLabels
-            value={URLPathname}
+            value={`/${URLPathname.split("/")[1]}`}
             onChange={(event, newValue) => {
               router.push(newValue);
             }}

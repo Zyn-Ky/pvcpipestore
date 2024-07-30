@@ -5,6 +5,8 @@ import { CssBaseline } from "@mui/material";
 import { XAppBar } from "@/components";
 import NProgressWrapper from "@/components/base/NProgress";
 import SITE_CONFIG from "@/components/config";
+import PullToRefresh from "react-simple-pull-to-refresh";
+import PullToRefreshWrapper from "@/components/base/PullToRefreshWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,10 +43,7 @@ export default function RootLayout({
         <NProgressWrapper>
           <XAppBar />
           <CssBaseline />
-          <main id="content_ui" role="main">
-            {children}
-          </main>
-          <div id="down"></div>
+          <PullToRefreshWrapper>{children}</PullToRefreshWrapper>
         </NProgressWrapper>
       </body>
     </html>
