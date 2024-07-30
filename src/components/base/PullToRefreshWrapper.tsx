@@ -30,7 +30,7 @@ export default function PullToRefreshWrapper(props: PropsWithChildren) {
             Pull more to refresh
           </Box>
         }
-        maxPullDownDistance={125}
+        maxPullDownDistance={175}
         backgroundColor="inherit"
       >
         <main id="content_ui" role="main">

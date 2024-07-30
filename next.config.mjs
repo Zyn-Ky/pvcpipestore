@@ -18,7 +18,11 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "mui.com" },
       { protocol: "https", hostname: "d220hvstrn183r.cloudfront.net" },
-      { protocol: "https", hostname: "*.go.id" },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        pathname: "/v0/b/moonsunstone-x.appspot.com/**",
+      },
     ],
   },
 };

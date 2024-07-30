@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import ItemProductCard from "@/components/base/ProductCard";
 import CSS from "@/scss/ShopPage.module.scss";
 import dynamic from "next/dynamic";
+import ProductList from "@/components/custom/ShopPage/FetchShopList";
 export const metadata: Metadata = {
   title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
 };
@@ -21,6 +22,7 @@ export default async function ShopPage(props: any) {
       <Typography variant="h4" gutterBottom>
         Yang Terbaik!
       </Typography>
+      <ProductList />
       <ItemProductCard />
       <Grid
         container
@@ -29,26 +31,6 @@ export default async function ShopPage(props: any) {
       >
         <Grid xs={2} sm={4} md={4}></Grid>
       </Grid>
-      <br />
-      <br />
-      <hr />
-      <br />
-      <p>Props</p>
-      {JSON.stringify(props)}
-      <br />
-      <br />
-      <hr />
-      <br />
-      <p>Test API</p>
-      {JSON.stringify(
-        await (
-          await fetch(
-            `https://jsonplaceholder.typicode.com/comments?postId=${Math.floor(
-              Math.random() * (100 - 1 + 1) + 1
-            )}`
-          )
-        ).json()
-      )}
     </div>
   );
 }
