@@ -2,12 +2,15 @@ import { Box, Button, Grid, Paper, styled, Typography } from "@mui/material";
 import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
 import ItemProductCard from "@/components/base/ProductCard";
-import AdvancedFilterPopUp from "@/components/custom/ShopPage/AdvancedFilterPopUp";
 import CSS from "@/scss/ShopPage.module.scss";
+import dynamic from "next/dynamic";
 export const metadata: Metadata = {
   title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
 };
-
+const AdvancedFilterPopUp = dynamic(
+  () => import("@/components/custom/ShopPage/AdvancedFilterPopUp"),
+  {}
+);
 export default async function ShopPage(props: any) {
   return (
     <div className={CSS.ShopContainer}>

@@ -21,6 +21,10 @@ body {
   z-index: 9999999999999 !important;
 }
 
+main#content_ui {
+  background-color: Canvas;
+}
+
 a {
   color: inherit;
   text-decoration: none;
