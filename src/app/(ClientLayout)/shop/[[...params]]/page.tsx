@@ -5,6 +5,10 @@ import ItemProductCard from "@/components/base/ProductCard";
 import CSS from "@/scss/ShopPage.module.scss";
 import dynamic from "next/dynamic";
 import ProductList from "@/components/custom/ShopPage/FetchShopList";
+import { getFirestore } from "firebase-admin/firestore";
+import AdminFirebaseApp from "@/libs/firebase/adminConfig";
+import { collection, getDocs } from "firebase/firestore";
+import { OptionalArray, ProductCardInfo } from "@/libs/config";
 export const metadata: Metadata = {
   title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
 };
@@ -12,7 +16,18 @@ const AdvancedFilterPopUp = dynamic(
   () => import("@/components/custom/ShopPage/AdvancedFilterPopUp"),
   {}
 );
+
 export default async function ShopPage(props: any) {
+  const firestore = getFirestore(AdminFirebaseApp); //This should return the firebase-admin app
+  const productsRef = firestore.collection("Products/");
+  const docs: OptionalArray<ProductCardInfo> = await Promise.all(
+    (
+      await productsRef.listDocuments()
+    ).map(async (doc) => {
+      return (await productsRef.doc(doc.id).get()).data();
+    })
+  );
+
   return (
     <div className={CSS.ShopContainer}>
       <Typography variant="h4" gutterBottom>
@@ -22,8 +37,8 @@ export default async function ShopPage(props: any) {
       <Typography variant="h4" gutterBottom>
         Yang Terbaik!
       </Typography>
-      <ProductList />
-      <ItemProductCard />
+      <ProductList serverData={docs} />
+
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

@@ -1,4 +1,5 @@
 import * as admin from "firebase-admin";
+import { App } from "firebase-admin/app";
 
 const AdminFirebaseApp =
   admin.apps.length === 0
@@ -15,4 +16,4 @@ const AdminFirebaseApp =
       })
     : admin.apps[0];
 
-export default AdminFirebaseApp;
+export default AdminFirebaseApp as App;

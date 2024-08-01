@@ -11,25 +11,36 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import TempImage from "./download.png";
+import { ProductCardInfo } from "@/libs/config";
 const QueenCard = styled(Card)(({ theme }) => ({
   margin: 16,
   userSelect: "text",
+  width: 250,
+  marginBottom: "20px",
+  border: "1px solid #ccc",
+  padding: "20px",
+  textAlign: "center",
 }));
 
-export default function ItemProductCard() {
+export default function ItemProductCard(props: { data: ProductCardInfo }) {
   return (
     <>
       <QueenCard variant="outlined">
-        <Image src={TempImage} width={350} height={350} alt="Placeholder" />
+        <Image
+          src={props.data.Images?.[0] ?? ""}
+          width={250}
+          height={250}
+          alt="Placeholder"
+        />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Cap PVC Rucika AW 100mm (4″)
+            {props.data.Name ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Fitting Pipa PVC Standard JIS, CAP
+            {props.data.Description ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rp. 52.300
+            Rp. {props.data.Price ?? ""}
           </Typography>
         </CardContent>
         <CardActions>
