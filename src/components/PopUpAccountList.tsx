@@ -5,6 +5,7 @@ import {
   PersonAdd,
   Receipt as ReceiptIcon,
   Settings,
+  InfoOutlined,
 } from "@mui/icons-material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import {
@@ -24,35 +25,12 @@ import { ComponentProps, useCallback, useEffect } from "react";
 import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 
-const OuterBox = styled(Box)(({ theme }) => ({
-  position: "relative",
-  display: "flex",
-  flexDirection: "column",
-}));
-
-const WrapperBox = styled(Box)(({ theme }) => ({
-  width: 400,
-  height: 400,
-  paddingInline: 8,
-  overflow: "auto",
-}));
-const Header = styled(CardHeader)(({ theme }) => ({
-  width: "100%",
-  paddingLeft: 24,
-  paddingRight: 24,
-}));
-
 export default function PopUpAccountList(props: {
   open: boolean;
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
   const { height } = useWindowSize();
-  const currentHeight = useCallback(() => {
-    if (!props.open) return;
-    const heightNoMarginHeader = height - 16 - 64 - 32;
-    return Math.min(heightNoMarginHeader, 400);
-  }, [props.open, height]);
 
   const handleClosePopup = useCallback(
     () => props.onClose?.({}, "backdropClick"),
@@ -70,6 +48,23 @@ export default function PopUpAccountList(props: {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         disableScrollLock
       >
+        <Link href="/auth/login" passHref>
+          <MenuItem onClick={handleClosePopup}>
+            <ListItemIcon>
+              <InfoOutlined fontSize="small" />
+            </ListItemIcon>
+            PAGE_TRIGGER_LOGIN_UI
+          </MenuItem>
+        </Link>
+        <Link href="/auth/register" passHref>
+          <MenuItem onClick={handleClosePopup}>
+            <ListItemIcon>
+              <InfoOutlined fontSize="small" />
+            </ListItemIcon>
+            PAGE_TRIGGER_REGISTER_UI
+          </MenuItem>
+        </Link>
+        <Divider sx={{ mt: 1 }} />
         <MenuItem onClick={handleClosePopup}>
           <Avatar /> Profile
         </MenuItem>

@@ -1,0 +1,25 @@
+.AuthContainer {
+  padding: 3rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 2rem;
+  .BannerIntro {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    background-color: #d8d9d9;
+    .Img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  .OuterFormContainer {
+    width: 400px;
+    height: 550px;
+  }
+}

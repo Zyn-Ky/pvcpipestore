@@ -13,6 +13,9 @@ import HomePage_CoverImg from "./HomePage/cover.jpg";
 import HomePage_Image_Banner2 from "./HomePage/hero-main-2.webp";
 import HomePage_Image_Banner3 from "./HomePage/hero-main-3.jpg";
 import HomePage_Image_Banner4 from "./HomePage/hero-main-4.jpg";
+
+import AuthUISharedLayout_Benefit_id_ID from "./AuthUISharedLayout/Benefit-ID_ID.png";
+
 export {
   PartnerHocoImg,
   PartnerItronImg,
@@ -28,4 +31,5 @@ export {
   HomePage_Image_Banner2,
   HomePage_Image_Banner3,
   HomePage_Image_Banner4,
+  AuthUISharedLayout_Benefit_id_ID,
 };
