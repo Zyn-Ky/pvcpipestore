@@ -9,6 +9,7 @@ import Image from "next/image";
 import React from "react";
 
 import { useCollection, useDocumentData } from "react-firebase-hooks/firestore";
+import { PhotoProvider } from "react-photo-view";
 
 type ProductListProps = {
   serverData: (ProductCardInfo | undefined)[];

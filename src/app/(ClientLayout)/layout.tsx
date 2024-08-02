@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.scss";
+import "react-photo-view/dist/react-photo-view.css";
 import { CssBaseline } from "@mui/material";
 import { XAppBar } from "@/components";
 import NProgressWrapper from "@/components/base/NProgress";
