@@ -24,8 +24,8 @@ export async function GET(req: NextRequest) {
       }
     );
   console.log(Token);
-  const { IsValid, UserExists } = await UserVerifyID(AdminFirebaseApp, Token);
-  if (!IsValid || !UserExists)
+  // const { IsValid, UserExists } = await UserVerifyID(AdminFirebaseApp, Token);
+  if (true)
     return NextResponse.json({
       code: 401,
       message: "INVALID_CREDENTIAL",

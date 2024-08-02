@@ -1,4 +1,5 @@
 import type { app } from "firebase-admin";
+
 const EXPECTED_FB_TOKEN_AUD =
   process.env.SECURED_FIREBASE_ADMIN_CERT_PROJECT_ID ?? "INVALID";
 const EXPECTED_FB_TOKEN_ISS = `https://securetoken.google.com/${

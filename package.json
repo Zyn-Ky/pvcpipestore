@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "1.8.11.ALPHA",
+  "version": "1.8.12.ALPHA",
   "private": true,
   "scripts": {
     "dev": "next dev",
