@@ -28,16 +28,13 @@ export default function ItemProductCard(props: { data: ProductCardInfo }) {
       <QueenCard variant="outlined">
         <Image
           src={props.data.Images?.[0] ?? ""}
-          width={250}
-          height={250}
+          width={200}
+          height={200}
           alt="Placeholder"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {props.data.Name ?? ""}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {props.data.Description ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Rp. {props.data.Price ?? ""}

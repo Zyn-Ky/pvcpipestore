@@ -1,5 +1,5 @@
 "use client";
-import { useTheme } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import type { PropsWithChildren } from "react";
@@ -11,6 +11,7 @@ const CircularProgress = dynamic(
 const RefreshIcon = dynamic(() => import("@mui/icons-material/Refresh"));
 export default function PullToRefreshWrapper(props: PropsWithChildren) {
   const { refresh } = useRouter();
+  const isTouchScreen = useMediaQuery("(pointer: coarse) ");
   return (
     <>
       <PullToRefresh
@@ -31,6 +32,7 @@ export default function PullToRefreshWrapper(props: PropsWithChildren) {
           </Box>
         }
         maxPullDownDistance={175}
+        isPullable={isTouchScreen}
         backgroundColor="inherit"
       >
         <main id="content_ui" role="main">
