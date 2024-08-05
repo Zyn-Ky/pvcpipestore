@@ -1,6 +1,6 @@
 import CSS from "@/scss/AuthUISharedLayout.module.scss";
 
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Link from "next/link";
 import paths from "@/components/paths";
 import { Metadata } from "next";
@@ -12,12 +12,15 @@ export const metadata: Metadata = {
 export default function LoginUI() {
   return (
     <>
-      <h1>Login</h1>
+      <h1>Masuk</h1>
+      <Typography></Typography>
       <LoginClient />
-      <p>
+      <Typography>
         Belum mempunyai akun?
-        <Link href={paths.AUTH_REGISTER}>Daftar sekarang!</Link>
-      </p>
+        <Link href={paths.AUTH_REGISTER}>
+          <Typography color="lightblue">Daftar sekarang!</Typography>
+        </Link>
+      </Typography>
     </>
   );
 }

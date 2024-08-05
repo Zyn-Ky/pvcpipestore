@@ -19,6 +19,14 @@ import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 import dynamic from "next/dynamic";
 import { useGlobalSettings } from "./base/ClientThemeWrapper";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import {
+  fetchAndActivate,
+  getBoolean,
+  getRemoteConfig,
+  getValue,
+} from "firebase/remote-config";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const InfoOutlinedIcon = dynamic(
@@ -46,11 +54,29 @@ export default function PopUpAccountList(props: {
   const { height } = useWindowSize();
   const { ThemeMode, SetThemeMode } = useGlobalSettings();
   const [showDebugButton, setShowDebugButton] = useState(false);
+  const [enableDebug, setEnableDebug] = useState(false);
   const handleClosePopup = useCallback(
     () => props.onClose?.({}, "backdropClick"),
     [props]
   );
+  const [signedIn, loading, error] = useAuthState(FirebaseAuth);
+  const [SignOutCall, SignOutLoading] = useSignOut(FirebaseAuth);
 
+  function SignOutHandler() {
+    SignOutCall();
+    window.location.href = paths.HOME_PAGE;
+    handleClosePopup();
+  }
+  async function DebugMode() {
+    const RemoteConfig = getRemoteConfig(firebaseApp);
+    await fetchAndActivate(RemoteConfig);
+    const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
+    console.log(EnableDebugUI);
+    setEnableDebug(EnableDebugUI);
+  }
+  useEffectOnce(() => {
+    DebugMode();
+  });
   return (
     <>
       <Menu
@@ -62,75 +88,86 @@ export default function PopUpAccountList(props: {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         disableScrollLock
       >
-        <Collapse orientation="vertical" in={showDebugButton}>
-          <MenuItem>
-            <ListItemIcon>
-              <InfoOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            CURRENT_UI_THEME : {ThemeMode}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClosePopup();
-              SetThemeMode("dark");
-            }}
-          >
-            <ListItemIcon>
-              <InfoOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            CLIENT_TRIGGER_DARK_THEME
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClosePopup();
-              SetThemeMode("light");
-            }}
-          >
-            <ListItemIcon>
-              <InfoOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            CLIENT_TRIGGER_LIGHT_THEME
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleClosePopup();
-              SetThemeMode("system");
-            }}
-          >
-            <ListItemIcon>
-              <InfoOutlinedIcon fontSize="small" />
-            </ListItemIcon>
-            CLIENT_TRIGGER_SYSTEM_THEME
-          </MenuItem>
-          <Link href="/auth/login" passHref>
-            <MenuItem onClick={handleClosePopup}>
+        {enableDebug && (
+          <>
+            <Collapse orientation="vertical" in={showDebugButton}>
+              <MenuItem>
+                <ListItemIcon>
+                  <InfoOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                CURRENT_UI_THEME : {ThemeMode}
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClosePopup();
+                  SetThemeMode("dark");
+                }}
+              >
+                <ListItemIcon>
+                  <InfoOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                CLIENT_TRIGGER_DARK_THEME
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClosePopup();
+                  SetThemeMode("light");
+                }}
+              >
+                <ListItemIcon>
+                  <InfoOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                CLIENT_TRIGGER_LIGHT_THEME
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClosePopup();
+                  SetThemeMode("system");
+                }}
+              >
+                <ListItemIcon>
+                  <InfoOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                CLIENT_TRIGGER_SYSTEM_THEME
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <InfoOutlinedIcon fontSize="small" />
+                </ListItemIcon>
+                CURRENT_USER : {signedIn?.uid ?? "invalid"}
+              </MenuItem>
+              <Link href="/auth/login?next=/shop" passHref>
+                <MenuItem onClick={handleClosePopup}>
+                  <ListItemIcon>
+                    <InfoOutlinedIcon fontSize="small" />
+                  </ListItemIcon>
+                  PAGE_TRIGGER_LOGIN_UI
+                </MenuItem>
+              </Link>
+              <Link href="/auth/register" passHref>
+                <MenuItem onClick={handleClosePopup}>
+                  <ListItemIcon>
+                    <InfoOutlinedIcon fontSize="small" />
+                  </ListItemIcon>
+                  PAGE_TRIGGER_REGISTER_UI
+                </MenuItem>
+              </Link>
+            </Collapse>
+            <MenuItem onClick={() => setShowDebugButton(!showDebugButton)}>
               <ListItemIcon>
-                <InfoOutlinedIcon fontSize="small" />
+                {showDebugButton ? (
+                  <ArrowDropUpIcon fontSize="small" />
+                ) : (
+                  <ArrowDropDownIcon fontSize="small" />
+                )}
               </ListItemIcon>
-              PAGE_TRIGGER_LOGIN_UI
-            </MenuItem>
-          </Link>
-          <Link href="/auth/register" passHref>
-            <MenuItem onClick={handleClosePopup}>
-              <ListItemIcon>
-                <InfoOutlinedIcon fontSize="small" />
-              </ListItemIcon>
-              PAGE_TRIGGER_REGISTER_UI
-            </MenuItem>
-          </Link>
-        </Collapse>
-        <MenuItem onClick={() => setShowDebugButton(!showDebugButton)}>
-          <ListItemIcon>
-            {showDebugButton ? (
-              <ArrowDropUpIcon fontSize="small" />
-            ) : (
-              <ArrowDropDownIcon fontSize="small" />
-            )}
-          </ListItemIcon>
 
-          {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
-        </MenuItem>
-        <Divider sx={{ my: 1 }} />
+              {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
+            </MenuItem>
+            <Divider sx={{ my: 1 }} />
+          </>
+        )}
+
         <Link href={paths.MOBILE_MY_ACCOUNT}>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
@@ -139,12 +176,6 @@ export default function PopUpAccountList(props: {
             My account
           </MenuItem>
         </Link>
-        <MenuItem onClick={handleClosePopup}>
-          <ListItemIcon>
-            <PersonAddIcon fontSize="small" />
-          </ListItemIcon>
-          Add another account
-        </MenuItem>
         <Divider />
         <Link href={paths.CARTS_ITEM_LIST} passHref>
           <MenuItem onClick={handleClosePopup}>
@@ -168,7 +199,7 @@ export default function PopUpAccountList(props: {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={handleClosePopup}>
+        <MenuItem onClick={SignOutHandler} disabled={SignOutLoading}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>

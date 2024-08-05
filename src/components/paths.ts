@@ -9,4 +9,11 @@ const paths = {
   AUTH_REGISTER: "/auth/register",
 };
 
+export function RedirectLoginPage(url: string) {
+  return `${paths.AUTH_LOGIN}?next=${url}`;
+}
+export function RedirectRegisterPage(url: string) {
+  return `${paths.AUTH_REGISTER}?next=${url}`;
+}
+
 export default paths;

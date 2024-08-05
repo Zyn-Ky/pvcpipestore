@@ -51,7 +51,7 @@ export default function ResponsivePopup(props: PropsWithChildren) {
         onClose={CloseLogin}
         TransitionComponent={Transition}
         PaperProps={{
-          sx: {},
+          sx: { minWidth: isSmallerSmallScreen ? 0 : 500 },
         }}
       >
         <DialogContent dividers>

@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function AdminPage() {
-  return <>Login</>;
+  return (
+    <>
+      <h1>Seller Center</h1>
+    </>
+  );
 }

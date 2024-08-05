@@ -4,11 +4,13 @@ import "../globals.scss";
 import "react-photo-view/dist/react-photo-view.css";
 import { CssBaseline } from "@mui/material";
 import { XAppBar } from "@/components";
-import NProgressWrapper from "@/components/base/NProgress";
 import SITE_CONFIG from "@/components/config";
-import PullToRefreshWrapper from "@/components/base/PullToRefreshWrapper";
-import dynamic from "next/dynamic";
 import ColorModeProvider from "@/components/base/ClientThemeWrapper";
+import dynamic from "next/dynamic";
+const NProgressWrapper = dynamic(() => import("@/components/base/NProgress"));
+const PullToRefreshWrapper = dynamic(
+  () => import("@/components/base/PullToRefreshWrapper")
+);
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration")
 );

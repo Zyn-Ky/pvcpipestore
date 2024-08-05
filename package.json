@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "2.1.0.BETA",
+  "version": "2.3.2.BETA",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,6 +13,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.16.0",
+    "@mui/lab": "^5.0.0-alpha.173",
     "@mui/material": "^5.16.0",
     "axios": "^1.7.2",
     "cookies-next": "^4.2.1",

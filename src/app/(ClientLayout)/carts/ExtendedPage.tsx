@@ -1,0 +1,72 @@
+"use client";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  Divider,
+  Paper,
+  styled,
+  Typography,
+} from "@mui/material";
+import CSS from "@/scss/custom/CartList.module.scss";
+import { PropsWithChildren, useEffect, useState } from "react";
+import Image from "next/image";
+import CounterModule from "./countermodule";
+import SampleImg from "./PIPA PVC.jpg";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import { useRouter } from "next-nprogress-bar";
+import paths, { RedirectLoginPage } from "@/components/paths";
+function TextLR(props: PropsWithChildren<{ rightItem?: string }>) {
+  return (
+    <>
+      <div className={CSS.TextLR}>
+        <div className={CSS.Left}>{props.children && props.children}</div>
+        <div className={CSS.Right}>{props.rightItem && props.rightItem}</div>
+      </div>
+    </>
+  );
+}
+
+export function CartsClient() {
+  const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
+    useAuthState(FirebaseAuth);
+  const router = useRouter();
+  useEffect(() => {
+    if (!ClientUserInfo) router.push(RedirectLoginPage(paths.CARTS_ITEM_LIST));
+  }, [ClientUserInfo]);
+
+  if (!ClientUserInfo) return <></>;
+  return (
+    <>
+      <div className={CSS.WrapperList}>
+        <div className={CSS.ItemListing}>
+          <Typography gutterBottom>No items</Typography>
+          <Card sx={{ display: "flex", minHeight: 151 }} elevation={5}>
+            <Image src={SampleImg} alt="1" width={151} height={151} />
+            <Box sx={{ flex: 1, padding: 3 }}>
+              <Typography variant="h5">Pipa PVC</Typography>
+              <Typography variant="caption">Rp 45.999</Typography>
+              <br />
+              <CounterModule />
+            </Box>
+          </Card>
+        </div>
+        <Paper className={CSS.FloatingPay} elevation={5}>
+          <Typography variant="h5" fontWeight={700} gutterBottom>
+            Summary
+          </Typography>
+          <TextLR rightItem="Rp. 99.999">Item Total</TextLR>
+          <TextLR rightItem="Rp. 1.500">Services</TextLR>
+          <TextLR rightItem="FREE">Shipping Fee</TextLR>
+          <Divider sx={{ mb: 1 }} />
+          <TextLR rightItem="Rp. 101.499">Total</TextLR>
+          <Button variant="contained" fullWidth>
+            Checkout
+          </Button>
+        </Paper>
+      </div>
+    </>
+  );
+}
