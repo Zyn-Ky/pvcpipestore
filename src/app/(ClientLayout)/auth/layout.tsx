@@ -1,9 +1,11 @@
+"use server";
 import { AuthUISharedLayout_Benefit_id_ID } from "@/components/assets/images";
+import ResponsivePopup from "@/components/custom/AuthUISharedLayout/ResponsivePopup";
 import CSS from "@/scss/AuthUISharedLayout.module.scss";
 import { Paper } from "@mui/material";
 import Image from "next/image";
 
-export default function AuthUISharedLayout({
+export default async function AuthUISharedLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -19,9 +21,7 @@ export default function AuthUISharedLayout({
             alt="Banner Benefit Mempunyai Akun"
           />
         </Paper>
-        <Paper className={CSS.OuterFormContainer} elevation={12}>
-          {children}
-        </Paper>
+        <ResponsivePopup>{children}</ResponsivePopup>
       </div>
     </>
   );
