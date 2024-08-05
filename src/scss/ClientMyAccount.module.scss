@@ -1,0 +1,17 @@
+.InfoSummary {
+  display: flex;
+  background-color: bisque;
+  align-items: center;
+  color: currentColor;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  min-height: 5rem;
+  .Account {
+    flex: 1 1;
+  }
+  .AccountAction {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+}

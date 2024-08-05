@@ -1,0 +1,19 @@
+.CarouselWrapper {
+  width: 100%;
+  .TestiItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 300px;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    .TextContainer {
+      height: 200px;
+      user-select: text;
+      overflow-y: auto;
+      .QuoteIcon {
+        font-size: 2.75rem;
+      }
+    }
+  }
+}

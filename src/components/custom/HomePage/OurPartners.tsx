@@ -21,6 +21,7 @@ export default function OurPartners(props: OurPartnerProps) {
           src={props.nextImage ?? ""}
           width={108}
           alt={props.alt && props.alt}
+          draggable={false}
         />
       </Item>
     </>

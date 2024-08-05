@@ -1,17 +1,10 @@
 "use client";
-import {
-  Close,
-  Logout,
-  PersonAdd,
-  Receipt as ReceiptIcon,
-  Settings,
-  InfoOutlined,
-} from "@mui/icons-material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import {
   Avatar,
   Box,
   CardHeader,
+  Collapse,
   Divider,
   IconButton,
   ListItemIcon,
@@ -21,9 +14,29 @@ import {
   styled,
 } from "@mui/material";
 import Link from "next/link";
-import { ComponentProps, useCallback, useEffect } from "react";
+import { ComponentProps, useCallback, useEffect, useState } from "react";
 import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
+import dynamic from "next/dynamic";
+import { useGlobalSettings } from "./base/ClientThemeWrapper";
+
+const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
+const InfoOutlinedIcon = dynamic(
+  () => import("@mui/icons-material/InfoOutlined")
+);
+const ArrowDropDownIcon = dynamic(
+  () => import("@mui/icons-material/ArrowDropDown")
+);
+const ArrowDropUpIcon = dynamic(
+  () => import("@mui/icons-material/ArrowDropUp")
+);
+const SettingsIcon = dynamic(() => import("@mui/icons-material/Settings"));
+const PersonAddIcon = dynamic(() => import("@mui/icons-material/PersonAdd"));
+const ShoppingCartIcon = dynamic(
+  () => import("@mui/icons-material/ShoppingCart")
+);
+const LogoutIcon = dynamic(() => import("@mui/icons-material/Logout"));
+const AccountBoxIcon = dynamic(() => import("@mui/icons-material/AccountBox"));
 
 export default function PopUpAccountList(props: {
   open: boolean;
@@ -31,7 +44,8 @@ export default function PopUpAccountList(props: {
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
   const { height } = useWindowSize();
-
+  const { ThemeMode, SetThemeMode } = useGlobalSettings();
+  const [showDebugButton, setShowDebugButton] = useState(false);
   const handleClosePopup = useCallback(
     () => props.onClose?.({}, "backdropClick"),
     [props]
@@ -48,33 +62,86 @@ export default function PopUpAccountList(props: {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         disableScrollLock
       >
-        <Link href="/auth/login" passHref>
+        <Collapse orientation="vertical" in={showDebugButton}>
+          <MenuItem>
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            CURRENT_UI_THEME : {ThemeMode}
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClosePopup();
+              SetThemeMode("dark");
+            }}
+          >
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            CLIENT_TRIGGER_DARK_THEME
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClosePopup();
+              SetThemeMode("light");
+            }}
+          >
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            CLIENT_TRIGGER_LIGHT_THEME
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleClosePopup();
+              SetThemeMode("system");
+            }}
+          >
+            <ListItemIcon>
+              <InfoOutlinedIcon fontSize="small" />
+            </ListItemIcon>
+            CLIENT_TRIGGER_SYSTEM_THEME
+          </MenuItem>
+          <Link href="/auth/login" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              PAGE_TRIGGER_LOGIN_UI
+            </MenuItem>
+          </Link>
+          <Link href="/auth/register" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon fontSize="small" />
+              </ListItemIcon>
+              PAGE_TRIGGER_REGISTER_UI
+            </MenuItem>
+          </Link>
+        </Collapse>
+        <MenuItem onClick={() => setShowDebugButton(!showDebugButton)}>
+          <ListItemIcon>
+            {showDebugButton ? (
+              <ArrowDropUpIcon fontSize="small" />
+            ) : (
+              <ArrowDropDownIcon fontSize="small" />
+            )}
+          </ListItemIcon>
+
+          {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
+        </MenuItem>
+        <Divider sx={{ my: 1 }} />
+        <Link href={paths.MOBILE_MY_ACCOUNT}>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
-              <InfoOutlined fontSize="small" />
+              <AccountBoxIcon fontSize="small" />
             </ListItemIcon>
-            PAGE_TRIGGER_LOGIN_UI
+            My account
           </MenuItem>
         </Link>
-        <Link href="/auth/register" passHref>
-          <MenuItem onClick={handleClosePopup}>
-            <ListItemIcon>
-              <InfoOutlined fontSize="small" />
-            </ListItemIcon>
-            PAGE_TRIGGER_REGISTER_UI
-          </MenuItem>
-        </Link>
-        <Divider sx={{ mt: 1 }} />
-        <MenuItem onClick={handleClosePopup}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClosePopup}>
-          <Avatar /> My account
-        </MenuItem>
-        <Divider />
         <MenuItem onClick={handleClosePopup}>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <PersonAddIcon fontSize="small" />
           </ListItemIcon>
           Add another account
         </MenuItem>
@@ -97,13 +164,13 @@ export default function PopUpAccountList(props: {
         </Link>
         <MenuItem onClick={handleClosePopup}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <SettingsIcon fontSize="small" />
           </ListItemIcon>
           Settings
         </MenuItem>
         <MenuItem onClick={handleClosePopup}>
           <ListItemIcon>
-            <Logout fontSize="small" />
+            <LogoutIcon fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>

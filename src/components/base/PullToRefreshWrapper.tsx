@@ -3,6 +3,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import type { PropsWithChildren } from "react";
+import MainContentTheming from "./ColorModeProvider";
 const PullToRefresh = dynamic(() => import("react-simple-pull-to-refresh"));
 const Box = dynamic(() => import("@mui/material/Box"));
 const CircularProgress = dynamic(
@@ -35,9 +36,9 @@ export default function PullToRefreshWrapper(props: PropsWithChildren) {
         isPullable={isTouchScreen}
         backgroundColor="inherit"
       >
-        <main id="content_ui" role="main">
+        <MainContentTheming>
           {props.children && props.children}
-        </main>
+        </MainContentTheming>
       </PullToRefresh>
     </>
   );

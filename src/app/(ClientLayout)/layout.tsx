@@ -8,6 +8,7 @@ import NProgressWrapper from "@/components/base/NProgress";
 import SITE_CONFIG from "@/components/config";
 import PullToRefreshWrapper from "@/components/base/PullToRefreshWrapper";
 import dynamic from "next/dynamic";
+import ColorModeProvider from "@/components/base/ClientThemeWrapper";
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration")
 );
@@ -27,6 +28,9 @@ export const metadata: Metadata = {
     description: SITE_CONFIG.SEO.Description,
   },
   generator: "Next.JS",
+  alternates: { canonical: "/shop" },
+  category: "ecommerce",
+  creator: "K. Yabes (@Zyn-Ky)",
   icons: [
     { sizes: "16x16", url: "/favicon-16.ico" },
     { sizes: "32x32", url: "/favicon-32.ico" },
@@ -42,15 +46,17 @@ export default function RootLayout(
   }>
 ) {
   return (
-    <html lang="en">
-      <CssBaseline />
-      <body className={inter.className}>
-        <WordpressMigration />
-        <NProgressWrapper>
-          <XAppBar />
-          <PullToRefreshWrapper>{props.children}</PullToRefreshWrapper>
-        </NProgressWrapper>
-      </body>
-    </html>
+    <ColorModeProvider>
+      <html lang="en">
+        <CssBaseline />
+        <body className={inter.className}>
+          <WordpressMigration />
+          <NProgressWrapper>
+            <XAppBar />
+            <PullToRefreshWrapper>{props.children}</PullToRefreshWrapper>
+          </NProgressWrapper>
+        </body>
+      </html>
+    </ColorModeProvider>
   );
 }

@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "1.9.4.ALPHA",
+  "version": "2.1.0.BETA",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.16.0",
     "axios": "^1.7.2",
+    "cookies-next": "^4.2.1",
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "jsonwebtoken": "^9.0.2",

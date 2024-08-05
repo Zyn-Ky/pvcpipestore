@@ -14,6 +14,7 @@ import { Metadata } from "next";
 import { PropsWithChildren, useState } from "react";
 import Image from "next/image";
 import CounterModule from "./countermodule";
+import SampleImg from "./PIPA PVC.jpg";
 export const metadata: Metadata = {
   title: `Keranjang - ${SITE_CONFIG.SEO.Title}`,
 };
@@ -36,12 +37,7 @@ export default function CartsItemList() {
         <div className={styles.ItemListing}>
           <Typography gutterBottom>No items</Typography>
           <Card sx={{ display: "flex", minHeight: 151 }} elevation={5}>
-            <Image
-              src="https://e-katalog.lkpp.go.id/katalog/produk/download/gambar/966388583"
-              alt="1"
-              width={151}
-              height={151}
-            />
+            <Image src={SampleImg} alt="1" width={151} height={151} />
             <Box sx={{ flex: 1, padding: 3 }}>
               <Typography variant="h5">Pipa PVC</Typography>
               <Typography variant="caption">Rp 45.999</Typography>

@@ -43,6 +43,10 @@ $padding-y-1: 18px;
       img {
         width: 100%;
         height: auto;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
       }
     }
   }
@@ -81,4 +85,13 @@ $padding-y-1: 18px;
       }
     }
   }
+}
+
+.OuterTestimonialWrapper {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+  max-width: 960px;
+  margin-inline: auto;
 }

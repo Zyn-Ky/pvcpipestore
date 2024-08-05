@@ -27,6 +27,10 @@ import {
 const ItemImageCarousel = dynamic(
   () => import("@/components/custom/HomePage/ItemImageCarousel")
 );
+const TestimonialModule = dynamic(
+  () => import("@/components/custom/HomePage/TestimonialModule"),
+  { loading: () => <>Loading...</> }
+);
 const FancySeperator = dynamic(
   () => import("@/components/custom/HomePage/FancySeperator")
 );
@@ -124,6 +128,26 @@ export default function Home() {
             text="Kami melayani dengan tim yang sudah berpengalaman dan professional."
           />
         </div>
+      </div>
+      <div className={CSS.OuterTestimonialWrapper}>
+        <Typography
+          fontSize="150%"
+          fontWeight="bold"
+          gutterBottom
+          textAlign="center"
+        >
+          Berikut ulasan Customer
+        </Typography>
+        <Typography gutterBottom textAlign="center" sx={{ mb: 5 }}>
+          Mereka adalah sebagian yang memberikan ulasan dan menjalin kerjasama
+          dengan kami
+        </Typography>
+        <TestimonialModule
+          items={[...new Array(5)].map(() => ({
+            authorName: "Nopal market1",
+            textContent: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?`,
+          }))}
+        />
       </div>
       <div className={CSS.Partners}>
         <Typography fontSize="150%" fontWeight="bold" gutterBottom>
