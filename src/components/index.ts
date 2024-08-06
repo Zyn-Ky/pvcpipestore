@@ -1,3 +1,4 @@
 import XAppBar from "./MainAppBar";
 import BetterBigCarousel from "./BetterBigCarousel";
-export { XAppBar, BetterBigCarousel };
+import PromptAuth from "./base/GeneratePromptAuth";
+export { XAppBar, BetterBigCarousel, PromptAuth };

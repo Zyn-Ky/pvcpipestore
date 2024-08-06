@@ -1,3 +1,4 @@
+"use client";
 import {
   Avatar,
   List,
@@ -7,8 +8,24 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import PromptAuth from "./GeneratePromptAuth";
+import LoginIcon from "@mui/icons-material/Login";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { FirebaseAuth } from "@/libs/firebase/config";
+import paths from "../paths";
 
 export default function NotificationList() {
+  const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
+    useAuthState(FirebaseAuth);
+
+  if (!ClientUserInfo)
+    return (
+      <PromptAuth
+        message="Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi"
+        icon={<LoginIcon sx={{ fontSize: "6rem" }} />}
+        redirectPath={paths.MOBILE_NOTIFICATION}
+      />
+    );
   return (
     <>
       <List sx={{ width: "100%", bgcolor: "background.paper" }}>

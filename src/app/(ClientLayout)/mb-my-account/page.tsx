@@ -12,6 +12,7 @@ import { InfoOutlined } from "@mui/icons-material";
 import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
 import { AvailableUserAction, SummaryCurrentUser } from "./HeaderModule";
+import { LogoutBtn } from "./MenuModule";
 
 export const metadata: Metadata = {
   title: `Akun - ${SITE_CONFIG.SEO.Title}`,
@@ -56,11 +57,18 @@ export default function AccountSummary() {
           <ListItemText primary="CARTS_LINK" />
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
+        <LogoutBtn />
         <ListItemButton>
           <ListItemIcon>
             <InfoOutlined />
           </ListItemIcon>
-          <ListItemText primary="UNKNOWN_LINK" />
+          <ListItemText primary="GO_TOS_LINK" />
+        </ListItemButton>
+        <ListItemButton>
+          <ListItemIcon>
+            <InfoOutlined />
+          </ListItemIcon>
+          <ListItemText primary="GO_PRIVACY_LINK" />
         </ListItemButton>
       </List>
     </>

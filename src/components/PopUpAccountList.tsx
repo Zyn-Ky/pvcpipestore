@@ -89,7 +89,7 @@ export default function PopUpAccountList(props: {
         disableScrollLock
       >
         {enableDebug && (
-          <>
+          <div>
             <Collapse orientation="vertical" in={showDebugButton}>
               <MenuItem>
                 <ListItemIcon>
@@ -165,7 +165,7 @@ export default function PopUpAccountList(props: {
               {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
             </MenuItem>
             <Divider sx={{ my: 1 }} />
-          </>
+          </div>
         )}
 
         <Link href={paths.MOBILE_MY_ACCOUNT}>
@@ -176,7 +176,7 @@ export default function PopUpAccountList(props: {
             My account
           </MenuItem>
         </Link>
-        <Divider />
+        <Divider sx={{ my: 1 }} />
         <Link href={paths.CARTS_ITEM_LIST} passHref>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
@@ -197,13 +197,13 @@ export default function PopUpAccountList(props: {
           <ListItemIcon>
             <SettingsIcon fontSize="small" />
           </ListItemIcon>
-          Settings
+          Pengaturan
         </MenuItem>
         <MenuItem onClick={SignOutHandler} disabled={SignOutLoading}>
           <ListItemIcon>
             <LogoutIcon fontSize="small" />
           </ListItemIcon>
-          Logout
+          Keluar
         </MenuItem>
       </Menu>
     </>

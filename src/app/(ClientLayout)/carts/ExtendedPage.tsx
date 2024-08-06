@@ -16,8 +16,9 @@ import CounterModule from "./countermodule";
 import SampleImg from "./PIPA PVC.jpg";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
-import { useRouter } from "next-nprogress-bar";
 import paths, { RedirectLoginPage } from "@/components/paths";
+import { PromptAuth } from "@/components";
+import LoginIcon from "@mui/icons-material/Login";
 function TextLR(props: PropsWithChildren<{ rightItem?: string }>) {
   return (
     <>
@@ -32,12 +33,15 @@ function TextLR(props: PropsWithChildren<{ rightItem?: string }>) {
 export function CartsClient() {
   const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
     useAuthState(FirebaseAuth);
-  const router = useRouter();
-  useEffect(() => {
-    if (!ClientUserInfo) router.push(RedirectLoginPage(paths.CARTS_ITEM_LIST));
-  }, [ClientUserInfo]);
 
-  if (!ClientUserInfo) return <></>;
+  if (!ClientUserInfo)
+    return (
+      <PromptAuth
+        message="Masuk untuk melihat keranjang anda!"
+        icon={<LoginIcon sx={{ fontSize: "7.5rem" }} />}
+        redirectPath={paths.CARTS_ITEM_LIST}
+      />
+    );
   return (
     <>
       <div className={CSS.WrapperList}>
