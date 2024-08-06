@@ -13,6 +13,7 @@ import {
   MenuItem,
   Popover,
   styled,
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { ComponentProps, useCallback, useEffect, useState } from "react";
@@ -28,6 +29,7 @@ import {
   getRemoteConfig,
   getValue,
 } from "firebase/remote-config";
+import { Menus } from "./PopUpAccountListPage";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const InfoOutlinedIcon = dynamic(
@@ -62,17 +64,15 @@ export default function PopUpAccountList(props: {
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
-  const { height } = useWindowSize();
   const { ThemeMode, SetThemeMode } = useGlobalSettings();
-  const [showDebugButton, setShowDebugButton] = useState(false);
   const [enableDebug, setEnableDebug] = useState(false);
   const [CurrentPage, setCurrentPage] = useState("home");
   const [signedIn, loading, error] = useAuthState(FirebaseAuth);
   const [SignOutCall, SignOutLoading] = useSignOut(FirebaseAuth);
-  const handleClosePopup = useCallback(
-    () => props.onClose?.({}, "backdropClick"),
-    [props]
-  );
+  const handleClosePopup = useCallback(() => {
+    setCurrentPage("home");
+    props.onClose?.({}, "backdropClick");
+  }, [props]);
   function SignOutHandler() {
     SignOutCall();
     window.location.href = paths.HOME_PAGE;
@@ -85,6 +85,9 @@ export default function PopUpAccountList(props: {
     console.log(EnableDebugUI);
     setEnableDebug(EnableDebugUI);
   }
+  useEffect(() => {
+    if (!props.open) setCurrentPage("home");
+  }, [props.open]);
   useEffectOnce(() => {
     DebugMode();
   });
@@ -94,148 +97,81 @@ export default function PopUpAccountList(props: {
         anchorEl={props.anchorElement}
         id="account-list-popup"
         open={props.open && CurrentPage === "home"}
-        onClose={props.onClose}
+        onClose={handleClosePopup}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        disableScrollLock
         slotProps={{
           paper: { sx: { minWidth: 300, maxHeight: "40vh" } },
         }}
       >
+        <Menus
+          items={[
+            [
+              {
+                text: "Akun saya",
+                href: paths.MOBILE_MY_ACCOUNT,
+                startIcon: <AccountBoxIcon />,
+              },
+            ],
+            [
+              {
+                startIcon: <ShoppingCartIcon />,
+                href: paths.CARTS_ITEM_LIST,
+                text: "Keranjang",
+              },
+              {
+                startIcon: <ReceiptIcon />,
+                href: paths.TRANSACTION_LIST,
+                text: "Transaksi",
+              },
+              {
+                startIcon: <Brightness4Icon />,
+                endIcon: <ChevronRightIcon />,
+                text: "Tema",
+                onClick: () => {
+                  setCurrentPage("theme_mode");
+                },
+                disableClosePopupOnClick: true,
+              },
+              {
+                startIcon: <SettingsIcon />,
+                text: "Pengaturan",
+              },
+            ],
+            [
+              {
+                startIcon: <LogoutIcon />,
+                text: "Keluar",
+                hidden: typeof signedIn !== "object",
+                disabled: SignOutLoading,
+                onClick: SignOutHandler,
+              },
+            ],
+          ]}
+          handleClosePopup={handleClosePopup}
+        />
         {enableDebug && (
-          <div>
-            <Collapse orientation="vertical" in={showDebugButton}>
-              <MenuItem>
-                <ListItemIcon>
-                  <InfoOutlinedIcon />
-                </ListItemIcon>
-                CURRENT_UI_THEME : {ThemeMode}
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClosePopup();
-                  SetThemeMode("dark");
-                }}
-              >
-                <ListItemIcon>
-                  <InfoOutlinedIcon />
-                </ListItemIcon>
-                CLIENT_TRIGGER_DARK_THEME
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClosePopup();
-                  SetThemeMode("light");
-                }}
-              >
-                <ListItemIcon>
-                  <InfoOutlinedIcon />
-                </ListItemIcon>
-                CLIENT_TRIGGER_LIGHT_THEME
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleClosePopup();
-                  SetThemeMode("system");
-                }}
-              >
-                <ListItemIcon>
-                  <InfoOutlinedIcon />
-                </ListItemIcon>
-                CLIENT_TRIGGER_SYSTEM_THEME
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <InfoOutlinedIcon />
-                </ListItemIcon>
-                CURRENT_USER : {signedIn?.uid ?? "invalid"}
-              </MenuItem>
-              <Link href="/auth/login?next=/shop" passHref>
-                <MenuItem onClick={handleClosePopup}>
-                  <ListItemIcon>
-                    <InfoOutlinedIcon />
-                  </ListItemIcon>
-                  PAGE_TRIGGER_LOGIN_UI
-                </MenuItem>
-              </Link>
-              <Link href="/auth/register" passHref>
-                <MenuItem onClick={handleClosePopup}>
-                  <ListItemIcon>
-                    <InfoOutlinedIcon />
-                  </ListItemIcon>
-                  PAGE_TRIGGER_REGISTER_UI
-                </MenuItem>
-              </Link>
-            </Collapse>
-            <MenuItem onClick={() => setShowDebugButton(!showDebugButton)}>
+          <>
+            <MenuItem
+              onClick={() => {
+                setCurrentPage("MODE_DEBUG_X");
+              }}
+            >
               <ListItemIcon>
-                {showDebugButton ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                <InfoOutlinedIcon />
               </ListItemIcon>
-
-              {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
+              <ListItemText>SHOW_DEBUG_BTN</ListItemText>
             </MenuItem>
-            <Divider sx={{ my: 1 }} />
-          </div>
-        )}
-        <Link href={paths.MOBILE_MY_ACCOUNT}>
-          <MenuItem onClick={handleClosePopup}>
-            <ListItemIcon>
-              <AccountBoxIcon />
-            </ListItemIcon>
-            Akun saya
-          </MenuItem>
-        </Link>
-        <Divider sx={{ my: 1 }} />
-        <Link href={paths.CARTS_ITEM_LIST} passHref>
-          <MenuItem onClick={handleClosePopup}>
-            <ListItemIcon>
-              <ShoppingCartIcon />
-            </ListItemIcon>
-            Keranjang
-          </MenuItem>
-        </Link>
-        <Link href={paths.TRANSACTION_LIST} passHref>
-          <MenuItem onClick={handleClosePopup}>
-            <ListItemIcon>
-              <ReceiptIcon />
-            </ListItemIcon>
-            Transaksi
-          </MenuItem>
-        </Link>
-        <MenuItem
-          onClick={() => {
-            setCurrentPage("theme_mode");
-          }}
-        >
-          <ListItemIcon>
-            <Brightness4Icon />
-          </ListItemIcon>
-          <ListItemText>Tema</ListItemText>
-          <ChevronRightIcon />
-        </MenuItem>
-        <MenuItem onClick={handleClosePopup}>
-          <ListItemIcon>
-            <SettingsIcon />
-          </ListItemIcon>
-          Pengaturan
-        </MenuItem>
-        {signedIn && (
-          <MenuItem onClick={SignOutHandler} disabled={SignOutLoading}>
-            <ListItemIcon>
-              <LogoutIcon />
-            </ListItemIcon>
-            Keluar
-          </MenuItem>
+          </>
         )}
       </Menu>
       <Menu
         anchorEl={props.anchorElement}
-        id="account-list-popup"
+        id="account-list-popup-theme-mode"
         open={props.open && CurrentPage === "theme_mode"}
-        onClose={props.onClose}
+        onClose={handleClosePopup}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        disableScrollLock
         slotProps={{
           paper: { sx: { minWidth: 275 } },
         }}
@@ -250,6 +186,87 @@ export default function PopUpAccountList(props: {
           </ListItemIcon>
           <ListItemText>Tema</ListItemText>
         </MenuItem>
+      </Menu>
+      <Menu
+        anchorEl={props.anchorElement}
+        id="account-list-popup"
+        open={props.open && CurrentPage === "MODE_DEBUG_X" && enableDebug}
+        onClose={handleClosePopup}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        slotProps={{
+          paper: { sx: { minWidth: 275 } },
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            setCurrentPage("home");
+          }}
+        >
+          <ListItemIcon>
+            <ChevronLeftIcon />
+          </ListItemIcon>
+          Debug Mode
+        </MenuItem>
+        <Divider sx={{ my: 2 }} />
+        <MenuItem>
+          <ListItemIcon>
+            <InfoOutlinedIcon />
+          </ListItemIcon>
+          CURRENT_UI_THEME : {ThemeMode}
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClosePopup();
+            SetThemeMode("dark");
+          }}
+        >
+          <ListItemIcon>
+            <InfoOutlinedIcon />
+          </ListItemIcon>
+          CLIENT_TRIGGER_DARK_THEME
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClosePopup();
+            SetThemeMode("light");
+          }}
+        >
+          <ListItemIcon>
+            <InfoOutlinedIcon />
+          </ListItemIcon>
+          CLIENT_TRIGGER_LIGHT_THEME
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClosePopup();
+            SetThemeMode("system");
+          }}
+        >
+          <ListItemIcon>
+            <InfoOutlinedIcon />
+          </ListItemIcon>
+          CLIENT_TRIGGER_SYSTEM_THEME
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <InfoOutlinedIcon />
+          </ListItemIcon>
+          CURRENT_USER : {signedIn?.uid ?? "invalid"}
+        </MenuItem>
+        <Link href="/auth/register" passHref>
+          <MenuItem onClick={handleClosePopup}>
+            <ListItemIcon>
+              <InfoOutlinedIcon />
+            </ListItemIcon>
+            PAGE_TRIGGER_REGISTER_UI
+          </MenuItem>
+        </Link>
+        <Divider sx={{ my: 2 }} />
+        <Typography px={2} py={1} width="300px">
+          <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} />
+          Be aware! These features may break in the future! Proceed with caution
+        </Typography>
       </Menu>
     </>
   );

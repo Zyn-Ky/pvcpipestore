@@ -2,9 +2,12 @@
 import Image, { StaticImageData } from "next/image";
 import Carousel from "react-material-ui-carousel";
 import CSS from "@/scss/custom/TestimonialUI.module.scss";
-import { Avatar, Collapse, Typography } from "@mui/material";
+import { Avatar, Collapse, Fab, Typography } from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { useState } from "react";
+import dynamic from "next/dynamic";
+const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"));
+const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"));
 type ItemProp = {
   avatar?: StaticImageData | string;
   authorName: string;
@@ -16,6 +19,8 @@ type TestimonialModuleProps = {
 };
 
 export default function TestimonialModule(props: TestimonialModuleProps) {
+  const [autoPlay, setAutoPlay] = useState(true);
+  const [isHoveringMouse, setIsHoveringMouse] = useState(false);
   function Item(props: ItemProp) {
     const [textExpanded, setTextExpanded] = useState(false);
     return (
@@ -30,7 +35,7 @@ export default function TestimonialModule(props: TestimonialModuleProps) {
             }
             sx={{ width: 80, height: 80, mb: 2 }}
           />
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" gutterBottom textAlign="center">
             {props.authorName && props.authorName}
           </Typography>
           <div className={CSS.TextContainer}>
@@ -51,20 +56,41 @@ export default function TestimonialModule(props: TestimonialModuleProps) {
   }
   return (
     <>
-      <Carousel
-        className={CSS.CarouselWrapper}
-        animation="slide"
-        cycleNavigation
-        swipe={false}
-        autoPlay
-        indicators
-        navButtonsAlwaysVisible
-        stopAutoPlayOnHover
-      >
-        {props.items.map((value, i) => (
-          <Item {...value} key={i} />
-        ))}
-      </Carousel>
+      <div className={CSS.Wrapper}>
+        <Carousel
+          className={CSS.CarouselWrapper}
+          animation="slide"
+          cycleNavigation
+          swipe={false}
+          autoPlay={autoPlay}
+          indicators
+          navButtonsAlwaysVisible
+          stopAutoPlayOnHover
+        >
+          {props.items.map((value, i) => (
+            <Item {...value} key={i} />
+          ))}
+        </Carousel>
+
+        <Fab
+          variant="extended"
+          size="small"
+          color="primary"
+          sx={{ bottom: "-1rem", left: 0 }}
+          onClick={() => setAutoPlay(!autoPlay)}
+          onMouseEnter={() => setIsHoveringMouse(true)}
+          onMouseLeave={() => setIsHoveringMouse(false)}
+        >
+          {autoPlay && <PauseIcon />}
+          {!autoPlay && <PlayArrowIcon />}
+          <Collapse in={isHoveringMouse} orientation="horizontal" unmountOnExit>
+            <Typography noWrap ml={1}>
+              {autoPlay && "Hentikan Autoplay"}
+              {!autoPlay && "Autoplay"}
+            </Typography>
+          </Collapse>
+        </Fab>
+      </div>
     </>
   );
 }

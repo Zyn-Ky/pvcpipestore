@@ -31,19 +31,30 @@
       align-items: center;
       gap: 1rem;
     }
+    @media screen and (max-width: 500px) {
+      & {
+        flex-direction: column;
+        min-height: 10rem;
+        align-items: start;
+      }
+      .AccountAction {
+        width: 100%;
+        justify-content: right;
+        margin-bottom: 1rem;
+      }
+    }
   }
-}
-
-@media screen and (min-width: 800px) {
-  .Container {
-    flex-direction: row;
-    padding: 4rem;
-    align-items: start;
-    gap: 2rem;
-    justify-content: center;
-    .InfoSummary {
-      flex: 1;
-      max-width: 720px;
+  @media screen and (min-width: 800px) {
+    & {
+      flex-direction: row;
+      padding: 4rem;
+      align-items: start;
+      gap: 2rem;
+      justify-content: center;
+      .InfoSummary {
+        flex: 1;
+        max-width: 720px;
+      }
     }
   }
 }

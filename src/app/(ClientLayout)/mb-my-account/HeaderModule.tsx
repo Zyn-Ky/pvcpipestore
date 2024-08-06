@@ -2,7 +2,7 @@
 import paths from "@/components/paths";
 import { FirebaseAuth } from "@/libs/firebase/config";
 import CSS from "@/scss/ClientMyAccount.module.scss";
-import { Button, IconButton, Typography } from "@mui/material";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
 import Image from "next/image";
 import Link from "next/link";
@@ -61,6 +61,12 @@ export function SummaryCurrentUser() {
             </Typography>
             <Typography variant="caption">User ID : {UserInfo.uid}</Typography>
           </div>
+        </>
+      )}
+      {!UserInfo && (
+        <>
+          <Avatar sx={{ width: PFP_IMAGE_SIZE, height: PFP_IMAGE_SIZE }} />
+          <Typography fontWeight="bold">Belum masuk</Typography>
         </>
       )}
       {UserLoading && (

@@ -5,6 +5,12 @@ $padding-y-1: 18px;
   min-height: 500px;
   max-height: 1080px;
   position: relative;
+  .AutoplayFab {
+    position: absolute;
+    left: 1rem;
+    bottom: -2.5rem;
+    z-index: 5;
+  }
 }
 .RecommendationsProd {
   padding-top: $padding-y-1;
