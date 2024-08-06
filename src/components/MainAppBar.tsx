@@ -176,17 +176,17 @@ export default function XAppBar() {
           >
             <BetterBottomNavigationAction
               value={paths.HOME_PAGE}
-              label="Home"
+              label="Hal Utama"
               icon={<HomeIcon />}
             />
             <BetterBottomNavigationAction
               value={paths.ACTUAL_SHOP}
-              label="Shop"
+              label="Belanja"
               icon={<StoreIcon />}
             />
             <BetterBottomNavigationAction
               value={paths.MOBILE_NOTIFICATION}
-              label="Notification"
+              label="Notifikasi"
               icon={<NotificationsIcon />}
             />
             <BetterBottomNavigationAction

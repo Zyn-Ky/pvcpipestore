@@ -51,7 +51,7 @@ export default function RootLayout(
     <ColorModeProvider>
       <html lang="en">
         <CssBaseline />
-        <body className={inter.className}>
+        <body className={inter.className} data-smooth-color-transition>
           <WordpressMigration />
           <NProgressWrapper>
             <XAppBar />

@@ -14,6 +14,21 @@ body {
   height: 100%;
 }
 
+body[data-smooth-color-transition] {
+  transition-property: background-color, color;
+  transition-duration: 300ms;
+  & p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    transition-property: background-color, color;
+    transition-duration: 50ms;
+  }
+}
+
 #nprogress .bar {
   z-index: 9999999999999 !important;
 }

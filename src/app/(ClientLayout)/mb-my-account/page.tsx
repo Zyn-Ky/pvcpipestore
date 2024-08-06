@@ -5,6 +5,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Paper,
 } from "@mui/material";
 import Link from "next/link";
 import CSS from "@/scss/ClientMyAccount.module.scss";
@@ -20,24 +21,22 @@ export const metadata: Metadata = {
 
 export default function AccountSummary() {
   return (
-    <>
-      <div className={CSS.InfoSummary}>
+    <div className={CSS.Container}>
+      <Paper className={CSS.InfoSummary} elevation={2}>
         <div className={CSS.Account}>
           <SummaryCurrentUser />
         </div>
         <div className={CSS.AccountAction}>
           <AvailableUserAction />
         </div>
-      </div>
+      </Paper>
       <List component="nav" aria-labelledby="nested-list-subheader">
-        <Link href="/admin">
-          <ListItemButton>
-            <ListItemIcon>
-              <InfoOutlined />
-            </ListItemIcon>
-            <ListItemText primary="SELLER_CENTER_LINK" />
-          </ListItemButton>
-        </Link>
+        <ListItemButton>
+          <ListItemIcon>
+            <InfoOutlined />
+          </ListItemIcon>
+          <ListItemText primary="SELLER_CENTER_LINK" />
+        </ListItemButton>
         <ListItemButton>
           <ListItemIcon>
             <InfoOutlined />
@@ -71,6 +70,6 @@ export default function AccountSummary() {
           <ListItemText primary="GO_PRIVACY_LINK" />
         </ListItemButton>
       </List>
-    </>
+    </div>
   );
 }

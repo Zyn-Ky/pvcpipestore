@@ -8,6 +8,7 @@ import {
   Divider,
   IconButton,
   ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   Popover,
@@ -45,6 +46,16 @@ const ShoppingCartIcon = dynamic(
 );
 const LogoutIcon = dynamic(() => import("@mui/icons-material/Logout"));
 const AccountBoxIcon = dynamic(() => import("@mui/icons-material/AccountBox"));
+const Brightness4Icon = dynamic(
+  () => import("@mui/icons-material/Brightness4")
+);
+const ChevronRightIcon = dynamic(
+  () => import("@mui/icons-material/ChevronRight")
+);
+
+const ChevronLeftIcon = dynamic(
+  () => import("@mui/icons-material/ChevronLeft")
+);
 
 export default function PopUpAccountList(props: {
   open: boolean;
@@ -55,13 +66,13 @@ export default function PopUpAccountList(props: {
   const { ThemeMode, SetThemeMode } = useGlobalSettings();
   const [showDebugButton, setShowDebugButton] = useState(false);
   const [enableDebug, setEnableDebug] = useState(false);
+  const [CurrentPage, setCurrentPage] = useState("home");
+  const [signedIn, loading, error] = useAuthState(FirebaseAuth);
+  const [SignOutCall, SignOutLoading] = useSignOut(FirebaseAuth);
   const handleClosePopup = useCallback(
     () => props.onClose?.({}, "backdropClick"),
     [props]
   );
-  const [signedIn, loading, error] = useAuthState(FirebaseAuth);
-  const [SignOutCall, SignOutLoading] = useSignOut(FirebaseAuth);
-
   function SignOutHandler() {
     SignOutCall();
     window.location.href = paths.HOME_PAGE;
@@ -82,18 +93,21 @@ export default function PopUpAccountList(props: {
       <Menu
         anchorEl={props.anchorElement}
         id="account-list-popup"
-        open={props.open}
+        open={props.open && CurrentPage === "home"}
         onClose={props.onClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         disableScrollLock
+        slotProps={{
+          paper: { sx: { minWidth: 300, maxHeight: "40vh" } },
+        }}
       >
         {enableDebug && (
           <div>
             <Collapse orientation="vertical" in={showDebugButton}>
               <MenuItem>
                 <ListItemIcon>
-                  <InfoOutlinedIcon fontSize="small" />
+                  <InfoOutlinedIcon />
                 </ListItemIcon>
                 CURRENT_UI_THEME : {ThemeMode}
               </MenuItem>
@@ -104,7 +118,7 @@ export default function PopUpAccountList(props: {
                 }}
               >
                 <ListItemIcon>
-                  <InfoOutlinedIcon fontSize="small" />
+                  <InfoOutlinedIcon />
                 </ListItemIcon>
                 CLIENT_TRIGGER_DARK_THEME
               </MenuItem>
@@ -115,7 +129,7 @@ export default function PopUpAccountList(props: {
                 }}
               >
                 <ListItemIcon>
-                  <InfoOutlinedIcon fontSize="small" />
+                  <InfoOutlinedIcon />
                 </ListItemIcon>
                 CLIENT_TRIGGER_LIGHT_THEME
               </MenuItem>
@@ -126,20 +140,20 @@ export default function PopUpAccountList(props: {
                 }}
               >
                 <ListItemIcon>
-                  <InfoOutlinedIcon fontSize="small" />
+                  <InfoOutlinedIcon />
                 </ListItemIcon>
                 CLIENT_TRIGGER_SYSTEM_THEME
               </MenuItem>
               <MenuItem>
                 <ListItemIcon>
-                  <InfoOutlinedIcon fontSize="small" />
+                  <InfoOutlinedIcon />
                 </ListItemIcon>
                 CURRENT_USER : {signedIn?.uid ?? "invalid"}
               </MenuItem>
               <Link href="/auth/login?next=/shop" passHref>
                 <MenuItem onClick={handleClosePopup}>
                   <ListItemIcon>
-                    <InfoOutlinedIcon fontSize="small" />
+                    <InfoOutlinedIcon />
                   </ListItemIcon>
                   PAGE_TRIGGER_LOGIN_UI
                 </MenuItem>
@@ -147,7 +161,7 @@ export default function PopUpAccountList(props: {
               <Link href="/auth/register" passHref>
                 <MenuItem onClick={handleClosePopup}>
                   <ListItemIcon>
-                    <InfoOutlinedIcon fontSize="small" />
+                    <InfoOutlinedIcon />
                   </ListItemIcon>
                   PAGE_TRIGGER_REGISTER_UI
                 </MenuItem>
@@ -155,11 +169,7 @@ export default function PopUpAccountList(props: {
             </Collapse>
             <MenuItem onClick={() => setShowDebugButton(!showDebugButton)}>
               <ListItemIcon>
-                {showDebugButton ? (
-                  <ArrowDropUpIcon fontSize="small" />
-                ) : (
-                  <ArrowDropDownIcon fontSize="small" />
-                )}
+                {showDebugButton ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
               </ListItemIcon>
 
               {showDebugButton ? "HIDE_DEBUG_BTN" : "SHOW_DEBUG_BTN"}
@@ -167,20 +177,19 @@ export default function PopUpAccountList(props: {
             <Divider sx={{ my: 1 }} />
           </div>
         )}
-
         <Link href={paths.MOBILE_MY_ACCOUNT}>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
-              <AccountBoxIcon fontSize="small" />
+              <AccountBoxIcon />
             </ListItemIcon>
-            My account
+            Akun saya
           </MenuItem>
         </Link>
         <Divider sx={{ my: 1 }} />
         <Link href={paths.CARTS_ITEM_LIST} passHref>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
-              <ShoppingCartIcon fontSize="small" />
+              <ShoppingCartIcon />
             </ListItemIcon>
             Keranjang
           </MenuItem>
@@ -188,22 +197,58 @@ export default function PopUpAccountList(props: {
         <Link href={paths.TRANSACTION_LIST} passHref>
           <MenuItem onClick={handleClosePopup}>
             <ListItemIcon>
-              <ReceiptIcon fontSize="small" />
+              <ReceiptIcon />
             </ListItemIcon>
             Transaksi
           </MenuItem>
         </Link>
+        <MenuItem
+          onClick={() => {
+            setCurrentPage("theme_mode");
+          }}
+        >
+          <ListItemIcon>
+            <Brightness4Icon />
+          </ListItemIcon>
+          <ListItemText>Tema</ListItemText>
+          <ChevronRightIcon />
+        </MenuItem>
         <MenuItem onClick={handleClosePopup}>
           <ListItemIcon>
-            <SettingsIcon fontSize="small" />
+            <SettingsIcon />
           </ListItemIcon>
           Pengaturan
         </MenuItem>
-        <MenuItem onClick={SignOutHandler} disabled={SignOutLoading}>
+        {signedIn && (
+          <MenuItem onClick={SignOutHandler} disabled={SignOutLoading}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            Keluar
+          </MenuItem>
+        )}
+      </Menu>
+      <Menu
+        anchorEl={props.anchorElement}
+        id="account-list-popup"
+        open={props.open && CurrentPage === "theme_mode"}
+        onClose={props.onClose}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        disableScrollLock
+        slotProps={{
+          paper: { sx: { minWidth: 275 } },
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            setCurrentPage("home");
+          }}
+        >
           <ListItemIcon>
-            <LogoutIcon fontSize="small" />
+            <ChevronLeftIcon />
           </ListItemIcon>
-          Keluar
+          <ListItemText>Tema</ListItemText>
         </MenuItem>
       </Menu>
     </>
