@@ -23,36 +23,18 @@ export function Menus(props: menus) {
         props.items.map((parentItem, i) => (
           <>
             {parentItem.map((item) =>
-              item.hidden !== true ? (
-                item.href ? (
-                  <Link
-                    href={item.href}
-                    passHref
-                    key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        if (item.disableClosePopupOnClick !== true)
-                          props.handleClosePopup && props.handleClosePopup();
-                        item.onClick && item.onClick();
-                      }}
-                      disabled={item.disabled}
-                    >
-                      {item.startIcon && (
-                        <ListItemIcon>{item.startIcon}</ListItemIcon>
-                      )}
-                      <ListItemText>{item.text && item.text}</ListItemText>
-                      {item.endIcon && item.endIcon}
-                    </MenuItem>
-                  </Link>
-                ) : (
+              item.hidden === true ? null : item.href ? (
+                <Link
+                  href={item.href}
+                  passHref
+                  key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
+                >
                   <MenuItem
                     onClick={() => {
                       if (item.disableClosePopupOnClick !== true)
                         props.handleClosePopup && props.handleClosePopup();
                       item.onClick && item.onClick();
                     }}
-                    key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
                     disabled={item.disabled}
                   >
                     {item.startIcon && (
@@ -61,8 +43,24 @@ export function Menus(props: menus) {
                     <ListItemText>{item.text && item.text}</ListItemText>
                     {item.endIcon && item.endIcon}
                   </MenuItem>
-                )
-              ) : null
+                </Link>
+              ) : (
+                <MenuItem
+                  onClick={() => {
+                    if (item.disableClosePopupOnClick !== true)
+                      props.handleClosePopup && props.handleClosePopup();
+                    item.onClick && item.onClick();
+                  }}
+                  key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
+                  disabled={item.disabled}
+                >
+                  {item.startIcon && (
+                    <ListItemIcon>{item.startIcon}</ListItemIcon>
+                  )}
+                  <ListItemText>{item.text && item.text}</ListItemText>
+                  {item.endIcon && item.endIcon}
+                </MenuItem>
+              )
             )}
             {props.items.length > 1 &&
               i >= 0 &&

@@ -141,8 +141,8 @@ export default function PopUpAccountList(props: {
             [
               {
                 startIcon: <LogoutIcon />,
-                text: "Keluar",
-                hidden: typeof signedIn !== "object",
+                text: `Keluar`,
+                hidden: signedIn === null,
                 disabled: SignOutLoading,
                 onClick: SignOutHandler,
               },

@@ -1,5 +1,8 @@
 "use client";
-import paths from "@/components/paths";
+import paths, {
+  RedirectLoginPage,
+  RedirectRegisterPage,
+} from "@/components/paths";
 import { FirebaseAuth } from "@/libs/firebase/config";
 import CSS from "@/scss/ClientMyAccount.module.scss";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
@@ -91,10 +94,10 @@ export function AvailableUserAction() {
       )}
       {!UserInfo && (
         <>
-          <Link href={paths.AUTH_LOGIN}>
+          <Link href={RedirectLoginPage(paths.MOBILE_MY_ACCOUNT)}>
             <Button variant="contained">Login</Button>
           </Link>
-          <Link href={paths.AUTH_REGISTER}>
+          <Link href={RedirectRegisterPage(paths.MOBILE_MY_ACCOUNT)}>
             <Button variant="outlined">Daftar</Button>
           </Link>
         </>

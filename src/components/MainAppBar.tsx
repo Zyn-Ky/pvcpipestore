@@ -121,7 +121,7 @@ export default function XAppBar() {
                         setOpenNotificationBar(!openNotificationBar);
                       }}
                     >
-                      <Badge badgeContent={17} color="error">
+                      <Badge color="error">
                         <NotificationsIcon />
                       </Badge>
                     </IconButton>
