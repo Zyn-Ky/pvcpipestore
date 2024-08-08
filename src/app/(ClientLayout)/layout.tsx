@@ -14,7 +14,8 @@ const PullToRefreshWrapper = dynamic(
   () => import("@/components/base/PullToRefreshWrapper")
 );
 const WordpressMigration = dynamic(
-  () => import("@/components/base/WordpressMigration")
+  () => import("@/components/base/WordpressMigration"),
+  { ssr: false }
 );
 
 const inter = Inter({ subsets: ["latin"] });

@@ -1,8 +1,7 @@
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { PropsWithChildren } from "react";
 
 export default function ColorModeProvider(props: PropsWithChildren) {
-  const theme = useTheme();
   return (
     <Box
       component="main"

@@ -12,6 +12,8 @@ import { usePathname } from "next/navigation";
 import paths from "./paths";
 import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import dynamic from "next/dynamic";
 const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
   loading: () => (
@@ -38,17 +40,11 @@ const BetterBottomNavigationAction = dynamic(
 
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
 const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));
-const AccountCircle = dynamic(
-  () => import("@mui/icons-material/AccountCircle")
-);
 const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));
 const PersonIcon = dynamic(() => import("@mui/icons-material/Person"));
 const Badge = dynamic(() => import("@mui/material/Badge"));
 const ShoppingCartIcon = dynamic(
   () => import("@mui/icons-material/ShoppingCart")
-);
-const NotificationsIcon = dynamic(
-  () => import("@mui/icons-material/Notifications")
 );
 const StoreIcon = dynamic(() => import("@mui/icons-material/Store"));
 export default function XAppBar() {

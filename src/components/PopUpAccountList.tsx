@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { ComponentProps, useCallback, useEffect, useState } from "react";
+import { ComponentProps, memo, useCallback, useEffect, useState } from "react";
 import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 import dynamic from "next/dynamic";
@@ -31,12 +31,13 @@ import {
 } from "firebase/remote-config";
 import { Menus } from "./PopUpAccountListPage";
 import { useGeneralFunction } from "./base/GeneralWrapper";
-import { Check } from "@mui/icons-material";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
+const CheckIcon = dynamic(() => import("@mui/icons-material/Check"));
 const InfoOutlinedIcon = dynamic(
   () => import("@mui/icons-material/InfoOutlined")
 );
+const DarkModeIcon = dynamic(() => import("@mui/icons-material/DarkMode"));
 
 const LightModeIcon = dynamic(() => import("@mui/icons-material/LightMode"));
 const SettingsIcon = dynamic(() => import("@mui/icons-material/Settings"));
@@ -59,7 +60,7 @@ const ChevronLeftIcon = dynamic(
   () => import("@mui/icons-material/ChevronLeft")
 );
 
-export default function PopUpAccountList(props: {
+const PopUpAccountList = memo(function PopUpAccountList(props: {
   open: boolean;
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
@@ -186,19 +187,27 @@ export default function PopUpAccountList(props: {
             ],
             [
               {
-                text: "Terang",
-                startIcon: <LightModeIcon />,
-                endIcon: ThemeMode === "light" && <Check />,
+                text: "Sistem",
+                startIcon: <BrightnessAutoIcon />,
+                endIcon: ThemeMode === "system" && <CheckIcon />,
                 onClick: () => {
-                  SetThemeMode("light");
+                  SetThemeMode("system");
                 },
               },
               {
-                text: "Sistem",
-                startIcon: <BrightnessAutoIcon />,
-                endIcon: ThemeMode === "system" && <Check />,
+                text: "Gelap",
+                startIcon: <DarkModeIcon />,
+                endIcon: ThemeMode === "dark" && <CheckIcon />,
                 onClick: () => {
-                  SetThemeMode("system");
+                  SetThemeMode("dark");
+                },
+              },
+              {
+                text: "Terang",
+                startIcon: <LightModeIcon />,
+                endIcon: ThemeMode === "light" && <CheckIcon />,
+                onClick: () => {
+                  SetThemeMode("light");
                 },
               },
             ],
@@ -293,4 +302,6 @@ export default function PopUpAccountList(props: {
       </Menu>
     </>
   );
-}
+});
+
+export default PopUpAccountList;

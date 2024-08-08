@@ -2,7 +2,7 @@ import { Button, Paper } from "@mui/material";
 import { ContainerItemTextCarousel } from "./HeroBox";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import dynamic from "next/dynamic";
-import { Key } from "react";
+import { Key, memo } from "react";
 import Link from "next/link";
 type ItemImageCarousel = {
   src: string | StaticImport;
@@ -19,7 +19,10 @@ type ItemImageCarousel = {
 const BetterBgImg = dynamic(
   () => import("@/components/custom/HomePage/BetterBgImg")
 );
-export default function ItemImageCarousel(props: ItemImageCarousel) {
+
+const ItemImageCarousel = memo(function ItemImageCarousel(
+  props: ItemImageCarousel
+) {
   return (
     <>
       <Paper
@@ -62,4 +65,6 @@ export default function ItemImageCarousel(props: ItemImageCarousel) {
       </Paper>
     </>
   );
-}
+});
+
+export default ItemImageCarousel;

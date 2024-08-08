@@ -33,6 +33,7 @@ import {
 } from "react";
 import setupIndexedDB, { useIndexedDBStore } from "use-indexeddb";
 import { IndexedDBConfig } from "use-indexeddb/dist/interfaces";
+import { useGeneralFunction } from "./GeneralWrapper";
 
 interface NotificationItem {
   collapse_key: string;
@@ -93,6 +94,7 @@ const IDB_NotiCache_Config: IndexedDBConfig = {
 
 export default function NotificationManager(props: PropsWithChildren) {
   const [idbCacheStarted, setIdbCacheStarted] = useState(false);
+  const { userManager } = useGeneralFunction();
   useEffect(() => {
     setupIndexedDB(IDB_NotiCache_Config)
       .then(() => {
@@ -171,7 +173,8 @@ export default function NotificationManager(props: PropsWithChildren) {
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
-      idbCacheStarted
+      idbCacheStarted &&
+      userManager.currentUser
     ) {
       UpdateNotificationList();
       const messaging = getMessaging(firebaseApp);
@@ -180,7 +183,7 @@ export default function NotificationManager(props: PropsWithChildren) {
         unsubscribe(); // Unsubscribe from the onMessage event
       };
     }
-  }, [idbCacheStarted]);
+  }, [idbCacheStarted, userManager]);
   return (
     <NotiManager.Provider
       value={{

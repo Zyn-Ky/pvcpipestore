@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "2.9.10.BETA",
+  "version": "2.9.11.BETA",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -21,7 +21,7 @@
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "jsonwebtoken": "^9.0.2",
-    "next": "14.2.4",
+    "next": "^14.2.5",
     "next-nprogress-bar": "^2.3.12",
     "react": "^18",
     "react-dom": "^18",

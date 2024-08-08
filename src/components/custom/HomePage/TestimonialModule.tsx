@@ -4,7 +4,7 @@ import Carousel from "react-material-ui-carousel";
 import CSS from "@/scss/custom/TestimonialUI.module.scss";
 import { Avatar, Collapse, Fab, Typography } from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
-import { useState } from "react";
+import { memo, useState } from "react";
 import dynamic from "next/dynamic";
 const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"));
 const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"));
@@ -18,7 +18,9 @@ type TestimonialModuleProps = {
   items: ItemProp[];
 };
 
-export default function TestimonialModule(props: TestimonialModuleProps) {
+const TestimonialModule = memo(function TestimonialModule(
+  props: TestimonialModuleProps
+) {
   const [autoPlay, setAutoPlay] = useState(true);
   const [isHoveringMouse, setIsHoveringMouse] = useState(false);
   function Item(props: ItemProp) {
@@ -59,7 +61,7 @@ export default function TestimonialModule(props: TestimonialModuleProps) {
       <div className={CSS.Wrapper}>
         <Carousel
           className={CSS.CarouselWrapper}
-          animation="slide"
+          animation="fade"
           cycleNavigation
           swipe={false}
           autoPlay={autoPlay}
@@ -93,4 +95,6 @@ export default function TestimonialModule(props: TestimonialModuleProps) {
       </div>
     </>
   );
-}
+});
+
+export default TestimonialModule;

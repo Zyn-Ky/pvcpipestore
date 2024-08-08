@@ -17,6 +17,7 @@ import {
 import NotificationManager, {
   IDB_NotiCache_DBName,
 } from "./NotificationManager";
+import paths from "../paths";
 
 export type AvailableLoginMethod = "google";
 
@@ -96,11 +97,11 @@ export default function GeneralFunctionWrapper(
   async function SignOutCall() {
     setForceHaltAuth(false);
     ClearLocalData();
-    return await SignOut();
+    const signout = await SignOut();
+    setTimeout(() => (window.location.href = paths.HOME_PAGE), 2000);
+    return signout;
   }
-  useEffect(() => {
-    console.log(GoogleUserSignInError);
-  }, [GoogleUserSignInError]);
+
   return (
     <GeneralFunctionContext.Provider
       value={{

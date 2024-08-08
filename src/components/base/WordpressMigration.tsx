@@ -3,20 +3,25 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, NoSsr, Snackbar, Typography } from "@mui/material";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useEffectOnce } from "react-use";
 
 export default function WordpressMigration() {
   const param = useSearchParams();
-  const [open, setOpen] = useState(() => {
-    if (typeof window !== "object") return false;
+  const [open, setOpen] = useState(false);
+  const [forceClose, setForceClose] = useState(false);
+  useEffectOnce(() => {
+    if (typeof window !== "object") return;
     console.log(
       window.document.referrer,
-      window.document.referrer.indexOf("https://www.google.com") !== -1
+      window.document.referrer.indexOf("https://belajarjualan.com/pipapvc") !==
+        -1
     );
-    // return window.refferer.indexOf("https://belajarjualan.com/pipapvc") !== -1;
-    return window.document.referrer.indexOf("https://www.google.com") !== -1;
+    setOpen(
+      window.document.referrer.indexOf("https://belajarjualan.com/pipapvc") !==
+        -1
+    );
   });
-  const [forceClose, setForceClose] = useState(false);
   return (
     <>
       <NoSsr>

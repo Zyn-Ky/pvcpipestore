@@ -10,7 +10,7 @@ export default function MobileNotification() {
   return (
     <>
       <Typography fontWeight="700" variant="h4" gutterBottom>
-        Notifications
+        Notifikasi
       </Typography>
       <NotificationList />
     </>

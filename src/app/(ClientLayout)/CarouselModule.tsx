@@ -10,10 +10,17 @@ import {
 import { Collapse, Fab, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"));
-const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"));
+const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"), {
+  ssr: false,
+});
+const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"), {
+  ssr: false,
+});
 const ItemImageCarousel = dynamic(
-  () => import("@/components/custom/HomePage/ItemImageCarousel")
+  () => import("@/components/custom/HomePage/ItemImageCarousel"),
+  {
+    ssr: false,
+  }
 );
 
 export function CarouselModule() {
@@ -22,7 +29,7 @@ export function CarouselModule() {
   return (
     <>
       <BetterBigCarousel
-        animation="slide"
+        animation="fade"
         cycleNavigation
         swipe
         autoPlay={autoPlay}

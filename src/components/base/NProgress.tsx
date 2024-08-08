@@ -1,6 +1,6 @@
 "use client";
 import { PropsWithChildren } from "react";
-import { AppProgressBar as ProgressBar, useRouter } from "next-nprogress-bar";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 
 export default function NProgressWrapper(props: PropsWithChildren) {
   return (
