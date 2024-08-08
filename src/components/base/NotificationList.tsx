@@ -11,14 +11,36 @@ import {
 import PromptAuth from "./GeneratePromptAuth";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { FirebaseAuth } from "@/libs/firebase/config";
+import { useToken } from "react-firebase-hooks/messaging";
+import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
 import paths from "../paths";
+import { getMessaging, onMessage } from "firebase/messaging";
+import { useEffect, useState } from "react";
+import { useFcmToken } from "@/libs/firebase";
+import { useFCMNotification } from "./NotificationManager";
+import { useGeneralFunction } from "./GeneralWrapper";
+import {
+  fetchAndActivate,
+  getBoolean,
+  getRemoteConfig,
+} from "firebase/remote-config";
+import { useEffectOnce } from "react-use";
 
 export default function NotificationList() {
-  const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
-    useAuthState(FirebaseAuth);
-
-  if (!ClientUserInfo)
+  const { userManager } = useGeneralFunction();
+  const [enableDebug, setEnableDebug] = useState(false);
+  const { Notifications, fcm_token } = useFCMNotification();
+  async function DebugMode() {
+    const RemoteConfig = getRemoteConfig(firebaseApp);
+    await fetchAndActivate(RemoteConfig);
+    const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
+    console.log(EnableDebugUI);
+    setEnableDebug(EnableDebugUI);
+  }
+  useEffectOnce(() => {
+    DebugMode();
+  });
+  if (!userManager.currentUser)
     return (
       <PromptAuth
         message="Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi"
@@ -26,10 +48,60 @@ export default function NotificationList() {
         redirectPath={paths.MOBILE_NOTIFICATION}
       />
     );
+
   return (
     <>
-      <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-        {[...new Array(10)].map((i) => (
+      {enableDebug && (
+        <>
+          <p
+            style={{
+              userSelect: "text",
+              whiteSpace: "wrap",
+              wordWrap: "break-word",
+              width: "100%",
+            }}
+          >
+            FCM Token : {fcm_token}
+          </p>
+          <br />
+        </>
+      )}
+
+      <List sx={{ width: "100%" }}>
+        {Notifications &&
+          Notifications.map((item, i) => (
+            <ListItemButton alignItems="flex-start" key={i}>
+              {item.current_blob_img_url && (
+                <ListItemAvatar>
+                  <Avatar
+                    alt={`Photo Notification of ${item.title}`}
+                    src={item.current_blob_img_url}
+                  />
+                </ListItemAvatar>
+              )}
+              <ListItemText
+                primary={item.title && item.title}
+                secondary={
+                  <>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {item.body && item.body}
+                    </Typography>
+                  </>
+                }
+              />
+            </ListItemButton>
+          ))}
+        {Notifications && Notifications.length === 0 && (
+          <>
+            <p>Notifikasi anda bersih</p>
+          </>
+        )}
+        {[...new Array(1)].map((i) => (
           <ListItemButton alignItems="flex-start" key={i}>
             <ListItemAvatar>
               <Avatar
@@ -38,7 +110,7 @@ export default function NotificationList() {
               />
             </ListItemAvatar>
             <ListItemText
-              primary="Brunch this weekend?"
+              primary="Placeholder"
               secondary={
                 <>
                   <Typography
@@ -47,9 +119,9 @@ export default function NotificationList() {
                     variant="body2"
                     color="text.primary"
                   >
-                    Ali Connors
+                    John Doe
                   </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
+                  {"Placeholder"}
                 </>
               }
             />

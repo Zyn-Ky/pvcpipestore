@@ -1,0 +1,35 @@
+{
+  "name": "Jualan Pipa PVC",
+  "short_name": "KP",
+  "description": "Bandar Pipa PVC berkualitas tinggi!",
+  "icons": [
+    {
+      "src": "/launchericon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/launchericon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/launchericon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/launchericon-192.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/shop",
+  "display": "standalone",
+  "orientation": "portrait"
+}

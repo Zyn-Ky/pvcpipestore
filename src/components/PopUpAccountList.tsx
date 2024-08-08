@@ -30,19 +30,19 @@ import {
   getValue,
 } from "firebase/remote-config";
 import { Menus } from "./PopUpAccountListPage";
+import { useGeneralFunction } from "./base/GeneralWrapper";
+import { Check } from "@mui/icons-material";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const InfoOutlinedIcon = dynamic(
   () => import("@mui/icons-material/InfoOutlined")
 );
-const ArrowDropDownIcon = dynamic(
-  () => import("@mui/icons-material/ArrowDropDown")
-);
-const ArrowDropUpIcon = dynamic(
-  () => import("@mui/icons-material/ArrowDropUp")
-);
+
+const LightModeIcon = dynamic(() => import("@mui/icons-material/LightMode"));
 const SettingsIcon = dynamic(() => import("@mui/icons-material/Settings"));
-const PersonAddIcon = dynamic(() => import("@mui/icons-material/PersonAdd"));
+const BrightnessAutoIcon = dynamic(
+  () => import("@mui/icons-material/BrightnessAuto")
+);
 const ShoppingCartIcon = dynamic(
   () => import("@mui/icons-material/ShoppingCart")
 );
@@ -67,17 +67,12 @@ export default function PopUpAccountList(props: {
   const { ThemeMode, SetThemeMode } = useGlobalSettings();
   const [enableDebug, setEnableDebug] = useState(false);
   const [CurrentPage, setCurrentPage] = useState("home");
-  const [signedIn, loading, error] = useAuthState(FirebaseAuth);
-  const [SignOutCall, SignOutLoading] = useSignOut(FirebaseAuth);
+  const { userManager } = useGeneralFunction();
   const handleClosePopup = useCallback(() => {
     setCurrentPage("home");
     props.onClose?.({}, "backdropClick");
   }, [props]);
-  function SignOutHandler() {
-    SignOutCall();
-    window.location.href = paths.HOME_PAGE;
-    handleClosePopup();
-  }
+
   async function DebugMode() {
     const RemoteConfig = getRemoteConfig(firebaseApp);
     await fetchAndActivate(RemoteConfig);
@@ -142,9 +137,9 @@ export default function PopUpAccountList(props: {
               {
                 startIcon: <LogoutIcon />,
                 text: `Keluar`,
-                hidden: signedIn === null,
-                disabled: SignOutLoading,
-                onClick: SignOutHandler,
+                hidden: userManager.currentUser === null,
+                disabled: userManager.loading,
+                onClick: userManager.method.SignOut,
               },
             ],
           ]}
@@ -176,16 +171,44 @@ export default function PopUpAccountList(props: {
           paper: { sx: { minWidth: 275 } },
         }}
       >
-        <MenuItem
-          onClick={() => {
-            setCurrentPage("home");
-          }}
-        >
-          <ListItemIcon>
-            <ChevronLeftIcon />
-          </ListItemIcon>
-          <ListItemText>Tema</ListItemText>
-        </MenuItem>
+        <Menus
+          handleClosePopup={handleClosePopup}
+          items={[
+            [
+              {
+                text: "Tema",
+                startIcon: <ChevronLeftIcon />,
+                onClick: () => {
+                  setCurrentPage("home");
+                },
+                disableClosePopupOnClick: true,
+              },
+            ],
+            [
+              {
+                text: "Terang",
+                startIcon: <LightModeIcon />,
+                endIcon: ThemeMode === "light" && <Check />,
+                onClick: () => {
+                  SetThemeMode("light");
+                },
+              },
+              {
+                text: "Sistem",
+                startIcon: <BrightnessAutoIcon />,
+                endIcon: ThemeMode === "system" && <Check />,
+                onClick: () => {
+                  SetThemeMode("system");
+                },
+              },
+            ],
+          ]}
+        />
+        <Divider sx={{ my: 2 }} />
+        <Typography px={2} py={1} width="300px">
+          <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} /> Fitur ini
+          masih dalam tahap percobaan
+        </Typography>
       </Menu>
       <Menu
         anchorEl={props.anchorElement}
@@ -252,7 +275,7 @@ export default function PopUpAccountList(props: {
           <ListItemIcon>
             <InfoOutlinedIcon />
           </ListItemIcon>
-          CURRENT_USER : {signedIn?.uid ?? "invalid"}
+          CURRENT_USER : {userManager.currentUser?.uid ?? "invalid"}
         </MenuItem>
         <Link href="/auth/register" passHref>
           <MenuItem onClick={handleClosePopup}>

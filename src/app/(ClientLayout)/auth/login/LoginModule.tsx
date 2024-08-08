@@ -8,20 +8,17 @@ import { useRouter } from "next-nprogress-bar";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import dynamic from "next/dynamic";
 import { useEffect } from "react";
+import {
+  AvailableLoginMethod,
+  useGeneralFunction,
+} from "@/components/base/GeneralWrapper";
 const GoogleIcon = dynamic(() => import("@mui/icons-material/Google"));
 const EmailIcon = dynamic(() => import("@mui/icons-material/Email"));
 export default function LoginClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [UserValue, UserLoading, UserError] = useAuthState(FirebaseAuth);
-  const [
-    SignInWithGoogle,
-    GoogleUserValue,
-    GoogleUserLoading,
-    GoogleUserSignInError,
-  ] = useSignInWithGoogle(FirebaseAuth);
-  const IsSignedIn = Boolean(UserValue || GoogleUserValue);
-  const IsBusySigningIn = GoogleUserLoading || UserLoading;
+  const { userManager } = useGeneralFunction();
+
   function RedirectUser() {
     const NextURL = searchParams.get("next");
     if (NextURL) {
@@ -30,13 +27,14 @@ export default function LoginClient() {
     }
     router.push(paths.HOME_PAGE);
   }
-  async function SignIn(provider: "google" | "email") {
-    if (provider === "google") await SignInWithGoogle();
-    RedirectUser();
+  async function SignIn(provider: AvailableLoginMethod) {
+    const LoggedIn = await userManager.method.Login(provider);
+    if (LoggedIn) RedirectUser();
   }
   useEffect(() => {
-    if (IsSignedIn) RedirectUser();
-  }, [IsSignedIn]);
+    if (userManager.currentUser) RedirectUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userManager.currentUser]);
   return (
     <Box
       display="flex"
@@ -45,15 +43,20 @@ export default function LoginClient() {
       my={3}
       gap={1}
     >
-      {IsSignedIn && (
+      {userManager.currentUser && (
         <Alert severity="success" sx={{ mb: 2 }}>
           Anda telah login! Anda akan teralihkan...
         </Alert>
       )}
+      {userManager.authError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          Terjadi kesalahan! {userManager.authError.message as string}
+        </Alert>
+      )}
       <LoadingButton
         onClick={async () => {}}
-        loading={IsBusySigningIn}
-        disabled={IsSignedIn}
+        loading={userManager.loading}
+        disabled={Boolean(userManager.currentUser)}
         startIcon={<EmailIcon />}
         variant="outlined"
       >
@@ -63,8 +66,8 @@ export default function LoginClient() {
         onClick={async () => {
           SignIn("google");
         }}
-        loading={IsBusySigningIn}
-        disabled={IsSignedIn}
+        loading={userManager.loading}
+        disabled={Boolean(userManager.currentUser)}
         startIcon={<GoogleIcon />}
         variant="outlined"
       >

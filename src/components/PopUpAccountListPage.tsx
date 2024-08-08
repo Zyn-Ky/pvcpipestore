@@ -12,6 +12,7 @@ type menus = {
     disableClosePopupOnClick?: boolean;
     disabled?: boolean;
     hidden?: boolean;
+    inset?: boolean;
   }[][];
   handleClosePopup: () => void;
 };
@@ -57,14 +58,17 @@ export function Menus(props: menus) {
                   {item.startIcon && (
                     <ListItemIcon>{item.startIcon}</ListItemIcon>
                   )}
-                  <ListItemText>{item.text && item.text}</ListItemText>
+                  <ListItemText inset={item.inset ?? false}>
+                    {item.text && item.text}
+                  </ListItemText>
                   {item.endIcon && item.endIcon}
                 </MenuItem>
               )
             )}
             {props.items.length > 1 &&
-              i >= 0 &&
-              i !== props.items.length - 1 && (
+              i !== props.items.length - 1 &&
+              props.items[i + 1].filter((item) => item.hidden).length !==
+                props.items[i + 1].length && (
                 <>
                   <Divider sx={{ my: 1 }} />
                 </>

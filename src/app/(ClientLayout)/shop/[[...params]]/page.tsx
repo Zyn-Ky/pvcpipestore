@@ -11,7 +11,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { OptionalArray, ProductCardInfo } from "@/libs/config";
 import { unstable_cache as cache } from "next/cache";
 export const metadata: Metadata = {
-  title: `Belanja - ${SITE_CONFIG.SEO.Title}`,
+  title: `Belanja`,
 };
 const AdvancedFilterPopUp = dynamic(
   () => import("@/components/custom/ShopPage/AdvancedFilterPopUp"),
@@ -30,6 +30,7 @@ const FetchProductsImpl = async () => {
       const ResolvedCatalog = (await CatalogID?.get())?.data();
       return {
         ...Data,
+        ProductID: doc.id,
         ResolvedCatalog,
       };
     })

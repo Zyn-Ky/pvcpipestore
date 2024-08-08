@@ -11,14 +11,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { PhotoProvider, PhotoView } from "react-photo-view";
+import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 
 const PFP_IMAGE_SIZE = 64;
 
 export function SummaryCurrentUser() {
-  const [UserInfo, UserLoading, UserError] = useAuthState(FirebaseAuth);
+  const { userManager } = useGeneralFunction();
+
   return (
     <>
-      {UserInfo && (
+      {userManager && userManager.currentUser && !userManager.loading && (
         <>
           <div className={CSS.PhotoProfile}>
             <PhotoProvider maskOpacity={0.8}>
@@ -33,46 +35,50 @@ export function SummaryCurrentUser() {
                   const childScale = scale === 1 ? scale + offset : 1 + offset;
                   return (
                     <div {...attrs}>
-                      <Image
-                        src={UserInfo.photoURL ?? ""}
-                        width={PFP_IMAGE_SIZE}
-                        height={PFP_IMAGE_SIZE}
-                        style={{
-                          transform: `scale(${childScale})`,
-                          width: PFP_IMAGE_SIZE,
-                          height: PFP_IMAGE_SIZE,
-                        }}
-                        sizes="4vw"
-                        alt={`Photo Profile of ${UserInfo.displayName}`}
-                      />
+                      {userManager.currentUser && (
+                        <Image
+                          src={userManager.currentUser.photoURL ?? ""}
+                          width={PFP_IMAGE_SIZE}
+                          height={PFP_IMAGE_SIZE}
+                          style={{
+                            transform: `scale(${childScale})`,
+                            width: PFP_IMAGE_SIZE,
+                            height: PFP_IMAGE_SIZE,
+                          }}
+                          sizes="4vw"
+                          alt={`Photo Profile of ${userManager.currentUser.displayName}`}
+                        />
+                      )}
                     </div>
                   );
                 }}
               >
                 <Image
-                  src={UserInfo.photoURL ?? ""}
+                  src={userManager.currentUser.photoURL ?? ""}
                   sizes="4vw"
                   fill
-                  alt={`Photo Profile of ${UserInfo.displayName}`}
+                  alt={`Photo Profile of ${userManager.currentUser.displayName}`}
                 />
               </PhotoView>
             </PhotoProvider>
           </div>
           <div>
             <Typography variant="h5" fontWeight="bold">
-              {UserInfo.displayName}
+              {userManager.currentUser.displayName}
             </Typography>
-            <Typography variant="caption">User ID : {UserInfo.uid}</Typography>
+            <Typography variant="caption">
+              User ID : {userManager.currentUser.uid}
+            </Typography>
           </div>
         </>
       )}
-      {!UserInfo && (
+      {!userManager.currentUser && !userManager.loading && (
         <>
           <Avatar sx={{ width: PFP_IMAGE_SIZE, height: PFP_IMAGE_SIZE }} />
           <Typography fontWeight="bold">Belum masuk</Typography>
         </>
       )}
-      {UserLoading && (
+      {userManager.loading && (
         <Typography variant="h5" fontWeight="bold">
           Loading...
         </Typography>
@@ -82,17 +88,17 @@ export function SummaryCurrentUser() {
 }
 
 export function AvailableUserAction() {
-  const [UserInfo, UserLoading, UserError] = useAuthState(FirebaseAuth);
+  const { userManager } = useGeneralFunction();
   return (
     <>
-      {UserInfo && (
+      {userManager.currentUser && !userManager.loading && (
         <>
           <IconButton>
             <SettingsIcon />
           </IconButton>
         </>
       )}
-      {!UserInfo && (
+      {!userManager.currentUser && !userManager.loading && (
         <>
           <Link href={RedirectLoginPage(paths.MOBILE_MY_ACCOUNT)}>
             <Button variant="contained">Login</Button>
@@ -102,7 +108,7 @@ export function AvailableUserAction() {
           </Link>
         </>
       )}
-      {UserLoading && (
+      {userManager.loading && (
         <Typography variant="h5" fontWeight="bold">
           Loading...
         </Typography>

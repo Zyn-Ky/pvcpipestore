@@ -13,7 +13,7 @@ type CategoryItem = {
   Type: "CHILD" | "PARENT";
 };
 
-export type ProductCardInfo = {
+export interface StoredProductCardInfo {
   AvailableStock?: number;
   CatalogID?: DocumentReference<CategoryItem>;
   ResolvedCatalog?: CategoryItem;
@@ -24,7 +24,11 @@ export type ProductCardInfo = {
   Price?: number;
   PriceMode?: AcceptedPriceMode;
   SuggestedCurrency?: AcceptedCurrency;
-};
+}
+
+export interface ProductCardInfo extends StoredProductCardInfo {
+  ProductID: string;
+}
 
 export type OptionalArray<T> = (T | undefined)[];
 

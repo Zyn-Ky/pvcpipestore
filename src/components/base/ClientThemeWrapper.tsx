@@ -11,7 +11,7 @@ import {
 import SITE_CONFIG from "../config";
 import { useEffectOnce } from "react-use";
 
-type AvailableThemeMode = "light" | "dark" | "system" | undefined;
+export type AvailableThemeMode = "light" | "dark" | "system" | undefined;
 type AvailableThemeModeV2 = "light" | "dark" | undefined;
 
 type GlobalSettingsProps = {
