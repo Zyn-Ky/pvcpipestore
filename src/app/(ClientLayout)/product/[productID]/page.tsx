@@ -107,6 +107,7 @@ export default async function ProductPage({
                   position: "relative",
                   height: "300px",
                 }}
+                key={i}
               >
                 <Image src={img} alt="11" key={i} fill sizes="10vw" />
               </div>
