@@ -7,9 +7,12 @@ import {
   HomePage_Image_Banner3,
   HomePage_Image_Banner4,
 } from "@/components/assets/images";
-import { Collapse, Fab, Typography } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+const Fab = dynamic(() => import("@mui/material/Fab"), {
+  ssr: false,
+});
 const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"), {
   ssr: false,
 });
@@ -31,7 +34,7 @@ export function CarouselModule() {
       <BetterBigCarousel
         animation="fade"
         cycleNavigation
-        swipe
+        navButtonsAlwaysVisible
         autoPlay={autoPlay}
         indicators={false}
       >

@@ -5,7 +5,9 @@ import { Metadata } from "next";
 import { unstable_cache as cache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
+import CSS from "@/scss/ProductItem.module.scss";
+import { PhotoProvider } from "react-photo-view";
+import { Button, Paper, Typography } from "@mui/material";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
@@ -67,7 +69,6 @@ export async function generateMetadata({
     title: productItem.Name,
     description: productItem.Description,
     openGraph: {
-      type: "website",
       title: productItem.Name,
       description: productItem.Description,
     },
@@ -94,27 +95,58 @@ export default async function ProductPage({
   params: { productID: string };
 }) {
   const { productItem, ...data } = await FetchProducts(params.productID);
+  if (!productItem) return notFound();
   return (
-    <main style={{ padding: "2rem" }}>
-      {JSON.stringify({ productItem, ...data })}
+    <main className={CSS.ProductContainer}>
+      {/* {JSON.stringify({ productItem, ...data })} */}
       {productItem && (
         <>
-          {productItem.Images &&
-            productItem.Images.map((img, i) => (
-              <div
-                style={{
-                  aspectRatio: "1/1",
-                  position: "relative",
-                  height: "300px",
-                }}
-                key={i}
-              >
-                <Image src={img} alt="11" key={i} fill sizes="10vw" />
-              </div>
-            ))}
-
-          <h1>{productItem.Name}</h1>
-          {JSON.stringify(productItem)}
+          <div>
+            {productItem.Images &&
+              productItem.Images.map((img, i) => (
+                <div
+                  style={{
+                    aspectRatio: "1/1",
+                    position: "relative",
+                    height: "300px",
+                  }}
+                  key={i}
+                >
+                  <Image src={img} alt="11" key={i} fill sizes="10vw" />
+                </div>
+              ))}
+          </div>
+          <div>
+            <Typography variant="h4" fontWeight="bold">
+              {productItem.Name && productItem.Name}
+            </Typography>
+            <Typography variant="h5" fontWeight="bold">
+              {productItem.Price && productItem.Price.toString()}
+            </Typography>
+            <Typography variant="body1">
+              {productItem.Description && productItem.Description}
+            </Typography>
+            <Button variant="contained">Beli</Button>
+            <Button variant="outlined">Tambahkan ke Keranjang</Button>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <p>DEBUG DATA :</p>
+            <pre
+              style={{
+                wordWrap: "break-word",
+                overflow: "auto",
+                width: "42vw",
+              }}
+            >
+              {JSON.stringify(productItem, null, 2)}
+            </pre>
+          </div>
         </>
       )}
     </main>

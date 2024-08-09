@@ -1,17 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getMessaging, getToken } from "firebase/messaging";
-import { firebaseApp } from "./config";
+import { firebaseApp, FirebaseAuth } from "./config";
+import { useGeneralFunction } from "@/components/base/GeneralWrapper";
+import { AxiosFetchV1Api } from "../axios";
+import { useIdToken } from "react-firebase-hooks/auth";
 
 const useFcmToken = () => {
   const [token, setToken] = useState("");
   const [notificationPermissionStatus, setNotificationPermissionStatus] =
     useState("");
-
+  const { userManager, apiManager } = useGeneralFunction();
   useEffect(() => {
     const retrieveToken = async () => {
       try {
-        if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+        if (
+          typeof window !== "undefined" &&
+          "serviceWorker" in navigator &&
+          userManager.currentUser
+        ) {
           const messaging = getMessaging(firebaseApp);
 
           // Retrieve the notification permission status
@@ -22,10 +29,22 @@ const useFcmToken = () => {
           if (permission === "granted") {
             const currentToken = await getToken(messaging, {
               vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-              serviceWorkerRegistration: await window.serwist.register(),
+              serviceWorkerRegistration: await window.serwist.register({
+                immediate: true,
+              }),
             });
             if (currentToken) {
               setToken(currentToken);
+              AxiosFetchV1Api(
+                "POST",
+                "client/v1/subscribe",
+                apiManager.xsrfToken,
+                {
+                  authToken:
+                    (await userManager.currentUser.getIdToken()) ?? "MISSING",
+                  deviceFCMKey: currentToken,
+                }
+              );
             } else {
               console.log(
                 "No registration token available. Request permission to generate one."
@@ -39,7 +58,7 @@ const useFcmToken = () => {
     };
 
     retrieveToken();
-  }, []);
+  }, [apiManager.xsrfToken, userManager.currentUser]);
 
   return { fcmToken: token, notificationPermissionStatus };
 };

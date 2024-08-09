@@ -13,7 +13,6 @@ import SITE_CONFIG from "../config";
 import { useEffectOnce } from "react-use";
 
 export type AvailableThemeMode = "light" | "dark" | "system" | undefined;
-type AvailableThemeModeV2 = "light" | "dark" | undefined;
 
 type GlobalSettingsProps = {
   ThemeMode: AvailableThemeMode;
@@ -31,11 +30,6 @@ export const GlobalSettings = createContext<GlobalSettingsProps>(DefaultProps);
 
 export const useGlobalSettings = () => useContext(GlobalSettings);
 
-/**
- * BUG_DETECTED
- * Dark theme on "dark" mode has broken color scheme
- * Workaround : Refresh page on theme change
- */
 export default function ClientThemeWrapper(props: PropsWithChildren) {
   const [themeMode, setThemeMode] = useState<AvailableThemeMode>(DefaultTheme);
   const systemThemeIsDark = useMediaQuery("(prefers-color-scheme: dark)");
@@ -78,7 +72,7 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
     return createTheme({
       palette: { mode: DetectCurrentTheme(themeMode, systemThemeIsDark) },
     });
-  }, [systemThemeIsDark, themeMode]);
+  }, [systemThemeIsDark, themeMode, DetectCurrentTheme]);
   useEffectOnce(() => {
     RefreshTheme();
   });

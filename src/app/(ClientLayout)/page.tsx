@@ -7,6 +7,8 @@ import dynamic from "next/dynamic";
 import OurServices from "@/components/custom/HomePage/OurServices";
 import OurPartners from "@/components/custom/HomePage/OurPartners";
 import {
+  HomePage_CoverPipaPVC_Img,
+  HomePage_KelebihanPipaPVC_Img,
   PartnerHocoImg,
   PartnerItronImg,
   PartnerKitzImg,
@@ -19,10 +21,10 @@ import {
   PartnerYutaImg,
 } from "@/components/assets/images";
 import { CarouselModule } from "./CarouselModule";
+import Image from "next/image";
 
 const TestimonialModule = dynamic(
-  () => import("@/components/custom/HomePage/TestimonialModule"),
-  { loading: () => <>Loading...</> }
+  () => import("@/components/custom/HomePage/TestimonialModule")
 );
 const FancySeperator = dynamic(
   () => import("@/components/custom/HomePage/FancySeperator")
@@ -36,7 +38,7 @@ export default function Home() {
         <FancySeperator />
       </div>
       <div className={CSS.OurServicesList}>
-        <Typography fontSize="150%" fontWeight="bold" gutterBottom>
+        <Typography fontWeight="bold" variant="h4" gutterBottom>
           Kenapa harus memilih kami?
         </Typography>
         <div className={CSS.UXLists}>
@@ -57,14 +59,67 @@ export default function Home() {
           />
         </div>
       </div>
+      <div className={CSS.KelebihanBoxWrapper}>
+        <div className={CSS.CoverImage}>
+          <Image
+            src={HomePage_CoverPipaPVC_Img}
+            alt="Foto Pipa Paralon PVC"
+            fill
+            sizes="40vw"
+            className={CSS.Image}
+            draggable={false}
+          />
+        </div>
+        <div className={CSS.TextContainer}>
+          <Typography fontWeight="bold" variant="h4" gutterBottom>
+            Pipa PVC
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Pipa PVC juga tahan terhadap korosi dan bahan kimia, memiliki masa
+            pakai yang panjang, dan sering digunakan dalam aplikasi saluran air,
+            sistem pembuangan, dan berbagai proyek konstruksi.
+          </Typography>
+          <Typography variant="body2" fontStyle="italic" sx={{ mt: 3 }}>
+            Pemasangannya relatif mudah dengan metode penyambungan yang
+            menggunakan lem khusus untuk menggabungkan ujung pipa dan fitting,
+            sehingga memastikan sambungan yang kuat dan tahan lama tanpa
+            memerlukan alat pemanas tambahan.
+          </Typography>
+        </div>
+      </div>
+      <div className={CSS.KelebihanBoxWrapper + " " + CSS.RowInverted}>
+        <div className={CSS.TextContainer}>
+          <Typography fontWeight="bold" variant="h4" gutterBottom>
+            Keunggulan kami
+          </Typography>
+          <Typography variant="body1" gutterBottom>
+            Fitting pipa PVC kami menawarkan kualitas tinggi dan daya tahan yang
+            luar biasa. Terbuat dari bahan berkualitas yang tahan terhadap
+            berbagai bahan kimia dan korosi, fitting ini ideal untuk sistem
+            saluran air dan pembuangan. Fitting kami juga dirancang untuk tahan
+            terhadap perubahan suhu, cocok untuk berbagai aplikasi dalam
+            instalasi air bersih dan sistem pembuangan.
+          </Typography>
+        </div>
+        <div className={CSS.CoverImage}>
+          <Image
+            src={HomePage_KelebihanPipaPVC_Img}
+            alt="Foto Pipa Paralon PVC"
+            fill
+            sizes="40vw"
+            className={CSS.Image}
+            draggable={false}
+          />
+        </div>
+      </div>
       <div className={CSS.OuterTestimonialWrapper}>
         <Typography
-          fontSize="150%"
           fontWeight="bold"
+          variant="h4"
           gutterBottom
           textAlign="center"
         >
-          Berikut ulasan Customer
+          Berikut ulasan customer kami
         </Typography>
         <Typography gutterBottom textAlign="center" sx={{ mb: 5 }}>
           Mereka adalah sebagian yang memberikan ulasan dan menjalin kerjasama
@@ -78,7 +133,7 @@ export default function Home() {
         />
       </div>
       <div className={CSS.Partners}>
-        <Typography fontSize="150%" fontWeight="bold" gutterBottom>
+        <Typography fontWeight="bold" variant="h4" gutterBottom>
           Our Partners
         </Typography>
         <div className={CSS.LogoLists}>
@@ -96,7 +151,7 @@ export default function Home() {
       </div>
       <div className={CSS.AboutCompany}>
         <Typography
-          fontSize="150%"
+          variant="h4"
           fontWeight="bold"
           textAlign="center"
           gutterBottom

@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import BetterAppBar from "./custom/UXNavbar/BetterAppBar";
-import { Portal, Tooltip, useMediaQuery } from "@mui/material";
+import { Portal, useMediaQuery } from "@mui/material";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import paths from "./paths";
@@ -37,7 +37,7 @@ const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
 const BetterBottomNavigationAction = dynamic(
   async () => (await import("./BetterBtmBar")).BetterBottomNavigationAction
 );
-
+const Tooltip = dynamic(() => import("@mui/material/Tooltip"));
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
 const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));
 const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));

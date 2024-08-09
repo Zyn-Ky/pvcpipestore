@@ -1,6 +1,6 @@
 "use client";
 import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
-import { FirebaseApp } from "firebase/app";
+import { FirebaseApp, deleteApp } from "firebase/app";
 import { AuthError, User, UserCredential } from "firebase/auth";
 import {
   createContext,
@@ -93,12 +93,13 @@ export default function GeneralFunctionWrapper(
   function ClearLocalData() {
     // Clear All Notification
     indexedDB.deleteDatabase(IDB_NotiCache_DBName);
+    deleteApp(firebaseApp);
   }
   async function SignOutCall() {
     setForceHaltAuth(false);
     ClearLocalData();
     const signout = await SignOut();
-    setTimeout(() => (window.location.href = paths.HOME_PAGE), 2000);
+    setTimeout(() => (window.location.href = paths.HOME_PAGE), 1500);
     return signout;
   }
 

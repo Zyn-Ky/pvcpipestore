@@ -101,3 +101,63 @@ $padding-y-1: 18px;
   max-width: 960px;
   margin-inline: auto;
 }
+
+.KelebihanBoxWrapper {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+  max-width: 1080px;
+  min-height: 480px;
+  margin-inline: auto;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 2.25rem;
+  .CoverImage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    .Image {
+      object-position: center;
+      object-fit: contain;
+      -webkit-user-drag: none;
+    }
+  }
+  .TextContainer {
+    width: 400px;
+    user-select: text;
+  }
+  &.RowInverted {
+    .TextContainer {
+      flex: 1;
+    }
+    .CoverImage {
+      flex: initial;
+      width: 500px;
+    }
+  }
+  @media screen and (max-width: 800px) {
+    & {
+      flex-direction: column;
+      padding-inline: 5rem;
+      .CoverImage {
+        min-height: 480px;
+      }
+      .TextContainer {
+        width: auto;
+      }
+    }
+    &.RowInverted {
+      flex-direction: column-reverse;
+      .CoverImage {
+        width: auto;
+      }
+    }
+  }
+  @media screen and (max-width: 500px) {
+    & {
+      padding-inline: 2rem;
+    }
+  }
+}

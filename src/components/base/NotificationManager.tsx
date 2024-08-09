@@ -26,6 +26,7 @@ import { getMessaging, MessagePayload, onMessage } from "firebase/messaging";
 import {
   createContext,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useInsertionEffect,
@@ -110,23 +111,26 @@ export default function NotificationManager(props: PropsWithChildren) {
   const idbCache = useIndexedDBStore<StoredNotificationItem>(
     IDB_NotiCache_DBStoreName
   );
-  async function UpdateNotificationList() {
-    if (!idbCache) return;
-    const notiList = await idbCache.getAll();
-    setListNotifications(
-      notiList.map((noti) => {
-        const { img_bin, img_src_url, current_blob_img_url, ...data } = noti;
-        if (!img_bin)
-          return {
-            ...data,
-            img_src_url: img_src_url ?? "",
-            current_blob_img_url: "",
-          };
-        const url = URL.createObjectURL(img_bin);
-        return { ...data, current_blob_img_url: url, img_src_url };
-      })
-    );
-  }
+  const UpdateNotificationList = useCallback(
+    async function UpdateNotificationList() {
+      if (!idbCache) return;
+      const notiList = await idbCache.getAll();
+      setListNotifications(
+        notiList.map((noti) => {
+          const { img_bin, img_src_url, current_blob_img_url, ...data } = noti;
+          if (!img_bin)
+            return {
+              ...data,
+              img_src_url: img_src_url ?? "",
+              current_blob_img_url: "",
+            };
+          const url = URL.createObjectURL(img_bin);
+          return { ...data, current_blob_img_url: url, img_src_url };
+        })
+      );
+    },
+    [idbCache]
+  );
   async function SaveAndCacheImage(url: string) {
     try {
       const imageFetch = fetch(url, {});
@@ -144,30 +148,33 @@ export default function NotificationManager(props: PropsWithChildren) {
       };
     }
   }
-  async function HandleNewNotifications(payload: MessagePayload) {
-    console.log(payload);
-    if (!payload.notification) return;
-    console.log("Foreground push notification received:", payload);
+  const HandleNewNotifications = useCallback(
+    async function HandleNewNotifications(payload: MessagePayload) {
+      console.log(payload);
+      if (!payload.notification) return;
+      console.log("Foreground push notification received:", payload);
 
-    let data: StoredNotificationItem = {
-      title: payload.notification.title,
-      body: payload.notification.body,
-      collapse_key: payload.collapseKey,
-      additional_data: "",
-    };
-    console.log(payload.notification);
-    if (typeof payload.notification.image === "string") {
-      const bin = await SaveAndCacheImage(payload.notification.image);
-      data = {
-        ...data,
-        ...bin,
+      let data: StoredNotificationItem = {
+        title: payload.notification.title,
+        body: payload.notification.body,
+        collapse_key: payload.collapseKey,
+        additional_data: "",
       };
-    }
-    console.log(data);
-    if (!idbCache) return;
-    idbCache.add(data);
-    await UpdateNotificationList();
-  }
+      console.log(payload.notification);
+      if (typeof payload.notification.image === "string") {
+        const bin = await SaveAndCacheImage(payload.notification.image);
+        data = {
+          ...data,
+          ...bin,
+        };
+      }
+      console.log(data);
+      if (!idbCache) return;
+      idbCache.add(data);
+      await UpdateNotificationList();
+    },
+    [idbCache, UpdateNotificationList]
+  );
 
   useEffect(() => {
     if (
@@ -183,7 +190,12 @@ export default function NotificationManager(props: PropsWithChildren) {
         unsubscribe(); // Unsubscribe from the onMessage event
       };
     }
-  }, [idbCacheStarted, userManager]);
+  }, [
+    idbCacheStarted,
+    userManager,
+    HandleNewNotifications,
+    UpdateNotificationList,
+  ]);
   return (
     <NotiManager.Provider
       value={{

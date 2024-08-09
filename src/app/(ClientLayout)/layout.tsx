@@ -84,7 +84,7 @@ export default function RootLayout(
           <GeneralFunctionWrapper apiXsrf={csrfToken}>
             <NProgressWrapper>
               <XAppBar />
-              <PullToRefreshWrapper>{props.children}</PullToRefreshWrapper>
+              {props.children}
             </NProgressWrapper>
           </GeneralFunctionWrapper>
         </body>

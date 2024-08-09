@@ -20,7 +20,7 @@ export async function AxiosFetchV1Api<CustomData>(
   method: string,
   url: string,
   xsrf: string,
-  data?: CustomData & { expAuthToken?: string; [key: string]: any }
+  data?: CustomData & { authToken?: string; [key: string]: any }
 ) {
   const DisabledBodyRequest =
     DISABLED_BODY_DATA_METHODS.indexOf(method.toUpperCase()) === -1;

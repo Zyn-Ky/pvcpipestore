@@ -13,6 +13,8 @@ import HomePage_CoverImg from "./HomePage/cover.jpg";
 import HomePage_Image_Banner2 from "./HomePage/hero-main-2.webp";
 import HomePage_Image_Banner3 from "./HomePage/hero-main-3.jpg";
 import HomePage_Image_Banner4 from "./HomePage/hero-main-4.jpg";
+import HomePage_KelebihanPipaPVC_Img from "./HomePage/kelebihan-pipa-pvc.jpg";
+import HomePage_CoverPipaPVC_Img from "./HomePage/cover-pipa-pvc.png";
 
 import AuthUISharedLayout_Benefit_id_ID from "./AuthUISharedLayout/Benefit-ID_ID.png";
 
@@ -31,5 +33,7 @@ export {
   HomePage_Image_Banner2,
   HomePage_Image_Banner3,
   HomePage_Image_Banner4,
+  HomePage_KelebihanPipaPVC_Img,
+  HomePage_CoverPipaPVC_Img,
   AuthUISharedLayout_Benefit_id_ID,
 };

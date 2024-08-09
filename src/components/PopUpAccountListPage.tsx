@@ -1,6 +1,6 @@
 import { Divider, ListItemIcon, ListItemText, MenuItem } from "@mui/material";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { Fragment, memo, ReactNode } from "react";
 
 type menus = {
   items: {
@@ -17,12 +17,12 @@ type menus = {
   handleClosePopup: () => void;
 };
 
-export function Menus(props: menus) {
+export const Menus = memo(function Menus(props: menus) {
   return (
     <>
       {props.items &&
         props.items.map((parentItem, i) => (
-          <>
+          <Fragment key={`MENU_PARENT_GROUP_${i}`}>
             {parentItem.map((item) =>
               item.hidden === true ? null : item.href ? (
                 <Link
@@ -70,11 +70,11 @@ export function Menus(props: menus) {
               props.items[i + 1].filter((item) => item.hidden).length !==
                 props.items[i + 1].length && (
                 <>
-                  <Divider sx={{ my: 1 }} />
+                  <Divider sx={{ my: 1 }} key={`PARENT_MENU_DIVIDER_${i}`} />
                 </>
               )}
-          </>
+          </Fragment>
         ))}
     </>
   );
-}
+});

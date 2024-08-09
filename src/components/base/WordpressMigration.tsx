@@ -1,11 +1,12 @@
 "use client";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, IconButton, NoSsr, Snackbar, Typography } from "@mui/material";
+import { Box, IconButton, NoSsr, Typography } from "@mui/material";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useEffectOnce } from "react-use";
-
+const Snackbar = dynamic(() => import("@mui/material/Snackbar"));
 export default function WordpressMigration() {
   const param = useSearchParams();
   const [open, setOpen] = useState(false);

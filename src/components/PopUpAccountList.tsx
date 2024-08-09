@@ -21,7 +21,6 @@ import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 import dynamic from "next/dynamic";
 import { useGlobalSettings } from "./base/ClientThemeWrapper";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
 import {
   fetchAndActivate,
@@ -147,7 +146,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
           handleClosePopup={handleClosePopup}
         />
         {enableDebug && (
-          <>
+          <div>
             <MenuItem
               onClick={() => {
                 setCurrentPage("MODE_DEBUG_X");
@@ -158,7 +157,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               </ListItemIcon>
               <ListItemText>SHOW_DEBUG_BTN</ListItemText>
             </MenuItem>
-          </>
+          </div>
         )}
       </Menu>
       <Menu
@@ -213,93 +212,60 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
             ],
           ]}
         />
-        <Divider sx={{ my: 2 }} />
-        <Typography px={2} py={1} width="300px">
-          <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} /> Fitur ini
-          masih dalam tahap percobaan
-        </Typography>
       </Menu>
-      <Menu
-        anchorEl={props.anchorElement}
-        id="account-list-popup"
-        open={props.open && CurrentPage === "MODE_DEBUG_X" && enableDebug}
-        onClose={handleClosePopup}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        slotProps={{
-          paper: { sx: { minWidth: 275 } },
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-            setCurrentPage("home");
+      {enableDebug && (
+        <Menu
+          anchorEl={props.anchorElement}
+          id="account-list-popup"
+          open={props.open && CurrentPage === "MODE_DEBUG_X"}
+          onClose={handleClosePopup}
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          slotProps={{
+            paper: { sx: { minWidth: 275 } },
           }}
         >
-          <ListItemIcon>
-            <ChevronLeftIcon />
-          </ListItemIcon>
-          Debug Mode
-        </MenuItem>
-        <Divider sx={{ my: 2 }} />
-        <MenuItem>
-          <ListItemIcon>
-            <InfoOutlinedIcon />
-          </ListItemIcon>
-          CURRENT_UI_THEME : {ThemeMode}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClosePopup();
-            SetThemeMode("dark");
-          }}
-        >
-          <ListItemIcon>
-            <InfoOutlinedIcon />
-          </ListItemIcon>
-          CLIENT_TRIGGER_DARK_THEME
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClosePopup();
-            SetThemeMode("light");
-          }}
-        >
-          <ListItemIcon>
-            <InfoOutlinedIcon />
-          </ListItemIcon>
-          CLIENT_TRIGGER_LIGHT_THEME
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleClosePopup();
-            SetThemeMode("system");
-          }}
-        >
-          <ListItemIcon>
-            <InfoOutlinedIcon />
-          </ListItemIcon>
-          CLIENT_TRIGGER_SYSTEM_THEME
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <InfoOutlinedIcon />
-          </ListItemIcon>
-          CURRENT_USER : {userManager.currentUser?.uid ?? "invalid"}
-        </MenuItem>
-        <Link href="/auth/register" passHref>
-          <MenuItem onClick={handleClosePopup}>
+          <MenuItem
+            onClick={() => {
+              setCurrentPage("home");
+            }}
+          >
+            <ListItemIcon>
+              <ChevronLeftIcon />
+            </ListItemIcon>
+            Debug Mode
+          </MenuItem>
+          <Divider sx={{ my: 2 }} />
+          <Link href="/testpage" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon />
+              </ListItemIcon>
+              TESTPAGE_LINK
+            </MenuItem>
+          </Link>
+          <MenuItem>
             <ListItemIcon>
               <InfoOutlinedIcon />
             </ListItemIcon>
-            PAGE_TRIGGER_REGISTER_UI
+            CURRENT_USER : {userManager.currentUser?.uid ?? "invalid"}
           </MenuItem>
-        </Link>
-        <Divider sx={{ my: 2 }} />
-        <Typography px={2} py={1} width="300px">
-          <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} />
-          Be aware! These features may break in the future! Proceed with caution
-        </Typography>
-      </Menu>
+          <Link href="/auth/register" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon />
+              </ListItemIcon>
+              REGISTER_UI_LINK
+            </MenuItem>
+          </Link>
+          <Divider sx={{ my: 2 }} />
+          <Typography px={2} py={1} width="300px">
+            <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} />
+            Be aware! These features may break in the future! Proceed with
+            caution
+          </Typography>
+        </Menu>
+      )}
     </>
   );
 });

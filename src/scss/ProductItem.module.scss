@@ -1,0 +1,22 @@
+.ProductNotFoundContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  .Child {
+    text-align: center;
+    .Icon {
+      font-size: 5rem;
+    }
+  }
+}
+
+.ProductContainer {
+  padding: 2rem;
+  display: flex;
+  @media screen and (max-width: 600px) {
+    & {
+      flex-direction: column;
+    }
+  }
+}
