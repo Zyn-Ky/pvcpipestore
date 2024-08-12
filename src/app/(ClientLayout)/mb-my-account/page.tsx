@@ -43,7 +43,7 @@ export default function AccountSummary() {
           </ListItemIcon>
           <ListItemText primary="STATUS_LINK" />
         </ListItemButton>
-        <ListItemButton>
+        <ListItemButton LinkComponent={Link} href={paths.SETTINGS_PAGE}>
           <ListItemIcon>
             <InfoOutlined />
           </ListItemIcon>

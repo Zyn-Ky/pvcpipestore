@@ -5,11 +5,13 @@ import {
   PHASE_DEVELOPMENT_SERVER,
   PHASE_PRODUCTION_BUILD,
 } from "next/constants.js";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 console.log("NODE_ENV :", process.env.NODE_ENV);
+const withNextIntl = createNextIntlPlugin();
 
 const DevModeRemote = [{ protocol: "https", hostname: "**" }];
 
@@ -48,7 +50,7 @@ export default async (phase) => {
       swUrl: "/sw-prod.js",
       register: false,
     });
-    return withSerwist(nextConfig);
+    return withSerwist(withNextIntl(nextConfig));
   }
-  return nextConfig;
+  return withNextIntl(nextConfig);
 };

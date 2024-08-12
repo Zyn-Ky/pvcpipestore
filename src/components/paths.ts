@@ -8,6 +8,7 @@ const paths = {
   MOBILE_MY_ACCOUNT: "/mb-my-account",
   AUTH_LOGIN: "/auth/login",
   AUTH_REGISTER: "/auth/register",
+  SETTINGS_PAGE: "/set-prefs",
 };
 
 export function RedirectLoginPage(url: string) {

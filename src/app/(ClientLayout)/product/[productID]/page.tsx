@@ -7,7 +7,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CSS from "@/scss/ProductItem.module.scss";
 import { PhotoProvider } from "react-photo-view";
-import { Button, Paper, Typography } from "@mui/material";
+import { Breadcrumbs, Button, Link, Paper, Typography } from "@mui/material";
+import ImageModule from "./ImageModule";
+import NextLink from "next/link";
+import paths from "@/components/paths";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
@@ -22,11 +25,11 @@ const FetchItemImpl = async (productID: string) => {
         productItem: null,
       };
     const { CatalogID, ...product } = productItem;
-    const ResolvedCatalog = (await CatalogID?.get())?.data();
+    const ResolvedCatalogID = (await CatalogID?.get())?.data();
     return {
       ok: true,
       message: "OK",
-      productItem: { ...product, CatalogID: ResolvedCatalog },
+      productItem: { ...product, ResolvedCatalogID },
     };
   } catch (e) {
     console.log(e);
@@ -102,30 +105,41 @@ export default async function ProductPage({
       {productItem && (
         <>
           <div>
-            {productItem.Images &&
-              productItem.Images.map((img, i) => (
-                <div
-                  style={{
-                    aspectRatio: "1/1",
-                    position: "relative",
-                    height: "300px",
-                  }}
-                  key={i}
-                >
-                  <Image src={img} alt="11" key={i} fill sizes="10vw" />
-                </div>
-              ))}
+            <ImageModule
+              productItem={{ ...productItem, ProductID: params.productID }}
+            />
           </div>
           <div>
+            <Breadcrumbs sx={{ mb: 1 }}>
+              <Link underline="hover" color="inherit" href={paths.ACTUAL_SHOP}>
+                Shop
+              </Link>
+              <Link
+                underline="hover"
+                color="inherit"
+                href="#"
+                component={NextLink}
+              >
+                Placeholder Category
+              </Link>
+              <Link underline="hover" color="text.primary" aria-current="page">
+                {productItem.Name && productItem.Name}
+              </Link>
+            </Breadcrumbs>
             <Typography variant="h4" fontWeight="bold">
               {productItem.Name && productItem.Name}
             </Typography>
             <Typography variant="h5" fontWeight="bold">
-              {productItem.Price && productItem.Price.toString()}
+              {new Intl.NumberFormat("id-ID", {
+                currency: "IDR",
+                style: "currency",
+              }).format(productItem.Price ?? 0)}
             </Typography>
+            <br />
             <Typography variant="body1">
               {productItem.Description && productItem.Description}
             </Typography>
+            <br />
             <Button variant="contained">Beli</Button>
             <Button variant="outlined">Tambahkan ke Keranjang</Button>
             <br />

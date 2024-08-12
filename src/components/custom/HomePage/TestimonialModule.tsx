@@ -6,6 +6,7 @@ import { Avatar, Collapse, Fab, Typography } from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { memo, useState } from "react";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 const PauseIcon = dynamic(() => import("@mui/icons-material/Pause"));
 const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"));
 type ItemProp = {
@@ -21,6 +22,7 @@ type TestimonialModuleProps = {
 const TestimonialModule = memo(function TestimonialModule(
   props: TestimonialModuleProps
 ) {
+  const text = useTranslations("BASE");
   const [autoPlay, setAutoPlay] = useState(true);
   const [isHoveringMouse, setIsHoveringMouse] = useState(false);
   function Item(props: ItemProp) {
@@ -57,43 +59,41 @@ const TestimonialModule = memo(function TestimonialModule(
     );
   }
   return (
-    <>
-      <div className={CSS.Wrapper}>
-        <Carousel
-          className={CSS.CarouselWrapper}
-          animation="fade"
-          cycleNavigation
-          swipe={false}
-          autoPlay={autoPlay}
-          indicators
-          navButtonsAlwaysVisible
-          stopAutoPlayOnHover
-        >
-          {props.items.map((value, i) => (
-            <Item {...value} key={i} />
-          ))}
-        </Carousel>
+    <div className={CSS.Wrapper}>
+      <Carousel
+        className={CSS.CarouselWrapper}
+        animation="fade"
+        cycleNavigation
+        swipe={false}
+        autoPlay={autoPlay}
+        indicators
+        navButtonsAlwaysVisible
+        stopAutoPlayOnHover
+      >
+        {props.items.map((value, i) => (
+          <Item {...value} key={i} />
+        ))}
+      </Carousel>
 
-        <Fab
-          variant="extended"
-          size="small"
-          color="primary"
-          sx={{ bottom: "-1rem", left: 0 }}
-          onClick={() => setAutoPlay(!autoPlay)}
-          onMouseEnter={() => setIsHoveringMouse(true)}
-          onMouseLeave={() => setIsHoveringMouse(false)}
-        >
-          {autoPlay && <PauseIcon />}
-          {!autoPlay && <PlayArrowIcon />}
-          <Collapse in={isHoveringMouse} orientation="horizontal" unmountOnExit>
-            <Typography noWrap ml={1}>
-              {autoPlay && "Hentikan Autoplay"}
-              {!autoPlay && "Autoplay"}
-            </Typography>
-          </Collapse>
-        </Fab>
-      </div>
-    </>
+      <Fab
+        variant="extended"
+        size="small"
+        color="primary"
+        sx={{ bottom: "-1rem", left: 0 }}
+        onClick={() => setAutoPlay(!autoPlay)}
+        onMouseEnter={() => setIsHoveringMouse(true)}
+        onMouseLeave={() => setIsHoveringMouse(false)}
+      >
+        {autoPlay && <PauseIcon />}
+        {!autoPlay && <PlayArrowIcon />}
+        <Collapse in={isHoveringMouse} orientation="horizontal" unmountOnExit>
+          <Typography noWrap ml={1}>
+            {autoPlay && text("PAUSE_AUTOPLAY")}
+            {!autoPlay && text("PLAY_AUTOPLAY")}
+          </Typography>
+        </Collapse>
+      </Fab>
+    </div>
   );
 });
 

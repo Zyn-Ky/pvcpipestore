@@ -22,6 +22,7 @@ import {
 } from "@/components/assets/images";
 import { CarouselModule } from "./CarouselModule";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const TestimonialModule = dynamic(
   () => import("@/components/custom/HomePage/TestimonialModule")
@@ -31,6 +32,7 @@ const FancySeperator = dynamic(
 );
 
 export default function Home() {
+  const text = useTranslations("HOME_UI");
   return (
     <div itemType="https://schema.org/Organization" itemScope>
       <div className={CSS.HeroBox}>
@@ -39,27 +41,27 @@ export default function Home() {
       </div>
       <div className={CSS.OurServicesList}>
         <Typography fontWeight="bold" variant="h4" gutterBottom>
-          Kenapa harus memilih kami?
+          {text("WHY_CHOOSE_US")}
         </Typography>
         <div className={CSS.UXLists}>
           <OurServices
             icon={<FlightLandIcon fontSize="large" />}
-            header="Pengiriman Aman dan Cepat"
-            text="Kami selalu mengutamakan pengiriman tepat waktu ke seluruh Indonesia."
+            header={text("REASON_TO_CHOOSE_US_1")}
+            text={text("REASON_TO_CHOOSE_US_1_BODY")}
           />
           <OurServices
             icon={<AdsClickIcon fontSize="large" />}
-            header="Solusi Terbaik"
-            text="Kami memberikan barang yang berekualitas dan memberikan solusi terbaik untuk kebutuhan anda"
+            header={text("REASON_TO_CHOOSE_US_2")}
+            text={text("REASON_TO_CHOOSE_US_2_BODY")}
           />
           <OurServices
             icon={<EmojiEventsIcon fontSize="large" />}
-            header="Professional Team"
-            text="Kami melayani dengan tim yang sudah berpengalaman dan professional."
+            header={text("REASON_TO_CHOOSE_US_3")}
+            text={text("REASON_TO_CHOOSE_US_3_BODY")}
           />
         </div>
       </div>
-      <div className={CSS.KelebihanBoxWrapper}>
+      <div className={CSS.KelebihanBoxWrapper} id="keunggulan">
         <div className={CSS.CoverImage}>
           <Image
             src={HomePage_CoverPipaPVC_Img}
@@ -72,33 +74,31 @@ export default function Home() {
         </div>
         <div className={CSS.TextContainer}>
           <Typography fontWeight="bold" variant="h4" gutterBottom>
-            Pipa PVC
+            {text("WHAT_IS_PVC")}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Pipa PVC juga tahan terhadap korosi dan bahan kimia, memiliki masa
-            pakai yang panjang, dan sering digunakan dalam aplikasi saluran air,
-            sistem pembuangan, dan berbagai proyek konstruksi.
+            {text("PIPA_PVC_DEFINITION")}
           </Typography>
           <Typography variant="body2" fontStyle="italic" sx={{ mt: 3 }}>
-            Pemasangannya relatif mudah dengan metode penyambungan yang
-            menggunakan lem khusus untuk menggabungkan ujung pipa dan fitting,
-            sehingga memastikan sambungan yang kuat dan tahan lama tanpa
-            memerlukan alat pemanas tambahan.
+            {text("PIPA_PVC_DEFINITION_ALT_TEXT")}
           </Typography>
         </div>
       </div>
-      <div className={CSS.KelebihanBoxWrapper + " " + CSS.RowInverted}>
+      <div
+        className={
+          CSS.KelebihanBoxWrapper +
+          " " +
+          CSS.RowInverted +
+          " " +
+          CSS.DontScaleImg
+        }
+      >
         <div className={CSS.TextContainer}>
           <Typography fontWeight="bold" variant="h4" gutterBottom>
-            Keunggulan kami
+            {text("KEUNGGULAN_KAMI")}
           </Typography>
           <Typography variant="body1" gutterBottom>
-            Fitting pipa PVC kami menawarkan kualitas tinggi dan daya tahan yang
-            luar biasa. Terbuat dari bahan berkualitas yang tahan terhadap
-            berbagai bahan kimia dan korosi, fitting ini ideal untuk sistem
-            saluran air dan pembuangan. Fitting kami juga dirancang untuk tahan
-            terhadap perubahan suhu, cocok untuk berbagai aplikasi dalam
-            instalasi air bersih dan sistem pembuangan.
+            {text("KEUNGGULAN_KAMI_TEXT")}
           </Typography>
         </div>
         <div className={CSS.CoverImage}>
@@ -119,11 +119,10 @@ export default function Home() {
           gutterBottom
           textAlign="center"
         >
-          Berikut ulasan customer kami
+          {text("TESTI_TITLE")}
         </Typography>
         <Typography gutterBottom textAlign="center" sx={{ mb: 5 }}>
-          Mereka adalah sebagian yang memberikan ulasan dan menjalin kerjasama
-          dengan kami
+          {text("TESTI_DESC")}
         </Typography>
         <TestimonialModule
           items={[...new Array(5)].map(() => ({
@@ -134,7 +133,7 @@ export default function Home() {
       </div>
       <div className={CSS.Partners}>
         <Typography fontWeight="bold" variant="h4" gutterBottom>
-          Our Partners
+          {text("OUR_PARTNER")}
         </Typography>
         <div className={CSS.LogoLists}>
           <OurPartners nextImage={PartnerHocoImg} alt="Hoco® Logo" />
@@ -156,7 +155,7 @@ export default function Home() {
           textAlign="center"
           gutterBottom
         >
-          Tentang Kami
+          {text("ABOUT_US")}
         </Typography>
         <Typography variant="body2" textAlign="center">
           Distributor Pipa uPVC yang menyediakan pipa jenis Pipa uPVC yang

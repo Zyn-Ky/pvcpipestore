@@ -258,6 +258,14 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               REGISTER_UI_LINK
             </MenuItem>
           </Link>
+          <Link href="/set-prefs" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon />
+              </ListItemIcon>
+              SETTINGS_LINK
+            </MenuItem>
+          </Link>
           <Divider sx={{ my: 2 }} />
           <Typography px={2} py={1} width="300px">
             <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} />

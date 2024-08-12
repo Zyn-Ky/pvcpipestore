@@ -1,0 +1,15 @@
+.SettingsContainer {
+  display: flex;
+  .Sidebar {
+    min-width: 360px;
+  }
+  .Child {
+    flex: 1 1;
+  }
+  @media screen and (max-width: 600px) {
+    .Sidebar {
+      min-width: none;
+      flex: 1;
+    }
+  }
+}

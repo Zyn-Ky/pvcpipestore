@@ -56,7 +56,7 @@ export default function ItemProductCard(props: { data: ProductCardInfo }) {
             {props.data.Name ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rp. {props.data.Price ?? ""}
+            Rp. {props.data.Price}
           </Typography>
         </CardContent>
         <CardActions>

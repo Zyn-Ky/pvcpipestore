@@ -161,3 +161,9 @@ $padding-y-1: 18px;
     }
   }
 }
+
+.DontScaleImg {
+  img {
+    object-fit: cover !important;
+  }
+}

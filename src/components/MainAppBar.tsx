@@ -15,6 +15,7 @@ import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
   loading: () => (
     <>

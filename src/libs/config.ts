@@ -16,7 +16,7 @@ type CategoryItem = {
 export interface StoredProductCardInfo {
   AvailableStock?: number;
   CatalogID?: DocumentReference<CategoryItem>;
-  ResolvedCatalog?: CategoryItem;
+  ResolvedCatalogID?: CategoryItem;
   Description?: string;
   Images?: string[];
   LinkedUser?: string;

@@ -10,6 +10,7 @@ import AdminFirebaseApp from "@/libs/firebase/adminConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { OptionalArray, ProductCardInfo } from "@/libs/config";
 import { unstable_cache as cache } from "next/cache";
+import { getLocale } from "next-intl/server";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -27,11 +28,11 @@ const FetchProductsImpl = async () => {
       const { CatalogID, ...Data } = (
         await productsRef.doc(doc.id).get()
       ).data() as ProductCardInfo;
-      const ResolvedCatalog = (await CatalogID?.get())?.data();
+      const ResolvedCatalogID = (await CatalogID?.get())?.data();
       return {
         ...Data,
         ProductID: doc.id,
-        ResolvedCatalog,
+        ResolvedCatalogID,
       };
     })
   );

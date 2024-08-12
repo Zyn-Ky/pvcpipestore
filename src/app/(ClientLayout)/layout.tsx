@@ -9,10 +9,10 @@ import ColorModeProvider from "@/components/base/ClientThemeWrapper";
 import dynamic from "next/dynamic";
 import GeneralFunctionWrapper from "@/components/base/GeneralWrapper";
 import { headers } from "next/headers";
+import { getLocale, getMessages } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+
 const NProgressWrapper = dynamic(() => import("@/components/base/NProgress"));
-const PullToRefreshWrapper = dynamic(
-  () => import("@/components/base/PullToRefreshWrapper")
-);
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
   { ssr: false }
@@ -69,26 +69,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout(
+export default async function RootLayout(
   props: Readonly<{
     children: React.ReactNode;
   }>
 ) {
   const csrfToken = headers().get("X-CSRF-Token") || "MISSING";
+  const messages = await getMessages();
+  const locale = await getLocale();
+
   return (
-    <ColorModeProvider>
-      <html lang="en">
-        <CssBaseline />
-        <body className={inter.className} data-smooth-color-transition>
-          <WordpressMigration />
-          <GeneralFunctionWrapper apiXsrf={csrfToken}>
-            <NProgressWrapper>
-              <XAppBar />
-              {props.children}
-            </NProgressWrapper>
-          </GeneralFunctionWrapper>
-        </body>
-      </html>
-    </ColorModeProvider>
+    <NextIntlClientProvider messages={messages}>
+      <ColorModeProvider>
+        <html lang={locale}>
+          <CssBaseline />
+          <body className={inter.className} data-smooth-color-transition>
+            <WordpressMigration />
+            <GeneralFunctionWrapper apiXsrf={csrfToken}>
+              <NProgressWrapper>
+                <XAppBar />
+                {props.children}
+              </NProgressWrapper>
+            </GeneralFunctionWrapper>
+          </body>
+        </html>
+      </ColorModeProvider>
+    </NextIntlClientProvider>
   );
 }

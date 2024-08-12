@@ -12,10 +12,11 @@
 }
 
 .ProductContainer {
-  padding: 2rem;
+  padding: 4rem;
   display: flex;
   @media screen and (max-width: 600px) {
     & {
+  padding: 2rem;
       flex-direction: column;
     }
   }
