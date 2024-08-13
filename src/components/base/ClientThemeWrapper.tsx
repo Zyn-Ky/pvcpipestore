@@ -72,7 +72,12 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
     const SmoothColorTransitionProp = {
       styleOverrides: {
         root:
-          document.body.getAttribute("data-smooth-color-transition") === "true"
+          typeof window !== "undefined" &&
+          window &&
+          window.document &&
+          window.document.body &&
+          window.document.body.getAttribute("data-smooth-color-transition") ===
+            "true"
             ? {
                 transitionProperty:
                   "background-color, color, box-shadow, opacity, transform !important",
