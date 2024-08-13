@@ -41,6 +41,7 @@ export function CarouselModule() {
         navButtonsAlwaysVisible
         autoPlay={autoPlay}
         indicators={false}
+        swipe={false}
       >
         <ItemImageCarousel
           src={HomePage_CoverImg}

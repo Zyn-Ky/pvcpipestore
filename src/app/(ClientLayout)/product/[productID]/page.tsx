@@ -1,4 +1,9 @@
-import { OptionalArray, StoredProductCardInfo } from "@/libs/config";
+import {
+  CategoryItem,
+  OptionalArray,
+  ProductCardInfo,
+  StoredProductCardInfo,
+} from "@/libs/config";
 import AdminFirebaseApp from "@/libs/firebase/adminConfig";
 import { getFirestore } from "firebase-admin/firestore";
 import { Metadata } from "next";
@@ -10,14 +15,17 @@ import { PhotoProvider } from "react-photo-view";
 import { Breadcrumbs, Button, Link, Paper, Typography } from "@mui/material";
 import ImageModule from "./ImageModule";
 import NextLink from "next/link";
-import paths from "@/components/paths";
+import paths, { GenerateShopFilterUrl } from "@/components/paths";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
     const firestore = getFirestore(AdminFirebaseApp); //This should return the firebase-admin app
     const productsRef = firestore.collection("Products/");
-    const doc = productsRef.doc(productID);
-    const productItem = (await doc.get()).data() as StoredProductCardInfo;
+    const categoryRef = firestore.collection("CatalogsList/");
+    const productDocument = productsRef.doc(productID);
+    const productItem = (
+      await productDocument.get()
+    ).data() as StoredProductCardInfo;
     if (!productItem)
       return {
         ok: false,
@@ -25,7 +33,20 @@ const FetchItemImpl = async (productID: string) => {
         productItem: null,
       };
     const { CatalogID, ...product } = productItem;
-    const ResolvedCatalogID = (await CatalogID?.get())?.data();
+    if (!CatalogID)
+      return {
+        ok: false,
+        message: "UNRESOLVED_PRODUCT",
+        productItem: null,
+      };
+    const ResolvedCatalogID = await Promise.all(
+      CatalogID.map(
+        async (id) =>
+          (await (await categoryRef.doc(id.toString()).get()).data()) as
+            | CategoryItem
+            | undefined
+      )
+    );
     return {
       ok: true,
       message: "OK",
@@ -44,7 +65,8 @@ const FetchItemImpl = async (productID: string) => {
 
 const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   tags: ["FETCH_PRODUCT_ITEM"],
-  revalidate: 60 * 60 * 6 /* same as fetch.revalidate */,
+  // revalidate: 60 * 60 * 6 /* same as fetch.revalidate */,
+  revalidate: 1,
 });
 
 export async function generateMetadata({
@@ -97,7 +119,9 @@ export default async function ProductPage({
 }: {
   params: { productID: string };
 }) {
-  const { productItem, ...data } = await FetchProducts(params.productID);
+  const { productItem, ...codeResponse } = await FetchProducts(
+    params.productID
+  );
   if (!productItem) return notFound();
   return (
     <main className={CSS.ProductContainer}>
@@ -106,7 +130,10 @@ export default async function ProductPage({
         <>
           <div>
             <ImageModule
-              productItem={{ ...productItem, ProductID: params.productID }}
+              productItem={{
+                ...productItem,
+                ProductID: params.productID ?? "",
+              }}
             />
           </div>
           <div>
@@ -114,14 +141,20 @@ export default async function ProductPage({
               <Link underline="hover" color="inherit" href={paths.ACTUAL_SHOP}>
                 Shop
               </Link>
-              <Link
-                underline="hover"
-                color="inherit"
-                href="#"
-                component={NextLink}
-              >
-                Placeholder Category
-              </Link>
+              {productItem.ResolvedCatalogID.map(
+                (id, i) =>
+                  id && (
+                    <Link
+                      underline="hover"
+                      color="inherit"
+                      href={GenerateShopFilterUrl({ filterID: [id.SelfID] })}
+                      component={NextLink}
+                      key={i}
+                    >
+                      {id.Title}
+                    </Link>
+                  )
+              )}
               <Link underline="hover" color="text.primary" aria-current="page">
                 {productItem.Name && productItem.Name}
               </Link>

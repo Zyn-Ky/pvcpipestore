@@ -30,6 +30,11 @@ const nextConfig = {
         hostname: "firebasestorage.googleapis.com",
         pathname: "/v0/b/moonsunstone-x.appspot.com/**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/kyy-cdn-wrpkc1/**",
+      },
     ],
   },
   compress: true,

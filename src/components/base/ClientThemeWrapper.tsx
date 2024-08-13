@@ -69,8 +69,26 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
     []
   );
   const themeUI = useMemo(() => {
+    const SmoothColorTransitionProp = {
+      styleOverrides: {
+        root:
+          document.body.getAttribute("data-smooth-color-transition") === "true"
+            ? {
+                transitionProperty:
+                  "background-color, color, box-shadow, opacity, transform !important",
+                transitionDuration: "250ms",
+              }
+            : {},
+      },
+    };
     return createTheme({
       palette: { mode: DetectCurrentTheme(themeMode, systemThemeIsDark) },
+      components: {
+        MuiAppBar: SmoothColorTransitionProp,
+        MuiAlert: SmoothColorTransitionProp,
+        MuiBottomNavigation: SmoothColorTransitionProp,
+        MuiButtonBase: SmoothColorTransitionProp,
+      },
     });
   }, [systemThemeIsDark, themeMode, DetectCurrentTheme]);
   useEffectOnce(() => {

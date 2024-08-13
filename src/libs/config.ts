@@ -6,17 +6,14 @@ const SITE_BACKEND_CONFIG = {
 
 type AcceptedCurrency = "X_IDR" | string;
 type AcceptedPriceMode = "FIXED_PRICE" | "ARRAY_BID";
-type CategoryItem = {
-  QueryItem: string | null;
-  QueryParameter: string;
+export type CategoryItem = {
   Title: string;
-  Type: "CHILD" | "PARENT";
+  SelfID: number;
 };
 
 export interface StoredProductCardInfo {
   AvailableStock?: number;
-  CatalogID?: DocumentReference<CategoryItem>;
-  ResolvedCatalogID?: CategoryItem;
+  CatalogID?: number[];
   Description?: string;
   Images?: string[];
   LinkedUser?: string;
@@ -28,6 +25,7 @@ export interface StoredProductCardInfo {
 
 export interface ProductCardInfo extends StoredProductCardInfo {
   ProductID: string;
+  ResolvedCatalogID: (CategoryItem | undefined)[];
 }
 
 export type OptionalArray<T> = (T | undefined)[];

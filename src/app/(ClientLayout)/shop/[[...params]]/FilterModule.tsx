@@ -14,16 +14,20 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { ComponentProps, useEffect, useRef, useState } from "react";
+import { ComponentProps, memo, useMemo, useState } from "react";
 import TuneIcon from "@mui/icons-material/Tune";
 import CloseIcon from "@mui/icons-material/Close";
+import { CategoryItem } from "@/libs/config";
+import Link from "next/link";
+import paths, { GenerateShopFilterUrl } from "@/components/paths";
 
 type PopoverProps = ComponentProps<typeof Popover>;
 
 type AdvancedFilterPopUpProps = {
-  show: PopoverProps["open"];
-  anchorEl: PopoverProps["anchorEl"];
-  onClose: PopoverProps["onClose"];
+  filterData: {
+    [key: string]: CategoryItem[];
+  };
+  activeFilterID: number[] | undefined;
 };
 const Puller = styled("div")(({ theme }) => ({
   width: 30,
@@ -44,7 +48,10 @@ const ChipStack = styled(Stack)(({ theme }) => ({
   maxWidth: "100%",
 }));
 
-export default function AdvancedFilterPopUp() {
+export default memo(function AdvancedFilterModule({
+  filterData,
+  activeFilterID,
+}: AdvancedFilterPopUpProps) {
   const theme = useTheme();
   const [popupAnchor, setPopupAnchor] = useState<HTMLButtonElement | null>(
     null
@@ -59,21 +66,35 @@ export default function AdvancedFilterPopUp() {
         <Typography variant="body1" gutterBottom>
           Jenis Produk
         </Typography>
-        <ChipStack direction="row" spacing={1}>
-          <Chip label="Pipa uPVC" variant="outlined" onClick={() => {}} />
-          <Chip
-            label="Fitting & Aksesoris Pipa PVC"
+        {activeFilterID && activeFilterID.length > 0 && (
+          <Button
+            LinkComponent={Link}
+            href={paths.ACTUAL_SHOP}
+            sx={{ mb: 1 }}
             variant="outlined"
-            onClick={() => {}}
-          />
+          >
+            Hapus filter
+          </Button>
+        )}
+        <ChipStack direction="row" spacing={1}>
+          <Chip label="MISSING" variant="outlined" onClick={() => {}} />
+          <Chip label="?" variant="outlined" onClick={() => {}} />
         </ChipStack>
         <Typography variant="body1" gutterBottom>
-          Jenis Pipa
+          Jenis Standar Pipa
         </Typography>
         <ChipStack direction="row" spacing={1}>
-          <Chip label="SNI" variant="outlined" onClick={() => {}} />
-          <Chip label="JIS" variant="outlined" onClick={() => {}} />
-          <Chip label="PP-R" variant="outlined" onClick={() => {}} />
+          {filterData.FilterByStandard &&
+            filterData.FilterByStandard.map((category) => (
+              <Chip
+                key={`CATEGORY_${category.SelfID}`}
+                label={category.Title}
+                href={GenerateShopFilterUrl({ filterID: [category.SelfID] })}
+                component={Link}
+                variant="outlined"
+                clickable
+              />
+            ))}
         </ChipStack>
         <Typography variant="body1" gutterBottom>
           Urutkan
@@ -160,4 +181,4 @@ export default function AdvancedFilterPopUp() {
       </SwipeableDrawer>
     </>
   );
-}
+});

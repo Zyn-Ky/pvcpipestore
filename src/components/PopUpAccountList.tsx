@@ -189,6 +189,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 text: "Sistem",
                 startIcon: <BrightnessAutoIcon />,
                 endIcon: ThemeMode === "system" && <CheckIcon />,
+                disableClosePopupOnClick: true,
                 onClick: () => {
                   SetThemeMode("system");
                 },
@@ -197,6 +198,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 text: "Gelap",
                 startIcon: <DarkModeIcon />,
                 endIcon: ThemeMode === "dark" && <CheckIcon />,
+                disableClosePopupOnClick: true,
                 onClick: () => {
                   SetThemeMode("dark");
                 },
@@ -205,6 +207,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 text: "Terang",
                 startIcon: <LightModeIcon />,
                 endIcon: ThemeMode === "light" && <CheckIcon />,
+                disableClosePopupOnClick: true,
                 onClick: () => {
                   SetThemeMode("light");
                 },

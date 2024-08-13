@@ -32,4 +32,8 @@ export function GetProductUrl(
   }`;
 }
 
+export function GenerateShopFilterUrl({ filterID }: { filterID?: number[] }) {
+  return `${paths.ACTUAL_SHOP}${filterID && `/fquery=${filterID.join(",")}`}`;
+}
+
 export default paths;
