@@ -16,7 +16,7 @@ body {
 
 body[data-smooth-color-transition] {
   transition-property: background-color, color;
-  transition-duration: 250ms;
+  transition-duration: 115ms;
   & p,
   h1,
   h2,
@@ -24,8 +24,16 @@ body[data-smooth-color-transition] {
   h4,
   h5,
   h6 {
+    transition-property: color;
+    transition-duration: 95ms;
+  }
+  svg {
+    transition-property: fill;
+    transition-duration: 115ms;
+  }
+  [data-force-smooth-transition] {
     transition-property: background-color, color;
-    transition-duration: 50ms;
+    transition-duration: 115ms;
   }
 }
 

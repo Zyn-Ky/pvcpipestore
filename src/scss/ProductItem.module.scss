@@ -14,10 +14,41 @@
 .ProductContainer {
   padding: 4rem;
   display: flex;
+  gap: 2rem;
+  .Actions {
+    margin-block: 1rem;
+  }
+  .ImgProduct {
+    position: relative;
+    width: 300px;
+  }
+  .ProductInfo {
+    flex: 1 1;
+  }
+  .AuthorInfo {
+    min-width: 300px;
+  }
+  .SummaryUser {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100px;
+    .ProfilePicture {
+      position: relative;
+      overflow: hidden;
+      min-width: 64px;
+      min-height: 64px;
+      border-radius: 100%;
+    }
+  }
   @media screen and (max-width: 600px) {
     & {
-  padding: 2rem;
+      padding: 2rem;
       flex-direction: column;
+      gap: 1rem;
+      .ImgProduct {
+        min-width: none;
+      }
     }
   }
 }

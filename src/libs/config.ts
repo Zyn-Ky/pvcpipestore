@@ -4,7 +4,7 @@ const SITE_BACKEND_CONFIG = {
   AUTH_SESSION_COOKIE_NAME: "moonsunstone-x-auth-sid",
 };
 
-type AcceptedCurrency = "X_IDR" | string;
+type AcceptedCurrency = "IDR" | string;
 type AcceptedPriceMode = "FIXED_PRICE" | "ARRAY_BID";
 export type CategoryItem = {
   Title: string;
@@ -26,6 +26,14 @@ export interface StoredProductCardInfo {
 export interface ProductCardInfo extends StoredProductCardInfo {
   ProductID: string;
   ResolvedCatalogID: (CategoryItem | undefined)[];
+  ResolvedPublisherInfo: {
+    photoURL: string | undefined;
+    email: string | undefined;
+    uid: string;
+    disabled: false;
+    phoneNumber: string | undefined;
+    displayName: string | undefined;
+  };
 }
 
 export type OptionalArray<T> = (T | undefined)[];

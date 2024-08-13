@@ -6,6 +6,7 @@ import {
 } from "@/libs/config";
 import AdminFirebaseApp from "@/libs/firebase/adminConfig";
 import { getFirestore } from "firebase-admin/firestore";
+import { getAuth } from "firebase-admin/auth";
 import { Metadata } from "next";
 import { unstable_cache as cache } from "next/cache";
 import Image from "next/image";
@@ -16,6 +17,8 @@ import { Breadcrumbs, Button, Link, Paper, Typography } from "@mui/material";
 import ImageModule from "./ImageModule";
 import NextLink from "next/link";
 import paths, { GenerateShopFilterUrl } from "@/components/paths";
+import UserSummaryModule from "./UserSummaryModule";
+import HorizontalActionModule from "./HorizontalActionModule";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
@@ -32,8 +35,8 @@ const FetchItemImpl = async (productID: string) => {
         message: "MISSING_PRODUCT",
         productItem: null,
       };
-    const { CatalogID, ...product } = productItem;
-    if (!CatalogID)
+    const { CatalogID, LinkedUser, ...product } = productItem;
+    if (!CatalogID || !LinkedUser)
       return {
         ok: false,
         message: "UNRESOLVED_PRODUCT",
@@ -42,15 +45,49 @@ const FetchItemImpl = async (productID: string) => {
     const ResolvedCatalogID = await Promise.all(
       CatalogID.map(
         async (id) =>
-          (await (await categoryRef.doc(id.toString()).get()).data()) as
+          (await categoryRef.doc(id.toString()).get()).data() as
             | CategoryItem
             | undefined
       )
     );
+    const auth = getAuth(AdminFirebaseApp);
+    const userInfo = await auth.getUser(LinkedUser);
+    if (!userInfo)
+      return {
+        ok: false,
+        message: "UNRESOLVED_PRODUCT",
+        productItem: null,
+      };
+    const {
+      photoURL,
+      email,
+      uid,
+      disabled,
+      phoneNumber,
+      displayName,
+      emailVerified,
+    } = userInfo;
+    if (!emailVerified || disabled)
+      return {
+        ok: false,
+        message: "UNVERIFIED_PRODUCT",
+        productItem: null,
+      };
     return {
       ok: true,
       message: "OK",
-      productItem: { ...product, ResolvedCatalogID },
+      productItem: {
+        ...product,
+        ResolvedCatalogID,
+        ResolvedPublisherInfo: {
+          photoURL,
+          email,
+          uid,
+          disabled,
+          phoneNumber,
+          displayName,
+        },
+      },
     };
   } catch (e) {
     console.log(e);
@@ -124,78 +161,99 @@ export default async function ProductPage({
   );
   if (!productItem) return notFound();
   return (
-    <main className={CSS.ProductContainer}>
-      {/* {JSON.stringify({ productItem, ...data })} */}
-      {productItem && (
-        <>
-          <div>
-            <ImageModule
-              productItem={{
-                ...productItem,
-                ProductID: params.productID ?? "",
-              }}
-            />
-          </div>
-          <div>
-            <Breadcrumbs sx={{ mb: 1 }}>
-              <Link underline="hover" color="inherit" href={paths.ACTUAL_SHOP}>
-                Shop
-              </Link>
-              {productItem.ResolvedCatalogID.map(
-                (id, i) =>
-                  id && (
-                    <Link
-                      underline="hover"
-                      color="inherit"
-                      href={GenerateShopFilterUrl({ filterID: [id.SelfID] })}
-                      component={NextLink}
-                      key={i}
-                    >
-                      {id.Title}
-                    </Link>
-                  )
-              )}
-              <Link underline="hover" color="text.primary" aria-current="page">
+    <>
+      <main className={CSS.ProductContainer}>
+        {/* {JSON.stringify({ productItem, ...data })} */}
+        {productItem && (
+          <>
+            <div className={CSS.ImgProduct}>
+              <ImageModule
+                productItem={{
+                  ...productItem,
+                  ProductID: params.productID ?? "",
+                }}
+              />
+            </div>
+            <div className={CSS.ProductInfo}>
+              <Breadcrumbs sx={{ mb: 1 }}>
+                <Link
+                  underline="hover"
+                  color="inherit"
+                  href={paths.ACTUAL_SHOP}
+                  component={NextLink}
+                >
+                  Shop
+                </Link>
+                {productItem.ResolvedCatalogID.map(
+                  (id, i) =>
+                    id && (
+                      <Link
+                        underline="hover"
+                        color="inherit"
+                        href={GenerateShopFilterUrl({ filterID: [id.SelfID] })}
+                        component={NextLink}
+                        key={i}
+                      >
+                        {id.Title}
+                      </Link>
+                    )
+                )}
+                <Link
+                  underline="hover"
+                  color="text.primary"
+                  aria-current="page"
+                >
+                  {productItem.Name && productItem.Name}
+                </Link>
+              </Breadcrumbs>
+              <Typography variant="h4" fontWeight="bold">
                 {productItem.Name && productItem.Name}
-              </Link>
-            </Breadcrumbs>
-            <Typography variant="h4" fontWeight="bold">
-              {productItem.Name && productItem.Name}
-            </Typography>
-            <Typography variant="h5" fontWeight="bold">
-              {new Intl.NumberFormat("id-ID", {
-                currency: "IDR",
-                style: "currency",
-              }).format(productItem.Price ?? 0)}
-            </Typography>
-            <br />
-            <Typography variant="body1">
-              {productItem.Description && productItem.Description}
-            </Typography>
-            <br />
-            <Button variant="contained">Beli</Button>
-            <Button variant="outlined">Tambahkan ke Keranjang</Button>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <p>DEBUG DATA :</p>
-            <pre
-              style={{
-                wordWrap: "break-word",
-                overflow: "auto",
-                width: "42vw",
-              }}
-            >
-              {JSON.stringify(productItem, null, 2)}
-            </pre>
-          </div>
-        </>
-      )}
-    </main>
+              </Typography>
+              <Typography variant="h5" fontWeight="bold">
+                {new Intl.NumberFormat("id-ID", {
+                  currency: "IDR",
+                  style: "currency",
+                }).format(productItem.Price ?? 0)}
+              </Typography>
+              <HorizontalActionModule />
+              <Typography variant="body1">
+                {productItem.Description && productItem.Description}
+              </Typography>
+              <br />
+              <Button variant="contained" sx={{ mr: 1 }}>
+                Beli
+              </Button>
+              <Button variant="outlined">Tambahkan ke Keranjang</Button>
+              <br />
+            </div>
+            <UserSummaryModule userInfo={productItem.ResolvedPublisherInfo} />
+          </>
+        )}
+      </main>
+      <details
+        style={{
+          paddingBottom: "3rem",
+        }}
+      >
+        <summary
+          style={{
+            marginBottom: "1rem",
+          }}
+        >
+          DEBUG INFORMATION
+        </summary>
+        <pre
+          style={{
+            whiteSpace: "break-spaces",
+            overflow: "auto",
+            maxWidth: "100vw",
+            userSelect: "text",
+            marginBottom: "1rem",
+          }}
+        >
+          {JSON.stringify(productItem, null, 2)}
+        </pre>
+      </details>
+    </>
   );
 }

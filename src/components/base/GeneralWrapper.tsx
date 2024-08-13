@@ -99,7 +99,7 @@ export default function GeneralFunctionWrapper(
     setForceHaltAuth(false);
     ClearLocalData();
     const signout = await SignOut();
-    setTimeout(() => (window.location.href = paths.HOME_PAGE), 1500);
+    window.location.href = paths.HOME_PAGE;
     return signout;
   }
 
