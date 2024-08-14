@@ -9,6 +9,8 @@ type AcceptedPriceMode = "FIXED_PRICE" | "ARRAY_BID";
 export type CategoryItem = {
   Title: string;
   SelfID: number;
+  ParentID: number;
+  Type: "PARENT_CATEGORY" | "CATEGORY";
 };
 
 export interface StoredProductCardInfo {

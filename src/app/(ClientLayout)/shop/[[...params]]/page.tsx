@@ -12,6 +12,8 @@ import { CategoryItem, OptionalArray, ProductCardInfo } from "@/libs/config";
 import { unstable_cache as cache } from "next/cache";
 import { getLocale } from "next-intl/server";
 import IsComingSoonSSR from "@/libs/firebase/comingSoonChecker";
+import { InfoRounded } from "@mui/icons-material";
+import ContentCategoryModule from "./ContentCategoryModule";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -67,7 +69,7 @@ const FetchFilterListImpl = async () => {
 
 const FetchProducts = cache(FetchProductsImpl, ["FETCH_GLOBAL_PRODUCT_LIST"], {
   tags: ["FETCH_GLOBAL_PRODUCT_LIST"],
-  revalidate: 60 * 60 * 24 /* same as fetch.revalidate */,
+  revalidate: process.env.NODE_ENV === "development" ? 300 : 60 * 60 * 24,
 });
 
 export default async function ShopPage({
@@ -76,12 +78,7 @@ export default async function ShopPage({
   params: { params?: string[] };
 }) {
   if (await IsComingSoonSSR())
-    return (
-      <>
-        <iframe className="fullscreen_cmp_w_navbar" src="/cmp.html" />
-      </>
-    );
-  const filterUI = await FetchFilterListImpl();
+    return <iframe className="fullscreen_cmp_w_navbar" src="/cmp.html" />;
   const isInFilterMode = Boolean(
     params.params &&
       params.params
@@ -90,28 +87,25 @@ export default async function ShopPage({
   );
   return (
     <main className={CSS.ShopContainer}>
-      <h1>Selamat Berbelanja!</h1>
-      {filterUI && filterUI.CategoryList && (
-        <AdvancedFilterModule
-          filterData={filterUI.CategoryList}
-          activeFilterID={
-            params.params &&
-            params.params
-              .map((e) => decodeURIComponent(e))
-              .filter((e) => e.indexOf("fquery") !== 1)
-              .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
-          }
-        />
-      )}
-      {JSON.stringify(isInFilterMode)}
-      {!isInFilterMode && (
-        <>
-          <Typography variant="h4" gutterBottom>
-            Yang Terbaik!
-          </Typography>
-          <ProductList serverData={await FetchProducts()} />
-        </>
-      )}
+      <div className={CSS.Sidebar}></div>
+      <div className={CSS.Content}>
+        <ContentCategoryModule />
+        <h1>Selamat Berbelanja!</h1>
+        {JSON.stringify(
+          (params.params ?? [])
+            .map((e) => decodeURIComponent(e))
+            .filter((e) => e.indexOf("fquery") !== -1)
+            .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
+        )}
+        {!isInFilterMode && (
+          <>
+            <Typography variant="h4" gutterBottom>
+              Yang Terbaik!
+            </Typography>
+            <ProductList serverData={await FetchProducts()} />
+          </>
+        )}
+      </div>
     </main>
   );
 }

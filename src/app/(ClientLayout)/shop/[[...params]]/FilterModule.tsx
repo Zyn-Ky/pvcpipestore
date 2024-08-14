@@ -85,16 +85,42 @@ export default memo(function AdvancedFilterModule({
         </Typography>
         <ChipStack direction="row" spacing={1}>
           {filterData.FilterByStandard &&
-            filterData.FilterByStandard.map((category) => (
-              <Chip
-                key={`CATEGORY_${category.SelfID}`}
-                label={category.Title}
-                href={GenerateShopFilterUrl({ filterID: [category.SelfID] })}
-                component={Link}
-                variant="outlined"
-                clickable
-              />
-            ))}
+            filterData.FilterByStandard.map((category) =>
+              activeFilterID &&
+              activeFilterID.filter((id) => id === category.SelfID).length ===
+                0 ? (
+                <Chip
+                  key={`CATEGORY_${category.SelfID}`}
+                  label={category.Title}
+                  variant={
+                    activeFilterID &&
+                    activeFilterID.filter((id) => id === category.SelfID)
+                      .length >= 1
+                      ? "filled"
+                      : "outlined"
+                  }
+                />
+              ) : (
+                <Chip
+                  key={`CATEGORY_${category.SelfID}`}
+                  label={category.Title}
+                  href={GenerateShopFilterUrl({ filterID: [category.SelfID] })}
+                  component={Link}
+                  variant={
+                    activeFilterID &&
+                    activeFilterID.filter((id) => id === category.SelfID)
+                      .length >= 1
+                      ? "filled"
+                      : "outlined"
+                  }
+                  clickable={
+                    activeFilterID &&
+                    activeFilterID.filter((id) => id === category.SelfID)
+                      .length === 0
+                  }
+                />
+              )
+            )}
         </ChipStack>
         <Typography variant="body1" gutterBottom>
           Urutkan

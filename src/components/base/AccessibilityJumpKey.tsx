@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 export default function AccessibilityJumpKey() {
+  const text = useTranslations("BASE");
   return (
     <>
       <Box
@@ -22,7 +24,7 @@ export default function AccessibilityJumpKey() {
           },
         }}
       >
-        Jump to content
+        {text("JUMP_TO_CONTENT")}
       </Box>
     </>
   );

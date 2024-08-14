@@ -19,76 +19,30 @@ import NextLink from "next/link";
 import paths, { GenerateShopFilterUrl } from "@/components/paths";
 import UserSummaryModule from "./UserSummaryModule";
 import HorizontalActionModule from "./HorizontalActionModule";
+import FetchProduct from "@/libs/fetchProductItem";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
-    const firestore = getFirestore(AdminFirebaseApp); //This should return the firebase-admin app
-    const productsRef = firestore.collection("Products/");
-    const categoryRef = firestore.collection("CatalogsList/");
-    const productDocument = productsRef.doc(productID);
-    const productItem = (
-      await productDocument.get()
-    ).data() as StoredProductCardInfo;
-    if (!productItem)
-      return {
-        ok: false,
-        message: "MISSING_PRODUCT",
-        productItem: null,
-      };
-    const { CatalogID, LinkedUser, ...product } = productItem;
-    if (!CatalogID || !LinkedUser)
-      return {
-        ok: false,
-        message: "UNRESOLVED_PRODUCT",
-        productItem: null,
-      };
-    const ResolvedCatalogID = await Promise.all(
-      CatalogID.map(
-        async (id) =>
-          (await categoryRef.doc(id.toString()).get()).data() as
-            | CategoryItem
-            | undefined
-      )
-    );
+    const firestore = getFirestore(AdminFirebaseApp);
     const auth = getAuth(AdminFirebaseApp);
-    const userInfo = await auth.getUser(LinkedUser);
-    if (!userInfo)
+    const { productItem, productState, userState } = await FetchProduct(
+      firestore,
+      auth,
+      productID
+    );
+    if (productState === "OK" && userState === "OK") {
+      return {
+        ok: true,
+        message: "OK",
+        productItem,
+      };
+    } else {
       return {
         ok: false,
-        message: "UNRESOLVED_PRODUCT",
-        productItem: null,
+        message: `${productState}_${userState}`,
+        productItem,
       };
-    const {
-      photoURL,
-      email,
-      uid,
-      disabled,
-      phoneNumber,
-      displayName,
-      emailVerified,
-    } = userInfo;
-    if (!emailVerified || disabled)
-      return {
-        ok: false,
-        message: "UNVERIFIED_PRODUCT",
-        productItem: null,
-      };
-    return {
-      ok: true,
-      message: "OK",
-      productItem: {
-        ...product,
-        ResolvedCatalogID,
-        ResolvedPublisherInfo: {
-          photoURL,
-          email,
-          uid,
-          disabled,
-          phoneNumber,
-          displayName,
-        },
-      },
-    };
+    }
   } catch (e) {
     console.log(e);
     return {
@@ -102,8 +56,8 @@ const FetchItemImpl = async (productID: string) => {
 
 const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   tags: ["FETCH_PRODUCT_ITEM"],
-  // revalidate: 60 * 60 * 6 /* same as fetch.revalidate */,
-  revalidate: 1,
+  revalidate: process.env.NODE_ENV === "development" ? 300 : 60 * 60 * 8,
+  // revalidate: 1,
 });
 
 export async function generateMetadata({

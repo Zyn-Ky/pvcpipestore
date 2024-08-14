@@ -11,6 +11,7 @@ import LogoMonochrome from "../../assets/logo-monochrome.webp";
 import LogoColorful from "../../assets/logo-colorful.webp";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
 const Search = dynamic(
   async () =>
     (await import("@/components/custom/UXNavbar/BetterSearchBar")).Search
@@ -26,6 +27,7 @@ const StyledInputBase = dynamic(
       .StyledInputBase
 );
 export default function LogoAndSearchModule() {
+  const text = useTranslations("BASE");
   const themes = useTheme();
   return (
     <>
@@ -41,7 +43,7 @@ export default function LogoAndSearchModule() {
           <SearchIcon />
         </SearchIconWrapper>
         <StyledInputBase
-          placeholder="Search…"
+          placeholder={text("SEARCH_TEXT")}
           inputProps={{ "aria-label": "search" }}
         />
       </Search>

@@ -30,6 +30,7 @@ import {
 } from "firebase/remote-config";
 import { Menus } from "./PopUpAccountListPage";
 import { useGeneralFunction } from "./base/GeneralWrapper";
+import { useTranslations } from "next-intl";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const CheckIcon = dynamic(() => import("@mui/icons-material/Check"));
@@ -64,6 +65,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
+  const text = useTranslations("POPUP_ACCOUNT_MENU");
   const { ThemeMode, SetThemeMode } = useGlobalSettings();
   const [enableDebug, setEnableDebug] = useState(false);
   const [CurrentPage, setCurrentPage] = useState("home");
@@ -103,7 +105,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
           items={[
             [
               {
-                text: "Akun saya",
+                text: text("MY_ACCOUNT"),
                 href: paths.MOBILE_MY_ACCOUNT,
                 startIcon: <AccountBoxIcon />,
               },
@@ -112,17 +114,17 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               {
                 startIcon: <ShoppingCartIcon />,
                 href: paths.CARTS_ITEM_LIST,
-                text: "Keranjang",
+                text: text("CARTS_TEXT"),
               },
               {
                 startIcon: <ReceiptIcon />,
                 href: paths.TRANSACTION_LIST,
-                text: "Transaksi",
+                text: text("TRANSACTION_TEXT"),
               },
               {
                 startIcon: <Brightness4Icon />,
                 endIcon: <ChevronRightIcon />,
-                text: "Tema",
+                text: text("THEME_TEXT"),
                 onClick: () => {
                   setCurrentPage("theme_mode");
                 },
@@ -130,13 +132,13 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               },
               {
                 startIcon: <SettingsIcon />,
-                text: "Pengaturan",
+                text: text("SETTINGS_TEXT"),
               },
             ],
             [
               {
                 startIcon: <LogoutIcon />,
-                text: `Keluar`,
+                text: text("LOGOUT_TEXT"),
                 hidden: userManager.currentUser === null,
                 disabled: userManager.loading,
                 onClick: userManager.method.SignOut,
@@ -176,7 +178,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
           items={[
             [
               {
-                text: "Tema",
+                text: text("THEME_TEXT"),
                 startIcon: <ChevronLeftIcon />,
                 onClick: () => {
                   setCurrentPage("home");
@@ -186,7 +188,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
             ],
             [
               {
-                text: "Sistem",
+                text: text("SYSTEM_THEME_TEXT"),
                 startIcon: <BrightnessAutoIcon />,
                 endIcon: ThemeMode === "system" && <CheckIcon />,
                 disableClosePopupOnClick: true,
@@ -195,7 +197,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 },
               },
               {
-                text: "Gelap",
+                text: text("DARK_THEME_TEXT"),
                 startIcon: <DarkModeIcon />,
                 endIcon: ThemeMode === "dark" && <CheckIcon />,
                 disableClosePopupOnClick: true,
@@ -204,7 +206,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 },
               },
               {
-                text: "Terang",
+                text: text("LIGHT_THEME_TEXT"),
                 startIcon: <LightModeIcon />,
                 endIcon: ThemeMode === "light" && <CheckIcon />,
                 disableClosePopupOnClick: true,

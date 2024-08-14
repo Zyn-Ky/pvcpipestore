@@ -13,9 +13,10 @@ import paths from "./paths";
 import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
 import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AccountCircle from "@mui/icons-material/AccountCircle";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
   loading: () => (
     <>
@@ -50,6 +51,8 @@ const ShoppingCartIcon = dynamic(
 const StoreIcon = dynamic(() => import("@mui/icons-material/Store"));
 export default function XAppBar() {
   const router = useRouter();
+  const text = useTranslations("BTM_NAVBAR");
+  const mainNavbarText = useTranslations("NAVBAR");
   const [openNotificationBar, setOpenNotificationBar] = React.useState(false);
   const [openAccountListPopup, setOpenAccountListPopup] = React.useState(false);
   const URLPathname = usePathname();
@@ -106,7 +109,7 @@ export default function XAppBar() {
               <>
                 <div className={CSS.Filler} />
                 <Box sx={{ display: "flex" }}>
-                  <Tooltip title="Notifikasi">
+                  <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
                     <IconButton
                       size="large"
                       aria-label="17 notifications available"
@@ -123,7 +126,7 @@ export default function XAppBar() {
                       </Badge>
                     </IconButton>
                   </Tooltip>
-                  <Tooltip title="Akun saya">
+                  <Tooltip title={mainNavbarText("ACCCOUNT_MENU_POPUP")}>
                     <IconButton
                       size="large"
                       edge="end"
@@ -137,7 +140,7 @@ export default function XAppBar() {
                         setOpenAccountListPopup(!openNotificationBar);
                       }}
                     >
-                      <AccountCircle />
+                      <MoreVertIcon />
                     </IconButton>
                   </Tooltip>
                 </Box>
@@ -173,26 +176,26 @@ export default function XAppBar() {
           >
             <BetterBottomNavigationAction
               value={paths.HOME_PAGE}
-              label="Hal Utama"
+              label={text("HOME_PAGE")}
               icon={<HomeIcon />}
             />
             <BetterBottomNavigationAction
               value={paths.ACTUAL_SHOP}
-              label="Belanja"
+              label={text("SHOP_PAGE")}
               icon={<StoreIcon />}
             />
             <BetterBottomNavigationAction
               value={paths.MOBILE_NOTIFICATION}
-              label="Notifikasi"
+              label={text("MOBILE_NOTIFICATION_PAGE")}
               icon={<NotificationsIcon />}
             />
             <BetterBottomNavigationAction
               value={paths.CARTS_ITEM_LIST}
-              label="Keranjang"
+              label={text("CARTS_PAGE")}
               icon={<ShoppingCartIcon />}
             />
             <BetterBottomNavigationAction
-              label="Saya"
+              label={text("MB_MY_ACCOUNT_PAGE")}
               value={paths.MOBILE_MY_ACCOUNT}
               icon={<PersonIcon />}
             />

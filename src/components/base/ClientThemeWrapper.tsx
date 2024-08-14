@@ -93,6 +93,13 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
         MuiAlert: SmoothColorTransitionProp,
         MuiBottomNavigation: SmoothColorTransitionProp,
         MuiButtonBase: SmoothColorTransitionProp,
+        MuiPopover: {
+          styleOverrides: {
+            root: {
+              zIndex: 9999,
+            },
+          },
+        },
       },
     });
   }, [systemThemeIsDark, themeMode, DetectCurrentTheme]);

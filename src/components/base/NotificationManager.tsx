@@ -150,7 +150,6 @@ export default function NotificationManager(props: PropsWithChildren) {
   }
   const HandleNewNotifications = useCallback(
     async function HandleNewNotifications(payload: MessagePayload) {
-      console.log(payload);
       if (!payload.notification) return;
       console.log("Foreground push notification received:", payload);
 

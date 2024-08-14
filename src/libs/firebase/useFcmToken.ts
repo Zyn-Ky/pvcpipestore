@@ -10,7 +10,7 @@ const useFcmToken = () => {
   const [token, setToken] = useState("");
   const [notificationPermissionStatus, setNotificationPermissionStatus] =
     useState("");
-  const { userManager, apiManager } = useGeneralFunction();
+  const { userManager, apiManager, swManager } = useGeneralFunction();
   useEffect(() => {
     const retrieveToken = async () => {
       try {
@@ -29,9 +29,7 @@ const useFcmToken = () => {
           if (permission === "granted") {
             const currentToken = await getToken(messaging, {
               vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-              serviceWorkerRegistration: await window.serwist.register({
-                immediate: true,
-              }),
+              serviceWorkerRegistration: swManager.getSWRegistration(),
             });
             if (currentToken) {
               setToken(currentToken);
@@ -58,7 +56,7 @@ const useFcmToken = () => {
     };
 
     retrieveToken();
-  }, [apiManager.xsrfToken, userManager.currentUser]);
+  }, [apiManager.xsrfToken, userManager.currentUser, swManager]);
 
   return { fcmToken: token, notificationPermissionStatus };
 };

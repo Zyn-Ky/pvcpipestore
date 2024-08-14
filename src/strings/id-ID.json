@@ -5,7 +5,31 @@
     "KNOW_MORE": "Ketahui lebih lanjut",
     "PAUSE_AUTOPLAY": "Hentikan Autoplay",
     "PLAY_AUTOPLAY": "Lanjutkan Autoplay",
-    "CONTACT_US": "Hubungi Kami"
+    "CONTACT_US": "Hubungi Kami",
+    "JUMP_TO_CONTENT": "Langsung ke konten",
+    "SEARCH_TEXT": "Cari..."
+  },
+  "NAVBAR": {
+    "NOTIFICATION_TEXT": "Notifikasi",
+    "ACCCOUNT_MENU_POPUP": "Opsi Lainnya"
+  },
+  "BTM_NAVBAR": {
+    "HOME_PAGE": "Hal Utama",
+    "SHOP_PAGE": "Toko",
+    "MOBILE_NOTIFICATION_PAGE": "Notifikasi",
+    "CARTS_PAGE": "Keranjang",
+    "MB_MY_ACCOUNT_PAGE": "Akunku"
+  },
+  "POPUP_ACCOUNT_MENU": {
+    "MY_ACCOUNT": "Akun saya",
+    "CARTS_TEXT": "Keranjang",
+    "TRANSACTION_TEXT": "Transaksi",
+    "THEME_TEXT": "Tema",
+    "SETTINGS_TEXT": "Setelan",
+    "LOGOUT_TEXT": "Keluar",
+    "SYSTEM_THEME_TEXT": "Tema",
+    "DARK_THEME_TEXT": "Gelap",
+    "LIGHT_THEME_TEXT": "Terang"
   },
   "HOME_UI": {
     "SHOP_NOW": "Belanja Sekarang",

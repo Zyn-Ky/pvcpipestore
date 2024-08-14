@@ -18,6 +18,7 @@ import NotificationManager, {
   IDB_NotiCache_DBName,
 } from "./NotificationManager";
 import paths from "../paths";
+import { useEffectOnce } from "react-use";
 
 export type AvailableLoginMethod = "google";
 
@@ -37,6 +38,9 @@ type GeneralFunctionContextProps = {
   apiManager: {
     xsrfToken: string;
   };
+  swManager: {
+    getSWRegistration: () => ServiceWorkerRegistration | undefined;
+  };
   ClearLocalData: () => void;
 };
 
@@ -54,6 +58,11 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
   },
   apiManager: {
     xsrfToken: "NOT_READY",
+  },
+  swManager: {
+    getSWRegistration() {
+      return undefined;
+    },
   },
   ClearLocalData() {},
 });
@@ -79,6 +88,9 @@ export default function GeneralFunctionWrapper(
     GoogleUserSignInError,
   ] = useSignInWithGoogle(FirebaseAuth);
   const [SignOut, AuthOutLoading, AuthOutError] = useSignOut(FirebaseAuth);
+  const [SWRegistration, SetSWRegistration] = useState<
+    ServiceWorkerRegistration | undefined
+  >(undefined);
   const [forceHaltAuth, setForceHaltAuth] = useState(false);
   async function Login(method: AvailableLoginMethod) {
     setForceHaltAuth(false);
@@ -102,7 +114,15 @@ export default function GeneralFunctionWrapper(
     window.location.href = paths.HOME_PAGE;
     return signout;
   }
-
+  async function InitServiceWorker() {
+    const Registration = await window.serwist.register({
+      immediate: true,
+    });
+    SetSWRegistration(Registration);
+  }
+  useEffectOnce(() => {
+    InitServiceWorker();
+  });
   return (
     <GeneralFunctionContext.Provider
       value={{
@@ -117,6 +137,9 @@ export default function GeneralFunctionWrapper(
           authError: GoogleUserSignInError || AuthError,
         },
         apiManager: { xsrfToken: props.apiXsrf || "MISSING" },
+        swManager: {
+          getSWRegistration: () => SWRegistration,
+        },
         ClearLocalData,
       }}
     >
