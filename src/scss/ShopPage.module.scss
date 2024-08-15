@@ -15,13 +15,16 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         grid-gap: 1rem;
+        padding: 0.25rem;
         .CategoryItem {
-          background-color: #333;
-          color: #fff;
           padding: 1rem;
           display: flex;
           align-items: center;
+          justify-content: left;
+          min-height: 80px;
           gap: 1rem;
+          color: currentColor;
+          text-transform: initial;
           .CategoryItemIcon {
             display: flex;
             align-items: center;

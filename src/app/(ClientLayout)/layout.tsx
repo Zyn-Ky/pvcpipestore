@@ -64,6 +64,7 @@ export const metadata: Metadata = {
     { sizes: "64x64", url: "/favicon-64.ico" },
     { sizes: "256x256", url: "/favicon-256.ico" },
   ],
+
   formatDetection: {
     telephone: false,
   },

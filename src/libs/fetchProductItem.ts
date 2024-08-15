@@ -45,6 +45,22 @@ export default async function FetchProduct(
       userState: "MODERATED",
       productItem: null,
     };
+
+  const {
+    photoURL,
+    email,
+    uid,
+    disabled,
+    phoneNumber,
+    displayName,
+    emailVerified,
+  } = userInfo;
+  if (!emailVerified)
+    return {
+      productState: "OK",
+      userState: "MODERATED",
+      productItem: null,
+    };
   //   CatalogID.map(async (idFromProduct, i) => {
   //     const catRef = categoryRef.doc(idFromProduct.toString());
   //     const isLastArray = i === CatalogID.length - 1;
@@ -83,21 +99,7 @@ export default async function FetchProduct(
     }`,
     `Catalog Path : ${ResolvedCatalogID}`
   );
-  const {
-    photoURL,
-    email,
-    uid,
-    disabled,
-    phoneNumber,
-    displayName,
-    emailVerified,
-  } = userInfo;
-  if (!emailVerified)
-    return {
-      productState: "OK",
-      userState: "MODERATED",
-      productItem: null,
-    };
+
   return {
     productState: "OK",
     userState: "OK",

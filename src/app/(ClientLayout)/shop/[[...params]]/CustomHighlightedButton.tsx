@@ -3,15 +3,11 @@
 import { ButtonBase, styled } from "@mui/material";
 
 const HighlightedButton = styled(ButtonBase)(({ theme }) => ({
-  transition: theme.transitions.create("outline-offset"),
   [theme.breakpoints.down("sm")]: {
     width: "100% !important", // Overrides inline-style
     height: 100,
   },
-  border: "2px solid currentColor",
-  outline: "2px solid currentColor",
-  outlineOffset: "-2px",
-  "&:hover, &:focus, &.Mui-focusVisible": {
+  "&:hover, &.Mui-focusVisible": {
     zIndex: 1,
     "& .MuiImageBackdrop-root": {
       opacity: 0.15,
@@ -19,7 +15,18 @@ const HighlightedButton = styled(ButtonBase)(({ theme }) => ({
     "& .MuiImageMarked-root": {
       opacity: 0,
     },
-    outlineOffset: "2px",
+    "& .MuiTypography-root": {
+      border: "4px solid currentColor",
+    },
   },
+}));
+export const ImageMarked = styled("span")(({ theme }) => ({
+  height: 3,
+  width: 18,
+  backgroundColor: theme.palette.common.white,
+  position: "absolute",
+  bottom: -2,
+  left: "calc(50% - 9px)",
+  transition: theme.transitions.create("opacity"),
 }));
 export default HighlightedButton;

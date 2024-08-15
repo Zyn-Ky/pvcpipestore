@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "4.0.1.COMING",
+  "version": "4.2.0.COMING",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.16.0",
     "@mui/lab": "^5.0.0-alpha.173",
-    "@mui/material": "^5.16.0",
+    "@mui/material": "^5.16.7",
     "@serwist/next": "^9.0.5",
     "axios": "^1.7.2",
     "cookies-next": "^4.2.1",
@@ -45,5 +45,9 @@
     "sass": "^1.77.7",
     "serwist": "^9.0.5",
     "typescript": "^5"
+  },
+  "overrides": {
+    "glob": "9.0.0",
+    "rimraf": "^4.0.0"
   }
 }

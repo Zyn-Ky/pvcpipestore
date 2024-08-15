@@ -27,8 +27,8 @@ export interface StoredProductCardInfo {
 
 export interface ProductCardInfo extends StoredProductCardInfo {
   ProductID: string;
-  ResolvedCatalogID: (CategoryItem | undefined)[];
-  ResolvedPublisherInfo: {
+  ResolvedCatalogID?: (CategoryItem | undefined)[];
+  ResolvedPublisherInfo?: {
     photoURL: string | undefined;
     email: string | undefined;
     uid: string;
@@ -37,7 +37,8 @@ export interface ProductCardInfo extends StoredProductCardInfo {
     displayName: string | undefined;
   };
 }
-
+export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
+export type SortOrderType = "ascending" | "descending" | "ignore";
 export type OptionalArray<T> = (T | undefined)[];
 
 export default SITE_BACKEND_CONFIG;

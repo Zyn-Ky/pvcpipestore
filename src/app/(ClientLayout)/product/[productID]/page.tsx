@@ -56,7 +56,10 @@ const FetchItemImpl = async (productID: string) => {
 
 const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   tags: ["FETCH_PRODUCT_ITEM"],
-  revalidate: process.env.NODE_ENV === "development" ? 300 : 60 * 60 * 8,
+  revalidate:
+    process.env.NODE_ENV === "development"
+      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
+      : 60 * 60 * 8,
   // revalidate: 1,
 });
 
@@ -129,37 +132,41 @@ export default async function ProductPage({
               />
             </div>
             <div className={CSS.ProductInfo}>
-              <Breadcrumbs sx={{ mb: 1 }}>
-                <Link
-                  underline="hover"
-                  color="inherit"
-                  href={paths.ACTUAL_SHOP}
-                  component={NextLink}
-                >
-                  Shop
-                </Link>
-                {productItem.ResolvedCatalogID.map(
-                  (id, i) =>
-                    id && (
-                      <Link
-                        underline="hover"
-                        color="inherit"
-                        href={GenerateShopFilterUrl({ filterID: [id.SelfID] })}
-                        component={NextLink}
-                        key={i}
-                      >
-                        {id.Title}
-                      </Link>
-                    )
-                )}
-                <Link
-                  underline="hover"
-                  color="text.primary"
-                  aria-current="page"
-                >
-                  {productItem.Name && productItem.Name}
-                </Link>
-              </Breadcrumbs>
+              {productItem.ResolvedCatalogID && (
+                <Breadcrumbs sx={{ mb: 1 }}>
+                  <Link
+                    underline="hover"
+                    color="inherit"
+                    href={paths.ACTUAL_SHOP}
+                    component={NextLink}
+                  >
+                    Shop
+                  </Link>
+                  {productItem.ResolvedCatalogID.map(
+                    (id, i) =>
+                      id && (
+                        <Link
+                          underline="hover"
+                          color="inherit"
+                          href={GenerateShopFilterUrl({
+                            filterID: [id.SelfID],
+                          })}
+                          component={NextLink}
+                          key={i}
+                        >
+                          {id.Title}
+                        </Link>
+                      )
+                  )}
+                  <Link
+                    underline="hover"
+                    color="text.primary"
+                    aria-current="page"
+                  >
+                    {productItem.Name && productItem.Name}
+                  </Link>
+                </Breadcrumbs>
+              )}
               <Typography variant="h4" fontWeight="bold">
                 {productItem.Name && productItem.Name}
               </Typography>

@@ -8,12 +8,19 @@ import ProductList from "@/components/custom/ShopPage/FetchShopList";
 import { getFirestore } from "firebase-admin/firestore";
 import AdminFirebaseApp from "@/libs/firebase/adminConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { CategoryItem, OptionalArray, ProductCardInfo } from "@/libs/config";
+import {
+  CategoryItem,
+  OptionalArray,
+  ProductCardInfo,
+  SortBy,
+  SortOrderType,
+} from "@/libs/config";
 import { unstable_cache as cache } from "next/cache";
 import { getLocale } from "next-intl/server";
 import IsComingSoonSSR from "@/libs/firebase/comingSoonChecker";
 import { InfoRounded } from "@mui/icons-material";
 import ContentCategoryModule from "./ContentCategoryModule";
+import { FetchProductBySingleFilter } from "@/libs/fetchProductListing";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -66,12 +73,38 @@ const FetchFilterListImpl = async () => {
     },
   };
 };
-
+const FilteredListImpl = async ({
+  filterID,
+  sortBy,
+  sortOrderType,
+}: {
+  filterID: number[];
+  sortBy?: SortBy;
+  sortOrderType?: SortOrderType;
+}) => {
+  FetchProductBySingleFilter(filterID);
+};
 const FetchProducts = cache(FetchProductsImpl, ["FETCH_GLOBAL_PRODUCT_LIST"], {
   tags: ["FETCH_GLOBAL_PRODUCT_LIST"],
-  revalidate: process.env.NODE_ENV === "development" ? 300 : 60 * 60 * 24,
+  revalidate:
+    process.env.NODE_ENV === "development"
+      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
+      : 60 * 60 * 24,
 });
 
+const FetchFiltredListProducts = cache(
+  FilteredListImpl,
+  ["FETCH_FILTERED_PRODUCT_LIST"],
+  {
+    tags: ["FETCH_FILTERED_PRODUCT_LIST"],
+    revalidate:
+      process.env.NODE_ENV === "development"
+        ? parseInt(
+            process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300"
+          )
+        : 60 * 60 * 24,
+  }
+);
 export default async function ShopPage({
   params,
 }: {
@@ -79,17 +112,30 @@ export default async function ShopPage({
 }) {
   if (await IsComingSoonSSR())
     return <iframe className="fullscreen_cmp_w_navbar" src="/cmp.html" />;
-  const isInFilterMode = Boolean(
-    params.params &&
-      params.params
-        .map((e) => decodeURIComponent(e))
-        .filter((e) => e.indexOf("fquery") !== 1).length > 0
-  );
+  const GetFilterParams = (paramKey: string) => {
+    if (!params.params)
+      return {
+        exists: false,
+        array: [],
+      };
+    const array = params.params
+      .map((e) => decodeURIComponent(e))
+      .filter((e) => e.split("=")[0] === paramKey);
+    console.log(paramKey, array);
+    return {
+      exists: array.length > 0,
+      array: array && array[0]?.split("=")[1].split(","),
+    };
+  };
+  const isInFilterMode = GetFilterParams("fquery").exists;
+
   return (
     <main className={CSS.ShopContainer}>
       <div className={CSS.Sidebar}></div>
       <div className={CSS.Content}>
         <ContentCategoryModule />
+        <p>{JSON.stringify(GetFilterParams("fquery").array)}</p>
+        <p>{JSON.stringify(GetFilterParams("sortmode").array)}</p>
         <h1>Selamat Berbelanja!</h1>
         {JSON.stringify(
           (params.params ?? [])
