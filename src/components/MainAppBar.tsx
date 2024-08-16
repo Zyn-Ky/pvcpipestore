@@ -17,6 +17,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import RegularAppBar from "./custom/UXNavbar/RegularAppBar";
+import ImmersiveAppBar from "./custom/UXNavbar/ImmersiveAppBar";
 const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
   loading: () => (
     <>
@@ -39,12 +41,10 @@ const BetterBottomNavigation = dynamic(() => import("./BetterBtmBar"), {
 const BetterBottomNavigationAction = dynamic(
   async () => (await import("./BetterBtmBar")).BetterBottomNavigationAction
 );
-const Tooltip = dynamic(() => import("@mui/material/Tooltip"));
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
 const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));
 const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));
 const PersonIcon = dynamic(() => import("@mui/icons-material/Person"));
-const Badge = dynamic(() => import("@mui/material/Badge"));
 const ShoppingCartIcon = dynamic(
   () => import("@mui/icons-material/ShoppingCart")
 );
@@ -52,7 +52,6 @@ const StoreIcon = dynamic(() => import("@mui/icons-material/Store"));
 export default function XAppBar() {
   const router = useRouter();
   const text = useTranslations("BTM_NAVBAR");
-  const mainNavbarText = useTranslations("NAVBAR");
   const [openNotificationBar, setOpenNotificationBar] = React.useState(false);
   const [openAccountListPopup, setOpenAccountListPopup] = React.useState(false);
   const URLPathname = usePathname();
@@ -66,6 +65,12 @@ export default function XAppBar() {
   const isMediumScreen = !isBigScreen && ScreenUp_md;
   const isSmallScreen =
     isBigScreen === false && isMediumScreen === false && ScreenDown_sm;
+  React.useEffect(() => {
+    if (URLPathname === paths.HOME_PAGE) {
+      setOpenAccountListPopup(false);
+      setOpenNotificationBar(false);
+    }
+  }, [URLPathname]);
   React.useEffect(() => {
     /*
     BUG_DETECTED
@@ -100,67 +105,31 @@ export default function XAppBar() {
   ]);
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <BetterAppBar>
-          <Toolbar role="menubar" className={CSS.NavigationPanel}>
-            <LogoAndSearchModule />
-            <AccessibilityJumpKey />
-            {!isSmallScreen && (
-              <>
-                <div className={CSS.Filler} />
-                <Box sx={{ display: "flex" }}>
-                  <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
-                    <IconButton
-                      size="large"
-                      aria-label="17 notifications available"
-                      color="inherit"
-                      ref={(el) => {
-                        refTriggerBtnNotfPopUp.current = el;
-                      }}
-                      onClick={() => {
-                        setOpenNotificationBar(!openNotificationBar);
-                      }}
-                    >
-                      <Badge color="error">
-                        <NotificationsIcon />
-                      </Badge>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={mainNavbarText("ACCCOUNT_MENU_POPUP")}>
-                    <IconButton
-                      size="large"
-                      edge="end"
-                      aria-label="Account of current user"
-                      aria-haspopup="true"
-                      color="inherit"
-                      ref={(el) => {
-                        refTriggerBtnAccPopUp.current = el;
-                      }}
-                      onClick={() => {
-                        setOpenAccountListPopup(!openNotificationBar);
-                      }}
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </>
-            )}
-          </Toolbar>
-        </BetterAppBar>
-      </Box>
-      <Toolbar />
+      {URLPathname !== paths.HOME_PAGE && (
+        <RegularAppBar
+          accountBtnRef={refTriggerBtnAccPopUp}
+          notiBtnRef={refTriggerBtnNotfPopUp}
+          onToggleMoreBtn={() => {
+            setOpenAccountListPopup(!openAccountListPopup);
+          }}
+          onToggleNotiBtn={() => {
+            setOpenNotificationBar(!openNotificationBar);
+          }}
+          isSmallScreen={isSmallScreen}
+        />
+      )}
+      {URLPathname === paths.HOME_PAGE && <ImmersiveAppBar />}
       <PopUpAccountList
         open={openAccountListPopup}
         anchorElement={refTriggerBtnAccPopUp.current}
-        onClose={() => setOpenAccountListPopup(!openAccountListPopup)}
+        onClose={() => setOpenAccountListPopup(false)}
       />
       <PopUpNotifcationList
         open={openNotificationBar}
         anchorElement={refTriggerBtnNotfPopUp.current}
-        onClose={() => setOpenNotificationBar(!openNotificationBar)}
+        onClose={() => setOpenNotificationBar(false)}
       />
-      {isSmallScreen && (
+      {isSmallScreen && URLPathname !== paths.HOME_PAGE && (
         <>
           {/* BUG_DETECTED EXPECTED TO BE BROKEN ON THE FUTURE */}
           <Portal container={() => document.getElementById("down")}>

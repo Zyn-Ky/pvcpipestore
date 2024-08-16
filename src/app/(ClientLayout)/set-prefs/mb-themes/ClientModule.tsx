@@ -2,12 +2,12 @@
 
 import {
   AvailableThemeMode,
-  useGlobalSettings,
+  useGlobalThemeSettings,
 } from "@/components/base/ClientThemeWrapper";
 import { List, ListItemButton, ListItemText } from "@mui/material";
 
 export default function ThemeSettingsClientLayout() {
-  const { SetThemeMode } = useGlobalSettings();
+  const { SetThemeMode } = useGlobalThemeSettings();
   return (
     <>
       <h1>Tema</h1>

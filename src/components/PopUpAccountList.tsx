@@ -9,7 +9,6 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
-  Menu,
   MenuItem,
   Popover,
   styled,
@@ -20,7 +19,7 @@ import { ComponentProps, memo, useCallback, useEffect, useState } from "react";
 import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 import dynamic from "next/dynamic";
-import { useGlobalSettings } from "./base/ClientThemeWrapper";
+import { useGlobalThemeSettings } from "./base/ClientThemeWrapper";
 import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
 import {
   fetchAndActivate,
@@ -60,13 +59,15 @@ const ChevronLeftIcon = dynamic(
   () => import("@mui/icons-material/ChevronLeft")
 );
 
+const Menu = dynamic(() => import("@mui/material/Menu"));
+
 const PopUpAccountList = memo(function PopUpAccountList(props: {
   open: boolean;
   anchorElement: ComponentProps<typeof Menu>["anchorEl"];
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
   const text = useTranslations("POPUP_ACCOUNT_MENU");
-  const { ThemeMode, SetThemeMode } = useGlobalSettings();
+  const { ThemeMode, SetThemeMode } = useGlobalThemeSettings();
   const [enableDebug, setEnableDebug] = useState(false);
   const [CurrentPage, setCurrentPage] = useState("home");
   const { userManager } = useGeneralFunction();
@@ -269,6 +270,14 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 <InfoOutlinedIcon />
               </ListItemIcon>
               SETTINGS_LINK
+            </MenuItem>
+          </Link>
+          <Link href="/support-form" passHref>
+            <MenuItem onClick={handleClosePopup}>
+              <ListItemIcon>
+                <InfoOutlinedIcon />
+              </ListItemIcon>
+              SUPPORT_LINK
             </MenuItem>
           </Link>
           <Divider sx={{ my: 2 }} />

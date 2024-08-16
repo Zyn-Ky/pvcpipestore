@@ -30,15 +30,15 @@ const ItemImageCarousel = memo(function ItemImageCarousel(
           position: "relative",
           width: "100%",
           height: "60vh",
-          minHeight: "500px",
+          minHeight: "575px",
           maxHeight: "1080px",
         }}
       >
         <BetterBgImg
           src={props.src}
           alt={props.alt}
-          width={1406}
-          height={500}
+          fill
+          sizes="27vw"
           priority
         />
         <ContainerItemTextCarousel>

@@ -89,7 +89,7 @@ export default async function RootLayout(
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
               <NProgressWrapper>
                 <XAppBar />
-                {props.children}
+                <div id="root-content-ui">{props.children}</div>
               </NProgressWrapper>
             </GeneralFunctionWrapper>
           </body>

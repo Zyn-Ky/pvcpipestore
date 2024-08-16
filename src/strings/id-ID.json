@@ -1,13 +1,17 @@
 {
   "BASE": {
     "DISCOVER": "Jelajahi",
+    "SHOP_NOW": "Belanja Sekarang!",
     "SCROLL_TO_KNOW": "Scroll ke bawah untuk lebih lanjut",
     "KNOW_MORE": "Ketahui lebih lanjut",
     "PAUSE_AUTOPLAY": "Hentikan Autoplay",
     "PLAY_AUTOPLAY": "Lanjutkan Autoplay",
     "CONTACT_US": "Hubungi Kami",
     "JUMP_TO_CONTENT": "Langsung ke konten",
-    "SEARCH_TEXT": "Cari..."
+    "SEARCH_TEXT": "Cari...",
+    "SYSTEM_THEME_TEXT": "Tema Sesuai Sistem",
+    "DARK_THEME_TEXT": "Tema Gelap",
+    "LIGHT_THEME_TEXT": "Tema Terang"
   },
   "NAVBAR": {
     "NOTIFICATION_TEXT": "Notifikasi",
@@ -27,7 +31,7 @@
     "THEME_TEXT": "Tema",
     "SETTINGS_TEXT": "Setelan",
     "LOGOUT_TEXT": "Keluar",
-    "SYSTEM_THEME_TEXT": "Tema",
+    "SYSTEM_THEME_TEXT": "Sistem",
     "DARK_THEME_TEXT": "Gelap",
     "LIGHT_THEME_TEXT": "Terang"
   },

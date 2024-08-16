@@ -1,13 +1,9 @@
-import { Box, Button, Grid, Paper, styled, Typography } from "@mui/material";
-import SITE_CONFIG from "@/components/config";
+import { Typography } from "@mui/material";
 import { Metadata } from "next";
-import ItemProductCard from "@/components/base/ProductCard";
-import CSS from "@/scss/ShopPage.module.scss";
 import dynamic from "next/dynamic";
 import ProductList from "@/components/custom/ShopPage/FetchShopList";
 import { getFirestore } from "firebase-admin/firestore";
 import AdminFirebaseApp from "@/libs/firebase/adminConfig";
-import { collection, getDocs } from "firebase/firestore";
 import {
   CategoryItem,
   OptionalArray,
@@ -16,11 +12,12 @@ import {
   SortOrderType,
 } from "@/libs/config";
 import { unstable_cache as cache } from "next/cache";
-import { getLocale } from "next-intl/server";
-import IsComingSoonSSR from "@/libs/firebase/comingSoonChecker";
-import { InfoRounded } from "@mui/icons-material";
 import ContentCategoryModule from "./ContentCategoryModule";
 import { FetchProductBySingleFilter } from "@/libs/fetchProductListing";
+import Link from "next/link";
+import GetFilterParams, {
+  GetFilterSearchParams,
+} from "@/components/custom/ShopPage/GetFilterParams";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -107,51 +104,39 @@ const FetchFiltredListProducts = cache(
 );
 export default async function ShopPage({
   params,
+  searchParams,
 }: {
   params: { params?: string[] };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  if (await IsComingSoonSSR())
-    return <iframe className="fullscreen_cmp_w_navbar" src="/cmp.html" />;
-  const GetFilterParams = (paramKey: string) => {
-    if (!params.params)
-      return {
-        exists: false,
-        array: [],
-      };
-    const array = params.params
-      .map((e) => decodeURIComponent(e))
-      .filter((e) => e.split("=")[0] === paramKey);
-    console.log(paramKey, array);
-    return {
-      exists: array.length > 0,
-      array: array && array[0]?.split("=")[1].split(","),
-    };
-  };
-  const isInFilterMode = GetFilterParams("fquery").exists;
+  const isInFilterMode = GetFilterSearchParams(searchParams, "fquery").exists;
 
   return (
-    <main className={CSS.ShopContainer}>
-      <div className={CSS.Sidebar}></div>
-      <div className={CSS.Content}>
-        <ContentCategoryModule />
-        <p>{JSON.stringify(GetFilterParams("fquery").array)}</p>
-        <p>{JSON.stringify(GetFilterParams("sortmode").array)}</p>
-        <h1>Selamat Berbelanja!</h1>
-        {JSON.stringify(
-          (params.params ?? [])
-            .map((e) => decodeURIComponent(e))
-            .filter((e) => e.indexOf("fquery") !== -1)
-            .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
-        )}
-        {!isInFilterMode && (
-          <>
-            <Typography variant="h4" gutterBottom>
-              Yang Terbaik!
-            </Typography>
-            <ProductList serverData={await FetchProducts()} />
-          </>
-        )}
-      </div>
-    </main>
+    <>
+      {JSON.stringify(searchParams)}
+      <Link href="/shop">shop</Link>
+      <ContentCategoryModule />
+      <p>
+        {JSON.stringify(GetFilterSearchParams(searchParams, "fquery").array)}
+      </p>
+      <p>
+        {JSON.stringify(GetFilterSearchParams(searchParams, "sortmode").array)}
+      </p>
+      <h1>Selamat Berbelanja!</h1>
+      {JSON.stringify(
+        (params.params ?? [])
+          .map((e) => decodeURIComponent(e))
+          .filter((e) => e.indexOf("fquery") !== -1)
+          .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
+      )}
+      {!isInFilterMode && (
+        <>
+          <Typography variant="h4" gutterBottom>
+            Yang Terbaik!
+          </Typography>
+          <ProductList serverData={await FetchProducts()} />
+        </>
+      )}
+    </>
   );
 }

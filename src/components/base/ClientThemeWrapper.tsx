@@ -28,7 +28,7 @@ const DefaultTheme: AvailableThemeMode = "system";
 
 export const GlobalSettings = createContext<GlobalSettingsProps>(DefaultProps);
 
-export const useGlobalSettings = () => useContext(GlobalSettings);
+export const useGlobalThemeSettings = () => useContext(GlobalSettings);
 
 export default function ClientThemeWrapper(props: PropsWithChildren) {
   const [themeMode, setThemeMode] = useState<AvailableThemeMode>(DefaultTheme);

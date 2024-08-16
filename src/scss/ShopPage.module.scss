@@ -3,6 +3,10 @@
   display: flex;
   max-width: 1000px;
   margin-inline: auto;
+  .Sidebar {
+    text-wrap: nowrap;
+    overflow-x: hidden;
+  }
   .Content {
     flex: 1 1;
     .HeaderCategoryList {

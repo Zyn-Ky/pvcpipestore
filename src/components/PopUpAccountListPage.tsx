@@ -21,30 +21,30 @@ export const Menus = memo(function Menus(props: menus) {
   return (
     <>
       {props.items &&
-        props.items.map((parentItem, i) => (
-          <Fragment key={`MENU_PARENT_GROUP_${i}`}>
-            {parentItem.map((item) =>
+        props.items.map((parentItem, parentIndex) => (
+          <Fragment key={`MENU_PARENT_GROUP_${parentIndex}`}>
+            {parentItem.map((item, i) =>
               item.hidden === true ? null : item.href ? (
-                <Link
+                <MenuItem
+                  onClick={(e) => {
+                    if (item.disableClosePopupOnClick !== true)
+                      props.handleClosePopup && props.handleClosePopup();
+                    item.onClick && item.onClick();
+                  }}
+                  component={Link}
+                  key={`PARENT_${parentIndex}_ITEM_${
+                    item.text.toUpperCase() ?? "UNDEFINED"
+                  }`}
                   href={item.href}
-                  passHref
-                  key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
+                  disabled={item.disabled}
+                  autoFocus={parentIndex === 0 && i === 0}
                 >
-                  <MenuItem
-                    onClick={() => {
-                      if (item.disableClosePopupOnClick !== true)
-                        props.handleClosePopup && props.handleClosePopup();
-                      item.onClick && item.onClick();
-                    }}
-                    disabled={item.disabled}
-                  >
-                    {item.startIcon && (
-                      <ListItemIcon>{item.startIcon}</ListItemIcon>
-                    )}
-                    <ListItemText>{item.text && item.text}</ListItemText>
-                    {item.endIcon && item.endIcon}
-                  </MenuItem>
-                </Link>
+                  {item.startIcon && (
+                    <ListItemIcon>{item.startIcon}</ListItemIcon>
+                  )}
+                  <ListItemText>{item.text && item.text}</ListItemText>
+                  {item.endIcon && item.endIcon}
+                </MenuItem>
               ) : (
                 <MenuItem
                   onClick={() => {
@@ -52,8 +52,11 @@ export const Menus = memo(function Menus(props: menus) {
                       props.handleClosePopup && props.handleClosePopup();
                     item.onClick && item.onClick();
                   }}
-                  key={`ITEM_${item.text.toUpperCase() ?? "UNDEFINED"}`}
+                  key={`PARENT_${parentIndex}_ITEM_${
+                    item.text.toUpperCase() ?? "UNDEFINED"
+                  }`}
                   disabled={item.disabled}
+                  autoFocus={parentIndex === 0 && i === 0}
                 >
                   {item.startIcon && (
                     <ListItemIcon>{item.startIcon}</ListItemIcon>
@@ -66,11 +69,14 @@ export const Menus = memo(function Menus(props: menus) {
               )
             )}
             {props.items.length > 1 &&
-              i !== props.items.length - 1 &&
-              props.items[i + 1].filter((item) => item.hidden).length !==
-                props.items[i + 1].length && (
+              parentIndex !== props.items.length - 1 &&
+              props.items[parentIndex + 1].filter((item) => item.hidden)
+                .length !== props.items[parentIndex + 1].length && (
                 <>
-                  <Divider sx={{ my: 1 }} key={`PARENT_MENU_DIVIDER_${i}`} />
+                  <Divider
+                    sx={{ my: 1 }}
+                    key={`PARENT_MENU_DIVIDER_${parentIndex}`}
+                  />
                 </>
               )}
           </Fragment>

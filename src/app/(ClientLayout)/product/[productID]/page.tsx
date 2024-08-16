@@ -181,7 +181,13 @@ export default async function ProductPage({
                 {productItem.Description && productItem.Description}
               </Typography>
               <br />
-              <Button variant="contained" sx={{ mr: 1 }}>
+
+              <Button
+                variant="contained"
+                sx={{ mr: 1 }}
+                LinkComponent={NextLink}
+                href={paths.CHECKOUT_PAGE + "?test_param_direct_buy_id=1"}
+              >
                 Beli
               </Button>
               <Button variant="outlined">Tambahkan ke Keranjang</Button>

@@ -9,6 +9,8 @@ const paths = {
   AUTH_LOGIN: "/auth/login",
   AUTH_REGISTER: "/auth/register",
   SETTINGS_PAGE: "/set-prefs",
+  CONTACT_PAGE: "/support-form",
+  CHECKOUT_PAGE: "/sp-checkout",
 };
 
 export function RedirectLoginPage(url: string) {
@@ -33,7 +35,7 @@ export function GetProductUrl(
 }
 
 export function GenerateShopFilterUrl({ filterID }: { filterID?: number[] }) {
-  return `${paths.ACTUAL_SHOP}${filterID && `/fquery=${filterID.join(",")}`}`;
+  return `${paths.ACTUAL_SHOP}${filterID && `?fquery=${filterID.join(",")}`}`;
 }
 
 export default paths;

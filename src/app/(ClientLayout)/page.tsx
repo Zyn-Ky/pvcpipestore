@@ -125,10 +125,25 @@ export default function Home() {
           {text("TESTI_DESC")}
         </Typography>
         <TestimonialModule
-          items={[...new Array(5)].map(() => ({
-            authorName: "Nopal market1",
-            textContent: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae facilis molestias tenetur sequi reprehenderit sapiente quibusdam commodi, distinctio, obcaecati, esse magni ratione quia earum ut quod fuga magnam iusto voluptas?`,
-          }))}
+          items={[
+            {
+              authorName: "Andi",
+              textContent: `Pipa PVC ini benar-benar memenuhi harapan kami. Kualitasnya sangat baik—tahan lama, kuat, dan tidak mudah bocor. Pengalaman kami dengan pipa ini menunjukkan ketahanan yang luar biasa dalam berbagai aplikasi. Sangat puas dengan performanya dan pastinya akan terus memilih perusahaan ini di masa depan.`,
+            },
+            {
+              authorName: "Nopal market1",
+              textContent: "yesking yes",
+            },
+            {
+              authorName: "Rudi",
+              textContent: `Pipa PVC SDR 41 dari perusahaan ini benar-benar luar biasa untuk pembuangan limbah. Dengan ketahanan yang tinggi dan kualitas yang sangat baik, pipa ini mengatasi tekanan dan bahan kimia dengan sempurna. Kami sangat puas dengan performanya dan akan terus menggunakan produk ini.`,
+            },
+            {
+              authorName: "Rina",
+              textContent: `Pipa PVC conduit dari perusahaan ini benar-benar berkualitas. Kuat, tahan lama, dan fleksibel, ideal untuk instalasi kabel di berbagai kondisi. Instalasi jadi lebih mudah dan hasilnya sangat memuaskan.`,
+            },
+            { authorName: "Nopal market1", textContent: "peh peh peh peh peh" },
+          ]}
         />
       </div>
       <div className={CSS.Partners}>
@@ -143,7 +158,7 @@ export default function Home() {
           <OurPartners nextImage={PartnerPenguinImg} alt="Penguin® Logo" />
           <OurPartners nextImage={PartnerPerrunoImg} alt="Perruno® Logo" />
           <OurPartners nextImage={PartnerPolyfuseImg} alt="Polyfuse® Logo" />
-          <OurPartners nextImage={PartnerRucika1Img} alt="Rucika Kelen® Logo" />
+          {/* <OurPartners nextImage={PartnerRucika1Img} alt="Rucika Kelen® Logo" /> */}
           <OurPartners nextImage={PartnerRucikaImg} alt="Hoco® Logo" />
           <OurPartners nextImage={PartnerYutaImg} alt="Yuta© Logo" />
         </div>

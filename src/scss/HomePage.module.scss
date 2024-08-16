@@ -2,7 +2,7 @@ $padding-x-1: 48px;
 $padding-y-1: 18px;
 .HeroBox {
   height: 60vh;
-  min-height: 500px;
+  min-height: 575px;
   max-height: 1080px;
   position: relative;
   .AutoplayFab {
@@ -42,17 +42,19 @@ $padding-y-1: 18px;
       min-height: 60px;
       padding: 1rem;
       text-align: center;
-      max-width: 140px;
+      width: 108px;
+      height: 108px;
+      position: relative;
       display: inline-block;
       margin: 0.25rem;
       vertical-align: middle;
       img {
-        width: 100%;
-        height: auto;
+        object-fit: scale-down;
         -webkit-user-drag: none;
         -khtml-user-drag: none;
         -moz-user-drag: none;
         -o-user-drag: none;
+        padding: 1rem;
       }
     }
   }

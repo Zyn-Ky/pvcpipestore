@@ -19,7 +19,8 @@ export default function OurPartners(props: OurPartnerProps) {
         <Image
           lazyBoundary=""
           src={props.nextImage ?? ""}
-          width={108}
+          fill
+          sizes="6vw"
           alt={props.alt && props.alt}
           draggable={false}
         />

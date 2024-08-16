@@ -11,6 +11,7 @@ import { Collapse, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { GenerateShopFilterUrl } from "@/components/paths";
 const Fab = dynamic(() => import("@mui/material/Fab"), {
   ssr: false,
 });
@@ -82,7 +83,7 @@ export function CarouselModule() {
           description={text("BANNER_DESCRIPTION_3")}
           actionButton={[
             {
-              href: "/shop/pipa-pvc/jis",
+              href: GenerateShopFilterUrl({ filterID: [0] }),
               text: baseText("DISCOVER"),
               outlined: false,
             },
@@ -95,7 +96,7 @@ export function CarouselModule() {
           description={text("BANNER_DESCRIPTION_4")}
           actionButton={[
             {
-              href: "/shop/pipa-pvc/fitting?f=jis,sni",
+              href: GenerateShopFilterUrl({ filterID: [1] }),
               text: baseText("DISCOVER"),
               outlined: false,
             },

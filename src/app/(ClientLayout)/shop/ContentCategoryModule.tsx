@@ -39,18 +39,15 @@ export default function ContentCategoryModule() {
             ],
           ].map((item, i) => (
             <Paper key={i} elevation={2}>
-              <Button
-                LinkComponent={Link}
+              <Link
                 href={GenerateShopFilterUrl({ filterID: [1324, 4234] })}
                 className={CSS.CategoryItem}
-                component={"a"}
-                sx={{ color: (theme) => theme.palette.text.primary }}
               >
                 <div className={CSS.CategoryItemIcon} color="currentColor">
                   {item[1]}
                 </div>
                 <Typography textAlign="left">{item[0]}</Typography>
-              </Button>
+              </Link>
             </Paper>
           ))}
         </div>
