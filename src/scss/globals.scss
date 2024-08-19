@@ -15,7 +15,7 @@ body {
 }
 
 body[data-smooth-color-transition] {
-  transition-property: background-color, color;
+  transition-property: all;
   transition-duration: 115ms;
   & p,
   h1,

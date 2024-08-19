@@ -1,7 +1,12 @@
 "use client";
 import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
 import { FirebaseApp, deleteApp } from "firebase/app";
-import { AuthError, User, UserCredential } from "firebase/auth";
+import {
+  AuthError,
+  sendEmailVerification,
+  User,
+  UserCredential,
+} from "firebase/auth";
 import {
   createContext,
   PropsWithChildren,
@@ -19,6 +24,7 @@ import NotificationManager, {
 } from "./NotificationManager";
 import paths from "../paths";
 import { useEffectOnce } from "react-use";
+import { StoredUserClaimsFB } from "@/libs/axios";
 
 export type AvailableLoginMethod = "google";
 
@@ -27,11 +33,13 @@ type GeneralFunctionContextProps = {
   userManager: {
     loading: boolean;
     currentUser: User | null | undefined;
+    emailVerified: boolean;
     method: {
       Login: (
         method: AvailableLoginMethod
       ) => Promise<void | UserCredential | undefined>;
       SignOut: () => Promise<boolean>;
+      SendVerificationEmail: () => Promise<boolean>;
     };
     authError?: AuthError | Error;
   };
@@ -49,9 +57,13 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
   userManager: {
     loading: false,
     currentUser: undefined,
+    emailVerified: false,
     method: {
       async Login() {},
       async SignOut() {
+        return false;
+      },
+      async SendVerificationEmail() {
         return false;
       },
     },
@@ -114,6 +126,17 @@ export default function GeneralFunctionWrapper(
     window.location.href = paths.HOME_PAGE;
     return signout;
   }
+  async function SendVerificationEmail() {
+    if (!CurrentUser) return false;
+    if (CurrentUser.emailVerified) return false;
+    try {
+      sendEmailVerification(CurrentUser);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   async function InitServiceWorker() {
     const Registration = await window.serwist.register({
       immediate: true,
@@ -130,9 +153,11 @@ export default function GeneralFunctionWrapper(
         userManager: {
           loading: forceHaltAuth ? false : AuthLoading || GoogleUserLoading,
           currentUser: GoogleUserValue?.user || CurrentUser,
+          emailVerified: (CurrentUser && CurrentUser.emailVerified) || false,
           method: {
             Login,
             SignOut: SignOutCall,
+            SendVerificationEmail,
           },
           authError: GoogleUserSignInError || AuthError,
         },

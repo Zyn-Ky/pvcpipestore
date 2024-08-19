@@ -11,7 +11,7 @@ import { Collapse, Typography } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { GenerateShopFilterUrl } from "@/components/paths";
+import paths, { GenerateShopFilterUrl } from "@/components/paths";
 const Fab = dynamic(() => import("@mui/material/Fab"), {
   ssr: false,
 });
@@ -52,12 +52,12 @@ export function CarouselModule() {
           key={"COVER"}
           actionButton={[
             {
-              href: "/shop",
+              href: paths.ACTUAL_SHOP,
               text: text("SHOP_NOW"),
               outlined: false,
             },
             {
-              href: "/support-form",
+              href: paths.CONTACT_PAGE,
               text: baseText("CONTACT_US"),
               outlined: true,
             },

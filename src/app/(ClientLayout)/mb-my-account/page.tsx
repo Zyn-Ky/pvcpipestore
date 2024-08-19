@@ -14,6 +14,7 @@ import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
 import { AvailableUserAction, SummaryCurrentUser } from "./HeaderModule";
 import { LogoutBtn } from "./MenuModule";
+import PromptEmailVerification from "@/components/base/PromptEmailVerification";
 
 export const metadata: Metadata = {
   title: `Akun - ${SITE_CONFIG.SEO.Title}`,
@@ -22,14 +23,17 @@ export const metadata: Metadata = {
 export default function AccountSummary() {
   return (
     <div className={CSS.Container}>
-      <Paper className={CSS.InfoSummary} elevation={2}>
-        <div className={CSS.Account}>
-          <SummaryCurrentUser />
-        </div>
-        <div className={CSS.AccountAction}>
-          <AvailableUserAction />
-        </div>
-      </Paper>
+      <div>
+        <PromptEmailVerification />
+        <Paper className={CSS.InfoSummary} elevation={2}>
+          <div className={CSS.Account}>
+            <SummaryCurrentUser />
+          </div>
+          <div className={CSS.AccountAction}>
+            <AvailableUserAction />
+          </div>
+        </Paper>
+      </div>
       <List component="nav" aria-labelledby="nested-list-subheader">
         <ListItemButton>
           <ListItemIcon>

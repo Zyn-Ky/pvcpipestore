@@ -10,6 +10,7 @@ export type CategoryItem = {
   Title: string;
   SelfID: number;
   ParentID: number;
+  ChildIDs: number[];
   Type: "PARENT_CATEGORY" | "CATEGORY";
 };
 

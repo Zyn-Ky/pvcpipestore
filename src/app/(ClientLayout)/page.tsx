@@ -130,10 +130,7 @@ export default function Home() {
               authorName: "Andi",
               textContent: `Pipa PVC ini benar-benar memenuhi harapan kami. Kualitasnya sangat baik—tahan lama, kuat, dan tidak mudah bocor. Pengalaman kami dengan pipa ini menunjukkan ketahanan yang luar biasa dalam berbagai aplikasi. Sangat puas dengan performanya dan pastinya akan terus memilih perusahaan ini di masa depan.`,
             },
-            {
-              authorName: "Nopal market1",
-              textContent: "yesking yes",
-            },
+
             {
               authorName: "Rudi",
               textContent: `Pipa PVC SDR 41 dari perusahaan ini benar-benar luar biasa untuk pembuangan limbah. Dengan ketahanan yang tinggi dan kualitas yang sangat baik, pipa ini mengatasi tekanan dan bahan kimia dengan sempurna. Kami sangat puas dengan performanya dan akan terus menggunakan produk ini.`,
@@ -142,7 +139,14 @@ export default function Home() {
               authorName: "Rina",
               textContent: `Pipa PVC conduit dari perusahaan ini benar-benar berkualitas. Kuat, tahan lama, dan fleksibel, ideal untuk instalasi kabel di berbagai kondisi. Instalasi jadi lebih mudah dan hasilnya sangat memuaskan.`,
             },
-            { authorName: "Nopal market1", textContent: "peh peh peh peh peh" },
+            {
+              authorName: "Nopal market1",
+              textContent: "yesking yes",
+            },
+            {
+              authorName: "Nopal market1",
+              textContent: "ya ya pipa ini bagus sekali, saya merekomendasikan",
+            },
           ]}
         />
       </div>
@@ -162,6 +166,36 @@ export default function Home() {
           <OurPartners nextImage={PartnerRucikaImg} alt="Hoco® Logo" />
           <OurPartners nextImage={PartnerYutaImg} alt="Yuta© Logo" />
         </div>
+      </div>
+      <div className={CSS.OurMissionContainer}>
+        {[
+          [
+            `Visi Kami`,
+            `Distributor Pipa PVC yang menyediakan pipa jenis Pipa PVC yang berkualitas tinggi dengan harga yang terjangkau.`,
+          ],
+          [
+            `Misi Kami`,
+            `Misi kami adalah menyediakan pipa PVC berkualitas tinggi yang dapat diandalkan untuk berbagai aplikasi, mulai dari distribusi air bersih, pengelolaan limbah, hingga infrastruktur industri. Kami berkomitmen untuk:\n
+- Menyediakan Produk Berkualitas Tinggi: Mengembangkan dan memproduksi pipa dengan standar kualitas tertinggi untuk memastikan daya tahan, keamanan, dan kinerja optimal di berbagai aplikasi industri.\n
+- Inovasi Berkelanjutan: Berinvestasi dalam penelitian dan pengembangan untuk menciptakan teknologi baru dan metode produksi yang lebih efisien serta ramah lingkungan.\n
+- Kepuasan Pelanggan: Menyediakan layanan pelanggan yang unggul, mulai dari konsultasi teknis hingga dukungan pasca penjualan, untuk memastikan kepuasan dan kepercayaan pelanggan.\n
+- Kualitas dan Keamanan: Mematuhi standar dan regulasi internasional serta melakukan pengujian ketat untuk memastikan setiap produk memenuhi spesifikasi dan persyaratan keamanan.`,
+          ],
+        ].map((t) => (
+          <div key={t[0]} className={CSS.Item}>
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              textAlign="left"
+              gutterBottom
+            >
+              {t[0]}
+            </Typography>
+            <Typography variant="body2" textAlign="left" paragraph>
+              {t[1]}
+            </Typography>
+          </div>
+        ))}
       </div>
       <div className={CSS.AboutCompany}>
         <Typography

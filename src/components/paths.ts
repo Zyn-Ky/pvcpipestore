@@ -9,8 +9,11 @@ const paths = {
   AUTH_LOGIN: "/auth/login",
   AUTH_REGISTER: "/auth/register",
   SETTINGS_PAGE: "/set-prefs",
-  CONTACT_PAGE: "/support-form",
+  CONTACT_PAGE: "/help/support",
+  ARTICLE_PAGE: "/help/article",
   CHECKOUT_PAGE: "/sp-checkout",
+  SELLER_ADMIN_PAGE: "/admin",
+  POST_PRODUCT_ADMIN_PAGE: "/admin/post",
 };
 
 export function RedirectLoginPage(url: string) {
