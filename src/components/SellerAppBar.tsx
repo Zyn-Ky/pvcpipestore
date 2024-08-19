@@ -180,9 +180,9 @@ export default function SellerAppBar() {
           </ListItem>
           {(
             [
-              [<HomeIcon />, "Dasbor"],
-              [<InventoryIcon />, "Produk"],
-              [<CategoryIcon />, "Kategori"],
+              [<HomeIcon key={1} />, "Dasbor"],
+              [<InventoryIcon key={2} />, "Produk"],
+              [<CategoryIcon key={3} />, "Kategori"],
             ] as [ReactNode, string][]
           ).map((item, index) => (
             <ListItem
@@ -232,9 +232,9 @@ export default function SellerAppBar() {
               [
                 [
                   <>
-                    {ThemeMode === "system" && <BrightnessAuto />}
-                    {ThemeMode === "light" && <LightMode />}
-                    {ThemeMode === "dark" && <DarkMode />}
+                    {ThemeMode === "system" && <BrightnessAuto key={11} />}
+                    {ThemeMode === "light" && <LightMode key={12} />}
+                    {ThemeMode === "dark" && <DarkMode key={13} />}
                   </>,
                   ThemeMode === "system"
                     ? "Sistem"
