@@ -185,11 +185,20 @@ export default function SellerAppBar() {
               [<CategoryIcon />, "Kategori"],
             ] as [ReactNode, string][]
           ).map((item, index) => (
-            <ListItem key={item[1]} disablePadding sx={{ display: "block" }}>
-              <Tooltip title={!openSidebar ? item[1] : ""} placement="right">
+            <ListItem
+              key={item[1].toString() + index.toString()}
+              disablePadding
+              sx={{ display: "block" }}
+            >
+              <Tooltip
+                title={!openSidebar ? item[1] : ""}
+                key={item[1].toString() + index.toString()}
+                placement="right"
+              >
                 <ListItemButton
                   LinkComponent={Link}
                   href="/admin"
+                  key={item[1].toString() + index.toString()}
                   sx={{
                     minHeight: 48,
                     justifyContent: "left",
@@ -242,13 +251,18 @@ export default function SellerAppBar() {
                 ],
               ] as [ReactNode, string, () => void | string][]
             ).map((item, index) => (
-              <ListItem key={item[1]} disablePadding sx={{ display: "block" }}>
+              <ListItem
+                key={item[1] + index.toString()}
+                disablePadding
+                sx={{ display: "block" }}
+              >
                 <ListItemButton
                   sx={{
                     minHeight: 48,
                     justifyContent: "left",
                     px: 2.5,
                   }}
+                  key={item[1].toString() + index.toString()}
                   {...(typeof item[2] === "string"
                     ? { LinkComponent: Link, href: item[2] }
                     : {
