@@ -1,4 +1,5 @@
 import "@/scss/globals.scss";
+import "./globals.scss";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Box, CssBaseline, Toolbar } from "@mui/material";
@@ -14,8 +15,8 @@ import NProgressWrapper from "@/components/base/NProgress";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "SECURED",
+  title: "Seller Center - PP",
+  description: "",
 };
 
 export default async function SellerRootLayout({
@@ -35,17 +36,16 @@ export default async function SellerRootLayout({
         <ClientThemeWrapper>
           <html lang="en">
             <body className={inter.className} data-smooth-color-transition>
-              <CssBaseline />
+              <CssBaseline enableColorScheme />
               <NProgressWrapper>
                 <ProtectedSellerOnlyRoute>
                   <Box sx={{ display: "flex" }}>
-                    <SellerAppBar />
-                    <Box>
+                    <SellerAppBar>
                       <Toolbar />
-                      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                      <Box component="main" sx={{ p: 3 }}>
                         {children}
                       </Box>
-                    </Box>
+                    </SellerAppBar>
                   </Box>
                 </ProtectedSellerOnlyRoute>
               </NProgressWrapper>

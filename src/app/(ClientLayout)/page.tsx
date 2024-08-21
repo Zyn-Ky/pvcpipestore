@@ -141,7 +141,7 @@ export default function Home() {
             },
             {
               authorName: "Nopal market1",
-              textContent: "yesking yes",
+              textContent: "ambatakammmm",
             },
             {
               authorName: "Nopal market1",

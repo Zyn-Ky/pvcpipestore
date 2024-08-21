@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { ParsedToken } from "firebase/auth";
+import { ADMIN_API_VERSION, API_PATH } from "./config";
 
 const API_VERSION = "v1";
 const DISABLED_BODY_DATA_METHODS = [
@@ -32,7 +33,7 @@ export interface ApiResponse<ExtendedResponse = { [key: string]: any }> {
   code: number;
   message: string;
   response?: ExtendedResponse;
-  nextAction?: "REDIRECT";
+  nextAction?: "REDIRECT" & any;
   nextActionValue?: any;
 }
 
@@ -51,7 +52,7 @@ export async function AxiosFetchV1Api<
   const DisabledBodyRequest =
     DISABLED_BODY_DATA_METHODS.indexOf(method.toUpperCase()) === -1;
   const AuthHeader = {
-    Authorization: `Bearer ${data?.expAuthToken || ""}`,
+    Authorization: `Bearer ${data?.authToken || ""}`,
   };
   const Result = await AxiosClient({
     method,
@@ -71,6 +72,29 @@ export async function AxiosFetchV1Api<
       },
       ...(data ?? {}),
     },
+  });
+  return Result as AxiosResponse<CustomResponse>;
+}
+export async function AxiosPostToImageUploadServer<
+  CustomResponse = any & ApiResponse
+>(xsrf: string, authToken: string, productName: string, binary: any) {
+  const formData = new FormData();
+  formData.append("secAuthToken", authToken);
+  formData.append("image_binary", binary);
+  formData.append(
+    "pathname",
+    `moonsunstone-x/product_assets/test-to-be-deleted/${
+      productName ?? "product-unknown-" + Date.now()
+    }`
+  );
+  const Result = await AxiosClient({
+    method: "POST",
+    url: API_PATH.IMAGE_UPLOAD_SERVER,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "X-CSRF-Token": xsrf,
+    },
+    data: formData,
   });
   return Result as CustomResponse;
 }

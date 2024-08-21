@@ -13,6 +13,7 @@ export async function FetchProductBySingleFilter(filterID: number[]) {
       ...queryList,
       productsRef.where("CatalogID", "array-contains", id),
     ];
+    console.log(productsRef.where("CatalogID", "array-contains", id));
   });
 
   const queryListSnapshot = await Promise.all(
@@ -60,6 +61,7 @@ export async function FetchProductBySingleFilter(filterID: number[]) {
         } as ProductCardInfo;
       })
   );
+  console.log(ResolvedProducts);
   return {
     ok: true,
     length: ResolvedProducts.length,

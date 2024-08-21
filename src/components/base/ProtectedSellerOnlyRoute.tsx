@@ -27,7 +27,7 @@ export default function ProtectedSellerOnlyRoute(props: PropsWithChildren) {
         .claims as StoredUserClaimsFB;
       setRoleState(tokenResult.userRole);
       setLoading(false);
-      console.log(await tokenResult);
+      console.log(tokenResult);
     },
     [userState]
   );

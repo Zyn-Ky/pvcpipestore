@@ -177,9 +177,13 @@ export default async function ProductPage({
                 }).format(productItem.Price ?? 0)}
               </Typography>
               <HorizontalActionModule />
-              <Typography variant="body1">
-                {productItem.Description && productItem.Description}
-              </Typography>
+              <Typography
+                variant="body1"
+                paragraph
+                dangerouslySetInnerHTML={{
+                  __html: productItem.Description ?? "",
+                }}
+              />
               <br />
 
               <Button

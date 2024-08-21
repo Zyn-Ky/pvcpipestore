@@ -39,7 +39,7 @@ const useFcmToken = () => {
                 apiManager.xsrfToken,
                 {
                   authToken:
-                    (await userManager.currentUser.getIdToken(true)) ?? "MISSING",
+                    (await userManager.currentUser.getIdToken()) ?? "MISSING",
                   deviceFCMKey: currentToken,
                 }
               );

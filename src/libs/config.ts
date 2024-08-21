@@ -2,6 +2,16 @@ import type { DocumentReference } from "firebase-admin/firestore";
 
 const SITE_BACKEND_CONFIG = {
   AUTH_SESSION_COOKIE_NAME: "moonsunstone-x-auth-sid",
+  FIRESTORE_PRODUCT_ROOT_PATH: "Products/",
+  FIRESTORE_CATALOGS_LIST_ROOT_PATH: "CatalogsList/",
+  FIRESTORE_SHOP_CONFIG_ROOT_PATH: "ShopConfig/",
+};
+
+export const ADMIN_API_VERSION = process.env.API_VERSION || "vBeta";
+export const API_PATH = {
+  IMAGE_UPLOAD_SERVER: `admin/${ADMIN_API_VERSION}/upload`,
+  HIDDEN_APPLY_SELLER_ROLE: `admin/${ADMIN_API_VERSION}/applysellerrole`,
+  SELLER_ADD_NEW_PRODUCT: `admin/${ADMIN_API_VERSION}/addproduct`,
 };
 
 type AcceptedCurrency = "IDR" | string;

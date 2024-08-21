@@ -22,7 +22,7 @@ export default function XTest() {
       "POST",
       "admin/vBeta/applysellerrole",
       apiManager.xsrfToken,
-      { authToken: await user.getIdToken(true) }
+      { authToken: await user.getIdToken() }
     );
   }
   async function RevokeAllRole() {
@@ -34,7 +34,7 @@ export default function XTest() {
       "DELETE",
       "admin/vBeta/applysellerrole",
       apiManager.xsrfToken,
-      { authToken: await user.getIdToken(true) }
+      { authToken: await user.getIdToken() }
     );
   }
   return (

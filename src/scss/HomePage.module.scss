@@ -171,8 +171,17 @@ $padding-y-1: 18px;
   white-space: break-spaces;
   gap: 5rem;
   user-select: text;
+  max-width: 1080px;
+  margin: 0 auto;
+
   .Item {
     flex: 50%;
+  }
+  @media screen and (max-width: 920px) {
+    & {
+      flex-direction: column;
+      gap: 3rem;
+    }
   }
 }
 

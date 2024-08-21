@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import ProductList from "@/components/custom/ShopPage/FetchShopList";
 import { getFirestore } from "firebase-admin/firestore";
 import AdminFirebaseApp from "@/libs/firebase/adminConfig";
-import {
+import SITE_BACKEND_CONFIG, {
   CategoryItem,
   OptionalArray,
   ProductCardInfo,
@@ -24,7 +24,9 @@ export const metadata: Metadata = {
 const AdvancedFilterModule = dynamic(() => import("./FilterModule"), {});
 const FetchProductsImpl = async () => {
   const firestore = getFirestore(AdminFirebaseApp); //This should return the firebase-admin app
-  const productsRef = firestore.collection("Products/");
+  const productsRef = firestore.collection(
+    SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH
+  );
   const docs: OptionalArray<ProductCardInfo> = await Promise.all(
     (
       await productsRef.listDocuments()
@@ -79,13 +81,13 @@ const FilteredListImpl = async ({
   sortBy?: SortBy;
   sortOrderType?: SortOrderType;
 }) => {
-  FetchProductBySingleFilter(filterID);
+  return await FetchProductBySingleFilter(filterID);
 };
 const FetchProducts = cache(FetchProductsImpl, ["FETCH_GLOBAL_PRODUCT_LIST"], {
   tags: ["FETCH_GLOBAL_PRODUCT_LIST"],
   revalidate:
     process.env.NODE_ENV === "development"
-      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
+      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "60")
       : 60 * 60 * 24,
 });
 
@@ -109,11 +111,12 @@ export default async function ShopPage({
   params: { params?: string[] };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const isInFilterMode = GetFilterSearchParams(searchParams, "fquery").exists;
+  const isInFilterMode =
+    GetFilterSearchParams(searchParams, "fquery").array.length > 0;
 
   return (
     <>
-      {JSON.stringify(searchParams)}
+      <p>{JSON.stringify(isInFilterMode)}</p>
       <Link href="/shop">shop</Link>
       <ContentCategoryModule />
       <p>
@@ -128,6 +131,25 @@ export default async function ShopPage({
           .map((e) => decodeURIComponent(e))
           .filter((e) => e.indexOf("fquery") !== -1)
           .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
+      )}
+      {isInFilterMode && (
+        <>
+          <Typography variant="h4" gutterBottom>
+            Hasil Filter
+          </Typography>
+          <ProductList
+            serverData={
+              (
+                await FetchFiltredListProducts({
+                  filterID: GetFilterSearchParams(
+                    searchParams,
+                    "fquery"
+                  ).array.map((val) => parseInt(val)),
+                })
+              ).ResolvedProducts
+            }
+          />
+        </>
       )}
       {!isInFilterMode && (
         <>

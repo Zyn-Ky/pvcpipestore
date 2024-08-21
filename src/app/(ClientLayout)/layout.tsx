@@ -83,7 +83,7 @@ export default async function RootLayout(
     <NextIntlClientProvider messages={messages}>
       <ColorModeProvider>
         <html lang={locale}>
-          <CssBaseline />
+          <CssBaseline enableColorScheme />
           <body className={inter.className} data-smooth-color-transition>
             <WordpressMigration />
             <GeneralFunctionWrapper apiXsrf={csrfToken}>

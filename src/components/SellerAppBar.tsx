@@ -33,7 +33,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { PropsWithChildren, ReactNode, useState } from "react";
 import paths from "./paths";
 const drawerWidth = 240;
 
@@ -78,12 +78,21 @@ const Drawer = styled(MuiDrawer, {
     "& .MuiDrawer-paper": closedMixin(theme),
   }),
 }));
+const StyledBoxContainer = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  minWidth: `calc(100vw - ${theme.spacing(7)} - 26px)`,
+  transition: theme.transitions.create(["transform"]),
+  transform: "scale(1) translateX(0px)",
+  [theme.breakpoints.up("sm")]: {
+    minWidth: `calc(100vw - ${theme.spacing(8)} - 18px)`,
+  },
+}));
 
 import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import HomeIcon from "@mui/icons-material/Home";
 import { useGlobalThemeSettings } from "./base/ClientThemeWrapper";
-export default function SellerAppBar() {
+export default function SellerAppBar(props: PropsWithChildren) {
   const theme = useTheme();
   const [openSidebar, setOpenSidebar] = useState(false);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -292,6 +301,17 @@ export default function SellerAppBar() {
           </List>
         </Collapse>
       </Drawer>
+      <StyledBoxContainer
+        style={
+          openSidebar
+            ? {
+                transform: "scale(0.75) translateX(-105px)",
+              }
+            : {}
+        }
+      >
+        {props.children && props.children}
+      </StyledBoxContainer>
     </>
   );
 }
