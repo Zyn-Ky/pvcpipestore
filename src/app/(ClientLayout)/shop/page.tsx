@@ -89,7 +89,7 @@ const FetchProducts = cache(FetchProductsImpl, ["FETCH_GLOBAL_PRODUCT_LIST"], {
   revalidate:
     process.env.NODE_ENV === "development"
       ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "60")
-      : 60 * 60 * 24,
+      : 60 * 2,
 });
 
 const FetchFiltredListProducts = cache(
@@ -102,7 +102,7 @@ const FetchFiltredListProducts = cache(
         ? parseInt(
             process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300"
           )
-        : 60 * 60 * 24,
+        : 60 * 2,
   }
 );
 export default async function ShopPage({
