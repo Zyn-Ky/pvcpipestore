@@ -2,7 +2,11 @@
 "use client";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { AxiosFetchV1Api, AxiosPostToImageUploadServer } from "@/libs/axios";
-import { ADMIN_API_VERSION, API_PATH } from "@/libs/config";
+import SITE_BACKEND_CONFIG, {
+  ADMIN_API_VERSION,
+  API_PATH,
+  StoredProductCardInfo,
+} from "@/libs/config";
 // import useSavedFormState from "@/components/custom/SellerCenter/useSavedFormState";
 import {
   Box,
@@ -40,6 +44,16 @@ import {
 import GenerateSanitizedURLSlug from "@/libs/api/GenerateSanitizedURLSlug";
 import { LoadingButton } from "@mui/lab";
 import { CloudUpload } from "@mui/icons-material";
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
+import { firebaseApp } from "@/libs/firebase/config";
+import { UploadedImageResult } from "@/libs/api/UploadToCloudinary";
+import Link from "next/link";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -54,6 +68,7 @@ const VisuallyHiddenInput = styled("input")({
 
 export default function ClientForm() {
   const [uploadServerOK, setUploadServerOK] = useState(false);
+  const [productState, setProductState] = useState("UNPUBLISHED");
   const [htmlDescription, setHtmlDescription] = useState("");
   const [productTitle, setProductTitle] = useState("");
   const [catalogID, setCatalogID] = useState("");
@@ -93,37 +108,88 @@ export default function ClientForm() {
     console.log(uploadResult);
     return uploadResult;
   }
+  async function PostToFirestore(
+    form: {
+      [k: string]: FormDataEntryValue;
+    },
+    images: (UploadedImageResult | undefined)[]
+  ) {
+    if (!userManager.currentUser) return;
+    /**{name: 't57tyfgf6', available_stock: '99', category_id: '53,76767,7676', price: '244234', slug_url: 't57tyfgf6-hda1ozZTuQh0P', price_mode: 'FIXED_PRICE'} */
+    const firestore = getFirestore(firebaseApp);
+    try {
+      await setDoc<StoredProductCardInfo, StoredProductCardInfo>(
+        doc(
+          firestore,
+          SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH,
+          form.slug_url as string
+        ),
+        {
+          AvailableStock: parseInt((form.available_stock as string) ?? "0"),
+          CatalogID: (form.category_id as string)
+            .split(",")
+            .map((id) => parseInt(id)),
+          Description: htmlDescription,
+          Images: images.map((img) => img?.url ?? ""),
+          LinkedUser: userManager.currentUser.uid,
+          Name: form.name as string,
+          Price: parseInt((form.price as string) ?? 0),
+          PriceMode: "FIXED_PRICE",
+          SuggestedCurrency: (form.suggested_currency as string) ?? "IDR",
+        }
+      );
+      setIsCreating(false);
+      setProductState("PUBLISHED");
+    } catch {
+      setProductState("UNPUBLISHED");
+    }
+  }
   const CreateNewProduct = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsCreating(true);
     const formData = new FormData(e.currentTarget);
     const formProps = Object.fromEntries(formData);
     const { file_array, ...formPropsCleaned } = formProps;
-    const fileArray = file_array as File | null;
     if (imagesForm.length > 0) {
       console.time("upload image");
-
-      console.timeEnd("upload image");
     }
     const Images =
       imagesForm.length > 0
         ? await Promise.all(
             imagesForm.map(
               async (item) =>
-                await UploadImages(
-                  formPropsCleaned.slug_url as string,
-                  item.binary
-                )
+                (
+                  await UploadImages(
+                    formPropsCleaned.slug_url as string,
+                    item.binary
+                  )
+                )?.data.response
             )
           )
         : [];
+    console.timeEnd("upload image");
+
     console.log(formPropsCleaned, Images);
-    setIsCreating(false);
+    await PostToFirestore(formPropsCleaned, Images);
+    e.currentTarget.reset();
   };
   useEffect(() => {
     CheckImgServer();
   }, [CheckImgServer]);
-  return (
+  return productState === "PUBLISHED" ? (
+    <Box sx={{ maxWidth: 720, width: "100%", margin: "auto" }}>
+      <Typography variant="h4" fontWeight="bold" gutterBottom>
+        Selamat produk anda telah terbit!
+      </Typography>
+      <Button
+        variant="contained"
+        LinkComponent={Link}
+        href={`/product/${slugURL}`}
+      >
+        Kunjungi
+      </Button>
+    </Box>
+  ) : (
     <Box sx={{ maxWidth: 1080, width: "100%", margin: "auto" }}>
       <EditorProvider>
         <FormControl
@@ -245,7 +311,7 @@ export default function ClientForm() {
             </Editor>
           </FormGroup>
           <FormGroup sx={{ flexDirection: "row", gap: 1 }}>
-            <TextField type="number" label="Stok" />
+            <TextField type="number" name="available_stock" label="Stok" />
             <TextField
               type="number"
               InputProps={{
@@ -253,6 +319,7 @@ export default function ClientForm() {
                   <InputAdornment position="end">
                     <Select
                       value="IDR"
+                      name="suggested_currency"
                       placeholder="Mata uang"
                       variant="outlined"
                       size="small"

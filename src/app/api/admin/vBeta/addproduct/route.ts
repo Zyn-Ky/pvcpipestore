@@ -5,7 +5,8 @@ import UserVerifyID from "@/libs/api/VerifyID";
 import { ApiResponse } from "@/libs/axios";
 import { getFirestore } from "firebase-admin/firestore";
 import CheckCloudinaryStatus from "@/libs/api/CheckCloudinaryStatus";
-import { API_PATH } from "@/libs/config";
+import SITE_BACKEND_CONFIG, { API_PATH } from "@/libs/config";
+import IsActiveSeller from "@/libs/api/IsActiveSeller";
 
 export async function POST(request: NextRequest) {
   try {
@@ -19,11 +20,12 @@ export async function POST(request: NextRequest) {
     const { IsValid, UserExists, uid } = await UserVerifyID(
       requestJSON.authToken
     );
-    if (UserExists && IsValid) {
+    const isActiveSeller = await IsActiveSeller(requestJSON.authToken);
+    if (isActiveSeller) {
       const auth = getAuth(AdminFirebaseApp);
       const currentUser = await auth.getUser(uid);
       if (currentUser.email !== "er12345.ky@gmail.com")
-        return NextResponse.json(
+        return NextResponse.json<ApiResponse>(
           { code: 403, message: "USER_NOT_SUPERUSER_APPROVED" },
           { status: 403 }
         );
@@ -47,13 +49,14 @@ export async function POST(request: NextRequest) {
           nextAction: "HALT_IMAGE_UPLOAD",
         });
       }
-      const firestore = getFirestore(AdminFirebaseApp);
-
-      return NextResponse.json<ApiResponse>({
-        code: 200,
-        message: "OK",
-        response: { generatedUrl: "" },
-      });
+      if (requestJSON.condition === "postnewproduct") {
+        return NextResponse.json<ApiResponse>({
+          code: 302,
+          message: "REDIRECT_CLIENT_ACTION",
+          nextAction: "USE_CLIENT_SDK",
+          response: {},
+        });
+      }
     } else {
       return NextResponse.json<ApiResponse>(
         { code: 401, message: "INVALID_TOKEN" },

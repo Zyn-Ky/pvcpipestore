@@ -35,7 +35,7 @@ $padding-y-1: 18px;
   .LogoLists {
     display: block;
     margin-top: 1rem;
-    max-width: 960px;
+    max-width: 1050px;
     margin-inline: auto;
     .LogoItem {
       line-height: 60px;
@@ -128,7 +128,6 @@ $padding-y-1: 18px;
   }
   .TextContainer {
     width: 400px;
-    user-select: text;
   }
   &.RowInverted {
     .TextContainer {

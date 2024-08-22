@@ -56,7 +56,10 @@ export default function ItemProductCard(props: { data: ProductCardInfo }) {
             {props.data.Name ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Rp. {props.data.Price}
+            {new Intl.NumberFormat("id-ID", {
+              currency: props.data.SuggestedCurrency ?? "",
+              style: "currency",
+            }).format(props.data.Price ?? 0)}
           </Typography>
         </CardContent>
         <CardActions>

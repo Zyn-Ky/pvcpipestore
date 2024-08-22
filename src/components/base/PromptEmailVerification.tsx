@@ -14,26 +14,28 @@ export default function PromptEmailVerification() {
   }
   return (
     <>
-      <Alert
-        variant="outlined"
-        color="warning"
-        icon={<Warning />}
-        sx={{ my: 1 }}
-        action={
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => {
-              SendVerification();
-            }}
-          >
-            Kirim Kode Verifikasi
-          </Button>
-        }
-      >
-        {codeSent && "Cek inbox e-mail anda"}
-        {!codeSent && "Akun anda belum terverifikasi!"}
-      </Alert>
+      {!userManager.emailVerified && (
+        <Alert
+          variant="outlined"
+          color="warning"
+          icon={<Warning />}
+          sx={{ my: 1 }}
+          action={
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => {
+                SendVerification();
+              }}
+            >
+              Kirim Kode Verifikasi
+            </Button>
+          }
+        >
+          {codeSent && "Cek inbox e-mail anda"}
+          {!codeSent && "Akun anda belum terverifikasi!"}
+        </Alert>
+      )}
     </>
   );
 }

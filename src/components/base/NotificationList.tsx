@@ -25,6 +25,7 @@ import {
   getRemoteConfig,
 } from "firebase/remote-config";
 import { useEffectOnce } from "react-use";
+import ProtectedHiddenDevelopmentComponent from "./ProtectedHiddenDevComponent";
 
 export default function NotificationList() {
   const { userManager } = useGeneralFunction();
@@ -68,19 +69,53 @@ export default function NotificationList() {
       )}
 
       <List sx={{ width: "100%" }}>
-        {Notifications &&
-          Notifications.map((item, i) => (
+        <ProtectedHiddenDevelopmentComponent>
+          {Notifications &&
+            Notifications.map((item, i) => (
+              <ListItemButton alignItems="flex-start" key={i}>
+                {item.current_blob_img_url && (
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={`Photo Notification of ${item.title}`}
+                      src={item.current_blob_img_url}
+                    />
+                  </ListItemAvatar>
+                )}
+                <ListItemText
+                  primary={item.title && item.title}
+                  secondary={
+                    <>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        {item.body && item.body}
+                      </Typography>
+                    </>
+                  }
+                />
+              </ListItemButton>
+            ))}
+        </ProtectedHiddenDevelopmentComponent>
+
+        {Notifications && Notifications.length === 0 && (
+          <>
+            <p>Notifikasi anda bersih</p>
+          </>
+        )}
+        <ProtectedHiddenDevelopmentComponent>
+          {[...new Array(1)].map((i) => (
             <ListItemButton alignItems="flex-start" key={i}>
-              {item.current_blob_img_url && (
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Photo Notification of ${item.title}`}
-                    src={item.current_blob_img_url}
-                  />
-                </ListItemAvatar>
-              )}
+              <ListItemAvatar>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="https://mui.com/static/images/avatar/3.jpg"
+                />
+              </ListItemAvatar>
               <ListItemText
-                primary={item.title && item.title}
+                primary="Placeholder"
                 secondary={
                   <>
                     <Typography
@@ -89,44 +124,15 @@ export default function NotificationList() {
                       variant="body2"
                       color="text.primary"
                     >
-                      {item.body && item.body}
+                      John Doe
                     </Typography>
+                    {"Placeholder"}
                   </>
                 }
               />
             </ListItemButton>
           ))}
-        {Notifications && Notifications.length === 0 && (
-          <>
-            <p>Notifikasi anda bersih</p>
-          </>
-        )}
-        {[...new Array(1)].map((i) => (
-          <ListItemButton alignItems="flex-start" key={i}>
-            <ListItemAvatar>
-              <Avatar
-                alt="Remy Sharp"
-                src="https://mui.com/static/images/avatar/3.jpg"
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Placeholder"
-              secondary={
-                <>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    John Doe
-                  </Typography>
-                  {"Placeholder"}
-                </>
-              }
-            />
-          </ListItemButton>
-        ))}
+        </ProtectedHiddenDevelopmentComponent>
       </List>
     </>
   );

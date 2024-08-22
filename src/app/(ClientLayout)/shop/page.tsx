@@ -18,6 +18,7 @@ import Link from "next/link";
 import GetFilterParams, {
   GetFilterSearchParams,
 } from "@/components/custom/ShopPage/GetFilterParams";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -116,22 +117,26 @@ export default async function ShopPage({
 
   return (
     <>
-      <p>{JSON.stringify(isInFilterMode)}</p>
-      <Link href="/shop">shop</Link>
-      <ContentCategoryModule />
-      <p>
-        {JSON.stringify(GetFilterSearchParams(searchParams, "fquery").array)}
-      </p>
-      <p>
-        {JSON.stringify(GetFilterSearchParams(searchParams, "sortmode").array)}
-      </p>
+      <ProtectedHiddenDevelopmentComponent>
+        <p>{JSON.stringify(isInFilterMode)}</p>
+        <Link href="/shop">shop</Link>
+        <ContentCategoryModule />
+        <p>
+          {JSON.stringify(GetFilterSearchParams(searchParams, "fquery").array)}
+        </p>
+        <p>
+          {JSON.stringify(
+            GetFilterSearchParams(searchParams, "sortmode").array
+          )}
+        </p>
+        {JSON.stringify(
+          (params.params ?? [])
+            .map((e) => decodeURIComponent(e))
+            .filter((e) => e.indexOf("fquery") !== -1)
+            .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
+        )}
+      </ProtectedHiddenDevelopmentComponent>
       <h1>Selamat Berbelanja!</h1>
-      {JSON.stringify(
-        (params.params ?? [])
-          .map((e) => decodeURIComponent(e))
-          .filter((e) => e.indexOf("fquery") !== -1)
-          .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
-      )}
       {isInFilterMode && (
         <>
           <Typography variant="h4" gutterBottom>
@@ -153,9 +158,6 @@ export default async function ShopPage({
       )}
       {!isInFilterMode && (
         <>
-          <Typography variant="h4" gutterBottom>
-            Yang Terbaik!
-          </Typography>
           <ProductList serverData={await FetchProducts()} />
         </>
       )}

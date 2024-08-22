@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { ParsedToken } from "firebase/auth";
 import { ADMIN_API_VERSION, API_PATH } from "./config";
+import { UploadedImageResult } from "./api/UploadToCloudinary";
 
 const API_VERSION = "v1";
 const DISABLED_BODY_DATA_METHODS = [
@@ -75,15 +76,18 @@ export async function AxiosFetchV1Api<
   });
   return Result as AxiosResponse<CustomResponse>;
 }
-export async function AxiosPostToImageUploadServer<
-  CustomResponse = any & ApiResponse
->(xsrf: string, authToken: string, productName: string, binary: any) {
+export async function AxiosPostToImageUploadServer(
+  xsrf: string,
+  authToken: string,
+  productName: string,
+  binary: any
+) {
   const formData = new FormData();
   formData.append("secAuthToken", authToken);
   formData.append("image_binary", binary);
   formData.append(
     "pathname",
-    `moonsunstone-x/product_assets/test-to-be-deleted/${
+    `moonsunstone-x/product_assets/${
       productName ?? "product-unknown-" + Date.now()
     }`
   );
@@ -96,7 +100,7 @@ export async function AxiosPostToImageUploadServer<
     },
     data: formData,
   });
-  return Result as CustomResponse;
+  return Result as AxiosResponse<ApiResponse<UploadedImageResult>, any>;
 }
 
 export default AxiosClient;

@@ -20,6 +20,9 @@ import paths, { GenerateShopFilterUrl } from "@/components/paths";
 import UserSummaryModule from "./UserSummaryModule";
 import HorizontalActionModule from "./HorizontalActionModule";
 import FetchProduct from "@/libs/fetchProductItem";
+import ProtectedHiddenDevelopmentComponent, {
+  IsDisabledOnProduction,
+} from "@/components/base/ProtectedHiddenDevComponent";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
@@ -172,7 +175,7 @@ export default async function ProductPage({
               </Typography>
               <Typography variant="h5" fontWeight="bold">
                 {new Intl.NumberFormat("id-ID", {
-                  currency: "IDR",
+                  currency: productItem.SuggestedCurrency ?? "",
                   style: "currency",
                 }).format(productItem.Price ?? 0)}
               </Typography>
@@ -191,40 +194,45 @@ export default async function ProductPage({
                 sx={{ mr: 1 }}
                 LinkComponent={NextLink}
                 href={paths.CHECKOUT_PAGE + "?test_param_direct_buy_id=1"}
+                disabled={IsDisabledOnProduction()}
               >
                 Beli
               </Button>
-              <Button variant="outlined">Tambahkan ke Keranjang</Button>
+              <Button variant="outlined" disabled={IsDisabledOnProduction()}>
+                Tambahkan ke Keranjang
+              </Button>
               <br />
             </div>
             <UserSummaryModule userInfo={productItem.ResolvedPublisherInfo} />
           </>
         )}
       </main>
-      <details
-        style={{
-          paddingBottom: "3rem",
-        }}
-      >
-        <summary
+      <ProtectedHiddenDevelopmentComponent>
+        <details
           style={{
-            marginBottom: "1rem",
+            paddingBottom: "3rem",
           }}
         >
-          DEBUG INFORMATION
-        </summary>
-        <pre
-          style={{
-            whiteSpace: "break-spaces",
-            overflow: "auto",
-            maxWidth: "100vw",
-            userSelect: "text",
-            marginBottom: "1rem",
-          }}
-        >
-          {JSON.stringify(productItem, null, 2)}
-        </pre>
-      </details>
+          <summary
+            style={{
+              marginBottom: "1rem",
+            }}
+          >
+            DEBUG INFORMATION
+          </summary>
+          <pre
+            style={{
+              whiteSpace: "break-spaces",
+              overflow: "auto",
+              maxWidth: "100vw",
+              userSelect: "text",
+              marginBottom: "1rem",
+            }}
+          >
+            {JSON.stringify(productItem, null, 2)}
+          </pre>
+        </details>
+      </ProtectedHiddenDevelopmentComponent>
     </>
   );
 }

@@ -1,10 +1,18 @@
 import { UploadApiResponse } from "cloudinary";
 import InitCloudinary from "../cloudinary/InitCloudinaryCred";
 
+export type UploadedImageResult = {
+  url: string;
+  created_at: string;
+  public_id: string;
+  width: number;
+  height: number;
+};
+
 export default async function UploadToCloudinary(
   folderpath: string,
   binary: File
-) {
+): Promise<UploadedImageResult> {
   const cloudinary = InitCloudinary();
   const ab = await binary.arrayBuffer();
   const buffer = new Uint8Array(ab);

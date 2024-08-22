@@ -12,6 +12,7 @@ export default function XTest() {
   const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager } = useGeneralFunction();
   const router = useRouter();
+
   const pathname = usePathname();
   async function ApplyAdmin() {
     if (user === null || typeof user === "undefined") {

@@ -140,12 +140,13 @@ export default function Home() {
               textContent: `Pipa PVC conduit dari perusahaan ini benar-benar berkualitas. Kuat, tahan lama, dan fleksibel, ideal untuk instalasi kabel di berbagai kondisi. Instalasi jadi lebih mudah dan hasilnya sangat memuaskan.`,
             },
             {
-              authorName: "Nopal market1",
-              textContent: "ambatakammmm",
+              authorName: "Mr.Ardhan market2",
+              textContent:
+                "Saya merekomendasikan pipa ini. Kuat, tahan lama, dan fleksibel, ideal untuk proyek saya",
             },
             {
               authorName: "Nopal market1",
-              textContent: "ya ya pipa ini bagus sekali, saya merekomendasikan",
+              textContent: "inpo ce es 😈",
             },
           ]}
         />

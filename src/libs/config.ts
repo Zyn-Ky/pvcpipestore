@@ -7,6 +7,8 @@ const SITE_BACKEND_CONFIG = {
   FIRESTORE_SHOP_CONFIG_ROOT_PATH: "ShopConfig/",
 };
 
+export const ADMIN_APPROVED_SELLER_USER_ROLE = "ACTIVE_SELLER";
+
 export const ADMIN_API_VERSION = process.env.API_VERSION || "vBeta";
 export const API_PATH = {
   IMAGE_UPLOAD_SERVER: `admin/${ADMIN_API_VERSION}/upload`,

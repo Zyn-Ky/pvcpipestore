@@ -4,7 +4,7 @@ import IsComingSoonSSR from "@/libs/firebase/comingSoonChecker";
 import { Metadata } from "next";
 import Link from "next/link";
 export const metadata: Metadata = {
-  title: `Daftar - ${SITE_CONFIG.SEO.Title}`,
+  title: `Daftar`,
 };
 export default async function LoginUI() {
   if (await IsComingSoonSSR())

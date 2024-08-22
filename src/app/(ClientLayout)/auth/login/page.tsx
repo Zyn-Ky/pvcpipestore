@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import SITE_CONFIG from "@/components/config";
 import LoginClient from "./LoginModule";
 export const metadata: Metadata = {
-  title: `Masuk - ${SITE_CONFIG.SEO.Title}`,
+  title: `Masuk`,
 };
 export default function LoginUI() {
   return (
