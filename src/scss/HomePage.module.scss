@@ -102,6 +102,9 @@ $padding-y-1: 18px;
   padding-right: $padding-x-1;
   max-width: 960px;
   margin-inline: auto;
+  .Description {
+    margin-bottom: 3rem;
+  }
 }
 
 .KelebihanBoxWrapper {
@@ -128,6 +131,9 @@ $padding-y-1: 18px;
   }
   .TextContainer {
     width: 400px;
+  }
+  .AltText {
+    margin-top: 3rem;
   }
   &.RowInverted {
     .TextContainer {
@@ -188,4 +194,14 @@ $padding-y-1: 18px;
   img {
     object-fit: cover !important;
   }
+}
+.ProductRecommended {
+  padding-top: $padding-y-1;
+  padding-bottom: $padding-y-1;
+  padding-left: $padding-x-1;
+  padding-right: $padding-x-1;
+  max-width: 500px;
+  min-height: 480px;
+  margin-inline: auto;
+  margin-bottom: 1rem;
 }

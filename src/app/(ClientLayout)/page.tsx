@@ -1,5 +1,5 @@
 import CSS from "@/scss/HomePage.module.scss";
-import { Button, Paper, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import AdsClickIcon from "@mui/icons-material/AdsClick";
@@ -16,13 +16,14 @@ import {
   PartnerPenguinImg,
   PartnerPerrunoImg,
   PartnerPolyfuseImg,
-  PartnerRucika1Img,
   PartnerRucikaImg,
   PartnerYutaImg,
 } from "@/components/assets/images";
 import { CarouselModule } from "./CarouselModule";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import ProductRecommendModule from "./ProductRecommendModule";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 
 const TestimonialModule = dynamic(
   () => import("@/components/custom/HomePage/TestimonialModule")
@@ -79,7 +80,11 @@ export default function Home() {
           <Typography variant="body1" gutterBottom>
             {text("PIPA_PVC_DEFINITION")}
           </Typography>
-          <Typography variant="body2" fontStyle="italic" sx={{ mt: 3 }}>
+          <Typography
+            variant="body2"
+            fontStyle="italic"
+            className={CSS.AltText}
+          >
             {text("PIPA_PVC_DEFINITION_ALT_TEXT")}
           </Typography>
         </div>
@@ -112,6 +117,19 @@ export default function Home() {
           />
         </div>
       </div>
+      <Typography
+        fontWeight="bold"
+        variant="h4"
+        gutterBottom
+        textAlign="center"
+      >
+        {text("PRODUCT_RECOMMENDATION_TITLE")}
+      </Typography>
+      <ProtectedHiddenDevelopmentComponent>
+        <div className={CSS.ProductRecommended}>
+          <ProductRecommendModule />
+        </div>
+      </ProtectedHiddenDevelopmentComponent>
       <div className={CSS.OuterTestimonialWrapper}>
         <Typography
           fontWeight="bold"
@@ -121,7 +139,7 @@ export default function Home() {
         >
           {text("TESTI_TITLE")}
         </Typography>
-        <Typography gutterBottom textAlign="center" sx={{ mb: 5 }}>
+        <Typography gutterBottom textAlign="center" className={CSS.Description}>
           {text("TESTI_DESC")}
         </Typography>
         <TestimonialModule
@@ -146,7 +164,7 @@ export default function Home() {
             },
             {
               authorName: "Nopal market1",
-              textContent: "inpo ce es 😈",
+              textContent: "yes king yes",
             },
           ]}
         />
@@ -163,7 +181,6 @@ export default function Home() {
           <OurPartners nextImage={PartnerPenguinImg} alt="Penguin® Logo" />
           <OurPartners nextImage={PartnerPerrunoImg} alt="Perruno® Logo" />
           <OurPartners nextImage={PartnerPolyfuseImg} alt="Polyfuse® Logo" />
-          {/* <OurPartners nextImage={PartnerRucika1Img} alt="Rucika Kelen® Logo" /> */}
           <OurPartners nextImage={PartnerRucikaImg} alt="Hoco® Logo" />
           <OurPartners nextImage={PartnerYutaImg} alt="Yuta© Logo" />
         </div>

@@ -36,6 +36,8 @@ export interface StoredProductCardInfo {
   Price?: number;
   PriceMode?: AcceptedPriceMode;
   SuggestedCurrency?: AcceptedCurrency;
+  CreatedAt?: number;
+  LastModifiedAt?: number;
 }
 
 export interface ProductCardInfo extends StoredProductCardInfo {
@@ -50,6 +52,18 @@ export interface ProductCardInfo extends StoredProductCardInfo {
     displayName: string | undefined;
   };
 }
+export interface StoredUserConfig {
+  PhoneNumberContact?: string;
+  CountryCodePhoneNumberContact?: string;
+}
+export interface StoredSearchRecordItem {
+  type: "ARTICLE TIPS" | "PRODUCT";
+  primaryTitle: string;
+  shortDescription: string;
+  id: string;
+  relativeUrl: string;
+}
+
 export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
 export type SortOrderType = "ascending" | "descending" | "ignore";
 export type OptionalArray<T> = (T | undefined)[];
