@@ -15,12 +15,15 @@ import { Metadata } from "next";
 import { AvailableUserAction, SummaryCurrentUser } from "./HeaderModule";
 import { LogoutBtn } from "./MenuModule";
 import PromptEmailVerification from "@/components/base/PromptEmailVerification";
+import { useTranslations } from "next-intl";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export const metadata: Metadata = {
   title: `Akun - ${SITE_CONFIG.SEO.Title}`,
 };
 
 export default function AccountSummary() {
+  const t = useTranslations("BASE");
   return (
     <div className={CSS.Container}>
       <div>
@@ -49,9 +52,9 @@ export default function AccountSummary() {
         </ListItemButton>
         <ListItemButton LinkComponent={Link} href={paths.SETTINGS_PAGE}>
           <ListItemIcon>
-            <InfoOutlined />
+            <SettingsIcon />
           </ListItemIcon>
-          <ListItemText primary="SETTINGS_LINK" />
+          <ListItemText primary={t("SETTINGS_TEXT")} />
         </ListItemButton>
         <ListItemButton>
           <ListItemIcon>

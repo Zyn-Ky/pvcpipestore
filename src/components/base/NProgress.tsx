@@ -11,6 +11,7 @@ export default function NProgressWrapper(props: PropsWithChildren) {
         color="#ff0000"
         options={{ showSpinner: true }}
         shallowRouting
+        memo
       />
     </>
   );

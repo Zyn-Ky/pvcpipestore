@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ChildPageResponsive from "./ChildPageResponsive";
 import SettingsSidebarResponsive from "./SettingsSidebarResponsive";
+import FirstTimeSetupButton from "./FirstTimeSetupButton";
 
 export default async function SettingsUISharedLayout({
   children,
@@ -28,11 +29,13 @@ export default async function SettingsUISharedLayout({
           <div className={CSS.Sidebar}>
             <h1>Pengaturan</h1>
             <List component="nav" aria-label="Settings Section">
+              <FirstTimeSetupButton />
               {[
                 ["/set-prefs/account", "Akun"],
                 ["/set-prefs/mb-themes", "Tema"],
                 ["/set-prefs/language", "Bahasa"],
-                ["/set-prefs/payments-mode", "Pembayaran"],
+                ["/set-prefs/address-perf", "Alamat Pengiriman"],
+                ["/set-prefs/payments-mode", "Metode Pembayaran"],
               ].map((btn) => (
                 <ListItemButton
                   LinkComponent={Link}
@@ -44,6 +47,7 @@ export default async function SettingsUISharedLayout({
               ))}
             </List>
           </div>
+          <Divider orientation="vertical" variant="middle" flexItem />
         </SettingsSidebarResponsive>
         <ChildPageResponsive>
           <div className={CSS.Child}>{children}</div>

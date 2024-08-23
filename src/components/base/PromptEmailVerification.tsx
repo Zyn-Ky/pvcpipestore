@@ -14,7 +14,7 @@ export default function PromptEmailVerification() {
   }
   return (
     <>
-      {!userManager.emailVerified && (
+      {!userManager.emailVerified && userManager.currentUser && (
         <Alert
           variant="outlined"
           color="warning"

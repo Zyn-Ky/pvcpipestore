@@ -11,7 +11,8 @@
     "SEARCH_TEXT": "Cari...",
     "SYSTEM_THEME_TEXT": "Tema Sesuai Sistem",
     "DARK_THEME_TEXT": "Tema Gelap",
-    "LIGHT_THEME_TEXT": "Tema Terang"
+    "LIGHT_THEME_TEXT": "Tema Terang",
+    "SETTINGS_TEXT": "Setelan"
   },
   "NAVBAR": {
     "NOTIFICATION_TEXT": "Notifikasi",

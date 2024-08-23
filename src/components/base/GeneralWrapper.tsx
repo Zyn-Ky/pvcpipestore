@@ -41,6 +41,7 @@ type GeneralFunctionContextProps = {
       SignOut: () => Promise<boolean>;
       SendVerificationEmail: () => Promise<boolean>;
     };
+    isFirstSetup: boolean;
     authError?: AuthError | Error;
   };
   apiManager: {
@@ -58,6 +59,7 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
     loading: false,
     currentUser: undefined,
     emailVerified: false,
+    isFirstSetup: false,
     method: {
       async Login() {},
       async SignOut() {
@@ -160,8 +162,10 @@ export default function GeneralFunctionWrapper(
             SendVerificationEmail,
           },
           authError: GoogleUserSignInError || AuthError,
+          isFirstSetup: true,
         },
         apiManager: { xsrfToken: props.apiXsrf || "MISSING" },
+
         swManager: {
           getSWRegistration: () => SWRegistration,
         },

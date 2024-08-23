@@ -53,8 +53,16 @@ export interface ProductCardInfo extends StoredProductCardInfo {
   };
 }
 export interface StoredUserConfig {
+  IsOnFirstSetup?: boolean;
   PhoneNumberContact?: string;
   CountryCodePhoneNumberContact?: string;
+  ShippingAddress?: {
+    Address: string;
+    OptionalAddress: string;
+    City: string;
+    Province: string;
+    ZipCode: string;
+  };
 }
 export interface StoredSearchRecordItem {
   type: "ARTICLE TIPS" | "PRODUCT";

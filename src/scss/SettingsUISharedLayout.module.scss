@@ -1,7 +1,9 @@
 .SettingsContainer {
   display: flex;
+  padding: 1rem;
+  gap: 1.25rem;
   .Sidebar {
-    min-width: 360px;
+    min-width: 320px;
   }
   .Child {
     flex: 1 1;

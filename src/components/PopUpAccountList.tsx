@@ -133,6 +133,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               },
               {
                 startIcon: <SettingsIcon />,
+                href: paths.SETTINGS_PAGE,
                 text: text("SETTINGS_TEXT"),
               },
             ],
