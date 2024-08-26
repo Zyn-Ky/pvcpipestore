@@ -1,20 +1,4 @@
 .AppBar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 70px;
-  padding: 5rem;
-  display: flex;
-  align-items: center;
-  .Fill {
-    flex: 1;
-  }
-  .ActionButton,
-  .Logo {
-    display: flex;
-    align-items: center;
-  }
   @supports (
     (not (-webkit-backdrop-filter: none)) or (not (backdrop-filter: none))
   ) {

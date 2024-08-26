@@ -6,17 +6,19 @@ import {
   PHASE_PRODUCTION_BUILD,
 } from "next/constants.js";
 import createNextIntlPlugin from "next-intl/plugin";
+import createMDX from "@next/mdx";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 console.log("NODE_ENV :", process.env.NODE_ENV);
 const withNextIntl = createNextIntlPlugin();
-
+const withMDX = createMDX({});
 const DevModeRemote = [{ protocol: "https", hostname: "**" }];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   sassOptions: {
     includePaths: [path.join(__dirname, "src", "scss")],
   },
@@ -57,5 +59,5 @@ export default async (phase) => {
     });
     return withSerwist(withNextIntl(nextConfig));
   }
-  return withNextIntl(nextConfig);
+  return withNextIntl(withMDX(nextConfig));
 };

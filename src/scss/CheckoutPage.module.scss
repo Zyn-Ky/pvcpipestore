@@ -2,5 +2,13 @@
   padding: 2rem;
   .Form {
     width: 100%;
+    .Name {
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 1rem;
+      .NameTextField {
+        flex: 1;
+      }
+    }
   }
 }

@@ -1,7 +1,6 @@
 "use client";
 import Image, { StaticImageData } from "next/image";
 import Carousel from "react-material-ui-carousel";
-import CSS from "@/scss/custom/TestimonialUI.module.scss";
 import { Avatar, Collapse, Fab, Typography } from "@mui/material";
 import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import { memo, useState } from "react";
@@ -29,7 +28,7 @@ const TestimonialModule = memo(function TestimonialModule(
     const [textExpanded, setTextExpanded] = useState(false);
     return (
       <>
-        <div className={CSS.TestiItem}>
+        <div className="flex flex-col items-center h-[300px] px-20">
           <Avatar
             src={
               props.avatar &&
@@ -37,19 +36,19 @@ const TestimonialModule = memo(function TestimonialModule(
                 ? props.avatar
                 : props.avatar.src)
             }
-            sx={{ width: 80, height: 80, mb: 2 }}
+            className="size-[80px] mb-4"
           />
           <Typography variant="h5" gutterBottom textAlign="center">
             {props.authorName && props.authorName}
           </Typography>
-          <div className={CSS.TextContainer}>
+          <div className="h-[200px] select-text overflow-y-auto">
             <Collapse collapsedSize={145} in={textExpanded}>
               <Typography
                 variant="body1"
                 onClick={() => setTextExpanded(!textExpanded)}
-                sx={{ overflow: "auto", cursor: "pointer" }}
+                className="overflow-auto cursor-pointer"
               >
-                <FormatQuoteIcon color="primary" className={CSS.QuoteIcon} />
+                <FormatQuoteIcon color="primary" />
                 {props.textContent && props.textContent}
               </Typography>
             </Collapse>
@@ -59,9 +58,9 @@ const TestimonialModule = memo(function TestimonialModule(
     );
   }
   return (
-    <div className={CSS.Wrapper}>
+    <>
       <Carousel
-        className={CSS.CarouselWrapper}
+        className="w-full"
         animation="fade"
         cycleNavigation
         swipe={false}
@@ -79,7 +78,7 @@ const TestimonialModule = memo(function TestimonialModule(
         variant="extended"
         size="small"
         color="primary"
-        sx={{ bottom: "-1rem", left: 0 }}
+        className="bottom-[-1rem] left-0"
         onClick={() => setAutoPlay(!autoPlay)}
         onMouseEnter={() => setIsHoveringMouse(true)}
         onMouseLeave={() => setIsHoveringMouse(false)}
@@ -93,7 +92,7 @@ const TestimonialModule = memo(function TestimonialModule(
           </Typography>
         </Collapse>
       </Fab>
-    </div>
+    </>
   );
 });
 

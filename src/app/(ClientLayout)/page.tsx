@@ -40,11 +40,11 @@ export default function Home() {
         <CarouselModule />
         <FancySeperator />
       </div>
-      <div className={CSS.OurServicesList}>
+      <div className="p-2 mt-4 min-h-[200px] text-center my-4">
         <Typography fontWeight="bold" variant="h4" gutterBottom>
           {text("WHY_CHOOSE_US")}
         </Typography>
-        <div className={CSS.UXLists}>
+        <div className="flex h-[250px] mt-4 items-baseline justify-center gap-4 max-md:flex-col max-md:h-auto max-md:items-center">
           <OurServices
             icon={<FlightLandIcon fontSize="large" />}
             header={text("REASON_TO_CHOOSE_US_1")}
@@ -117,20 +117,20 @@ export default function Home() {
           />
         </div>
       </div>
-      <Typography
-        fontWeight="bold"
-        variant="h4"
-        gutterBottom
-        textAlign="center"
-      >
-        {text("PRODUCT_RECOMMENDATION_TITLE")}
-      </Typography>
       <ProtectedHiddenDevelopmentComponent>
+        <Typography
+          fontWeight="bold"
+          variant="h4"
+          gutterBottom
+          textAlign="center"
+        >
+          {text("PRODUCT_RECOMMENDATION_TITLE")}
+        </Typography>
         <div className={CSS.ProductRecommended}>
           <ProductRecommendModule />
         </div>
       </ProtectedHiddenDevelopmentComponent>
-      <div className={CSS.OuterTestimonialWrapper}>
+      <div className="p-5 max-w-[960px] mx-auto">
         <Typography
           fontWeight="bold"
           variant="h4"
@@ -139,7 +139,7 @@ export default function Home() {
         >
           {text("TESTI_TITLE")}
         </Typography>
-        <Typography gutterBottom textAlign="center" className={CSS.Description}>
+        <Typography gutterBottom textAlign="center" className="mb-12">
           {text("TESTI_DESC")}
         </Typography>
         <TestimonialModule
@@ -215,7 +215,7 @@ export default function Home() {
           </div>
         ))}
       </div>
-      <div className={CSS.AboutCompany}>
+      <div className="p-2">
         <Typography
           variant="h4"
           fontWeight="bold"

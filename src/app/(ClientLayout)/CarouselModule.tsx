@@ -1,6 +1,6 @@
 "use client";
 import CSS from "@/scss/HomePage.module.scss";
-import { BetterBigCarousel } from "@/components";
+import Carousel from "react-material-ui-carousel";
 import {
   HomePage_CoverImg,
   HomePage_Image_Banner2,
@@ -36,13 +36,14 @@ export function CarouselModule() {
 
   return (
     <>
-      <BetterBigCarousel
+      <Carousel
         animation="fade"
         cycleNavigation
         navButtonsAlwaysVisible
         autoPlay={autoPlay}
         indicators={false}
         swipe={false}
+        className="absolute inset-0"
       >
         <ItemImageCarousel
           src={HomePage_CoverImg}
@@ -54,6 +55,11 @@ export function CarouselModule() {
             {
               href: paths.ACTUAL_SHOP,
               text: text("SHOP_NOW"),
+              outlined: false,
+            },
+            {
+              href: paths.ARTICLE_PAGE,
+              text: baseText("KNOW_MORE"),
               outlined: false,
             },
             {
@@ -102,7 +108,7 @@ export function CarouselModule() {
             },
           ]}
         />
-      </BetterBigCarousel>
+      </Carousel>
       <Fab
         variant="extended"
         size="small"

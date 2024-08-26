@@ -25,15 +25,7 @@ const ItemImageCarousel = memo(function ItemImageCarousel(
 ) {
   return (
     <>
-      <Paper
-        sx={{
-          position: "relative",
-          width: "100%",
-          height: "60vh",
-          minHeight: "575px",
-          maxHeight: "1080px",
-        }}
-      >
+      <div className="relative w-full h-[60vh] min-h-[575px] max-h-[1080px]">
         <BetterBgImg
           src={props.src}
           alt={props.alt}
@@ -47,22 +39,20 @@ const ItemImageCarousel = memo(function ItemImageCarousel(
           <div>
             {props.actionButton &&
               props.actionButton.map((action, i) => (
-                <Link
-                  href={action.href}
+                <Button
                   key={`X_LINK_ACTION_${props.key && props.key}_${i}`}
+                  variant={action.outlined ? "outlined" : "contained"}
+                  color={action.outlined ? "inherit" : "info"}
+                  className="m-1"
+                  LinkComponent={Link}
+                  href={action.href}
                 >
-                  <Button
-                    variant={action.outlined ? "outlined" : "contained"}
-                    color={action.outlined ? "inherit" : "info"}
-                    sx={{ m: 1 }}
-                  >
-                    {action.text && action.text}
-                  </Button>
-                </Link>
+                  {action.text && action.text}
+                </Button>
               ))}
           </div>
         </ContainerItemTextCarousel>
-      </Paper>
+      </div>
     </>
   );
 });

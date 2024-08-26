@@ -37,7 +37,7 @@ export default function AccountSummary() {
           </div>
         </Paper>
       </div>
-      <List component="nav" aria-labelledby="nested-list-subheader">
+      <List component="nav">
         <ListItemButton>
           <ListItemIcon>
             <InfoOutlined />

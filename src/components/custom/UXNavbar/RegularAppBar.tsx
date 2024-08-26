@@ -33,7 +33,7 @@ export default function RegularAppBar({
             {!isSmallScreen && (
               <>
                 <div className={CSS.Filler} />
-                <Box sx={{ display: "flex" }}>
+                <Box className="flex">
                   <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
                     <IconButton
                       size="large"

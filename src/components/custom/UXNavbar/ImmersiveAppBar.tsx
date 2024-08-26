@@ -102,13 +102,7 @@ export default function ImmersiveAppBar() {
   return (
     <>
       <Box
-        sx={{
-          zIndex: (theme) => theme.zIndex.appBar,
-          [theme.breakpoints.down("md")]: {
-            transition: (theme) => theme.transitions.create("padding"),
-          },
-        }}
-        className={CSS.AppBar}
+        className="fixed top-0 left-0 w-full h-[70px] px-20 py-20 flex items-center max-[415px]:px-1 max-muiMd:transition-[padding] z-muiAppBar"
         style={{
           padding: `${padding}rem`,
           backdropFilter: `blur(${blur}px)`,
@@ -124,7 +118,7 @@ export default function ImmersiveAppBar() {
           boxShadow: opacity > 0.4 ? theme.shadows[3] : "none",
         }}
       >
-        <div className={CSS.Logo}>
+        <div className="flex items-center">
           <Link href="/">
             {theme.palette.mode === "dark" ? (
               <Image src={LogoMonochrome} width={130} alt="Logo SIB" priority />
@@ -133,7 +127,7 @@ export default function ImmersiveAppBar() {
             )}
           </Link>
         </div>
-        <div className={CSS.Fill}>
+        <div className="flex-1">
           <Tooltip
             title={
               <>
@@ -164,7 +158,7 @@ export default function ImmersiveAppBar() {
           </Tooltip>
           <AccessibilityJumpKey notFloating />
         </div>
-        <div className={CSS.ActionButton}>
+        <div className="flex items-center">
           <Slide in={showShopBtn} direction="down" unmountOnExit>
             <div>
               <Fade in={showShopBtn}>

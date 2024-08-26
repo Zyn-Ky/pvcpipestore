@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/scss/globals.scss";
 import "react-photo-view/dist/react-photo-view.css";
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import { XAppBar } from "@/components";
 import SITE_CONFIG from "@/components/config";
 import ColorModeProvider from "@/components/base/ClientThemeWrapper";

@@ -19,13 +19,6 @@ $padding-y-1: 18px;
   padding-right: $padding-x-1;
 }
 
-.AboutCompany {
-  padding-top: $padding-y-1;
-  padding-bottom: $padding-y-1;
-  padding-left: $padding-x-1;
-  padding-right: $padding-x-1;
-}
-
 .Partners {
   padding-top: $padding-y-1;
   padding-bottom: $padding-y-1;
@@ -57,53 +50,6 @@ $padding-y-1: 18px;
         padding: 1rem;
       }
     }
-  }
-}
-
-.OurServicesList {
-  padding-top: $padding-y-1;
-  padding-bottom: $padding-y-1;
-  padding-left: $padding-x-1;
-  padding-right: $padding-x-1;
-  margin-top: 1rem;
-  min-height: 200px;
-  text-align: center;
-  .UXLists {
-    display: flex;
-    height: 250px;
-    margin-top: 1rem;
-    align-items: baseline;
-    justify-content: center;
-    gap: 1rem;
-    @media screen and (max-width: 700px) {
-      flex-direction: column;
-      height: auto;
-      align-items: center;
-    }
-    .Item {
-      display: flex;
-      flex-direction: column;
-      width: 220px;
-      justify-content: center;
-      padding-top: $padding-y-1;
-      padding-bottom: $padding-y-1;
-      align-items: center;
-      .ItemTitle {
-        margin-top: 1rem;
-      }
-    }
-  }
-}
-
-.OuterTestimonialWrapper {
-  padding-top: $padding-y-1;
-  padding-bottom: $padding-y-1;
-  padding-left: $padding-x-1;
-  padding-right: $padding-x-1;
-  max-width: 960px;
-  margin-inline: auto;
-  .Description {
-    margin-bottom: 3rem;
   }
 }
 
@@ -168,7 +114,6 @@ $padding-y-1: 18px;
     }
   }
 }
-
 .OurMissionContainer {
   display: flex;
   padding: 5rem;

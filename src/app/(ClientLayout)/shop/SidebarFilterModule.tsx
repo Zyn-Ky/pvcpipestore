@@ -16,7 +16,7 @@ export default function SidebarFilterModule() {
         orientation="horizontal"
         // style={{ width: isInFilterMode ? "260px" : "0px" }}
       >
-        <Toolbar sx={{ width: 260 }} />
+        <Toolbar className="w-[260px]" />
         <Typography variant="h4" fontWeight="bold">
           Filter
         </Typography>

@@ -10,7 +10,7 @@ const paths = {
   AUTH_REGISTER: "/auth/register",
   SETTINGS_PAGE: "/set-prefs",
   CONTACT_PAGE: "/help/support",
-  ARTICLE_PAGE: "/help/article",
+  ARTICLE_PAGE: "/help/articles",
   CHECKOUT_PAGE: "/sp-checkout",
   SELLER_ADMIN_PAGE: "/admin",
   POST_PRODUCT_ADMIN_PAGE: "/admin/post",

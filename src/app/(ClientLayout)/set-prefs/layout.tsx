@@ -47,7 +47,12 @@ export default async function SettingsUISharedLayout({
               ))}
             </List>
           </div>
-          <Divider orientation="vertical" variant="middle" flexItem />
+          <Divider
+            orientation="vertical"
+            variant="middle"
+            flexItem
+            className="block max-[600px]:hidden"
+          />
         </SettingsSidebarResponsive>
         <ChildPageResponsive>
           <div className={CSS.Child}>{children}</div>

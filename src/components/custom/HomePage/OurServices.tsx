@@ -9,7 +9,7 @@ type ItemOurServices = {
 
 export default function OurServices(props: ItemOurServices) {
   return (
-    <div className={CSS.Item}>
+    <div className="flex flex-col w-[220px] justify-center py-5 items-center">
       {props.icon && props.icon}
       <Typography
         variant="body1"
@@ -17,7 +17,7 @@ export default function OurServices(props: ItemOurServices) {
         fontWeight="bold"
         gutterBottom
         textTransform="capitalize"
-        className={CSS.ItemTitle}
+        className="mt-4"
       >
         {props.header && props.header}
       </Typography>

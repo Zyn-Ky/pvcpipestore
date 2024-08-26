@@ -39,7 +39,7 @@ export default function UserSummaryModule({
       >
         {userInfo && (
           <Paper
-            sx={{ mt: 2, maxWidth: "500px", mx: "auto" }}
+            className="mt-2 max-w-[500px] mx-auto"
             data-force-smooth-transition
           >
             <Typography variant="body1" p={2}>

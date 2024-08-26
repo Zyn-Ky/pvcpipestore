@@ -63,12 +63,13 @@ export default function CheckoutPage() {
             />
           </RadioGroup>
         </FormGroup>
-        <FormGroup>
+        <FormGroup className={CSS.Name}>
           <TextField
             type="text"
             name="user_firstname"
             label="Nama depan"
             variant="filled"
+            className={CSS.NameTextField}
             value={
               useDifferentInfo === "same"
                 ? userManager.currentUser.displayName &&
@@ -91,6 +92,7 @@ export default function CheckoutPage() {
             }
             label="Nama belakang"
             variant="filled"
+            className={CSS.NameTextField}
             InputProps={{ readOnly: useDifferentInfo === "same" }}
             onChange={(e) => {
               setContactLastName(e.currentTarget.value);
@@ -131,7 +133,14 @@ export default function CheckoutPage() {
           />
         </FormGroup>
         <FormGroup>
-          <TextField type="time" label="placeholder" variant="filled" />
+          <TextField
+            type="text"
+            label="Pesan kepada penjual"
+            multiline
+            minRows={3}
+            maxRows={6}
+            variant="filled"
+          />
         </FormGroup>
       </FormControl>
     </div>

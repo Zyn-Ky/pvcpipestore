@@ -1,5 +1,10 @@
 "use client";
-import { createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
 import { getCookie, setCookie } from "cookies-next";
 import {
   createContext,
@@ -11,6 +16,8 @@ import {
 } from "react";
 import SITE_CONFIG from "../config";
 import { useEffectOnce } from "react-use";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 
 export type AvailableThemeMode = "light" | "dark" | "system" | undefined;
 
@@ -25,6 +32,10 @@ const DefaultProps: GlobalSettingsProps = {
 };
 
 const DefaultTheme: AvailableThemeMode = "system";
+const emotionCache = createCache({
+  key: "css",
+  prepend: true,
+});
 
 export const GlobalSettings = createContext<GlobalSettingsProps>(DefaultProps);
 
@@ -69,21 +80,23 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
     []
   );
   const themeUI = useMemo(() => {
+    if (typeof window === "undefined") return createTheme({});
     const SmoothColorTransitionProp = {
       styleOverrides: {
         root:
-          typeof window !== "undefined" &&
-          window &&
-          window.document &&
-          window.document.body &&
-          window.document.body.getAttribute("data-smooth-color-transition") ===
-            "true"
+          document.body.getAttribute("data-smooth-color-transition") === "true"
             ? {
                 transitionProperty:
                   "background-color, color, box-shadow, opacity, transform !important",
                 transitionDuration: "250ms",
               }
             : {},
+      },
+    };
+    const body = document.querySelector("body");
+    const OverrideContainer = {
+      defaultProps: {
+        container: body,
       },
     };
     return createTheme({
@@ -93,12 +106,22 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
         MuiAlert: SmoothColorTransitionProp,
         MuiBottomNavigation: SmoothColorTransitionProp,
         MuiButtonBase: SmoothColorTransitionProp,
+        MuiPopper: {
+          ...OverrideContainer,
+        },
+        MuiDialog: {
+          ...OverrideContainer,
+        },
+        MuiModal: {
+          ...OverrideContainer,
+        },
         MuiPopover: {
           styleOverrides: {
             root: {
               zIndex: 9999,
             },
           },
+          ...OverrideContainer,
         },
       },
     });
@@ -108,16 +131,20 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
   });
   return (
     <>
-      <ThemeProvider theme={themeUI}>
-        <GlobalSettings.Provider
-          value={{
-            ThemeMode: themeMode,
-            SetThemeMode,
-          }}
-        >
-          {props.children && props.children}
-        </GlobalSettings.Provider>
-      </ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={themeUI}>
+          <CacheProvider value={emotionCache}>
+            <GlobalSettings.Provider
+              value={{
+                ThemeMode: themeMode,
+                SetThemeMode,
+              }}
+            >
+              {props.children && props.children}
+            </GlobalSettings.Provider>
+          </CacheProvider>
+        </ThemeProvider>
+      </StyledEngineProvider>
     </>
   );
 }

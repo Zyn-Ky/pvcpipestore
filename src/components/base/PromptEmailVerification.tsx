@@ -19,7 +19,7 @@ export default function PromptEmailVerification() {
           variant="outlined"
           color="warning"
           icon={<Warning />}
-          sx={{ my: 1 }}
+          className="my-4"
           action={
             <Button
               variant="contained"

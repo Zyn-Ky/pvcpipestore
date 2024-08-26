@@ -39,10 +39,10 @@ export default async function SellerRootLayout({
               <CssBaseline enableColorScheme />
               <NProgressWrapper>
                 <ProtectedSellerOnlyRoute>
-                  <Box sx={{ display: "flex" }}>
+                  <Box className="flex">
                     <SellerAppBar>
                       <Toolbar />
-                      <Box component="main" sx={{ p: 3 }}>
+                      <Box component="main" className="p-3">
                         {children}
                       </Box>
                     </SellerAppBar>
