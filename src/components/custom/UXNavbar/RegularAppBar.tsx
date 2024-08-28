@@ -5,7 +5,6 @@ import BetterAppBar from "./BetterAppBar";
 import LogoAndSearchModule from "./HomePage";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import { MoreVert, Notifications } from "@mui/icons-material";
-import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 
 export default function RegularAppBar({
   isSmallScreen,
@@ -27,9 +26,7 @@ export default function RegularAppBar({
       <Box flexGrow={1}>
         <BetterAppBar>
           <Toolbar role="menubar" className="transition-[min-height]">
-            <ProtectedHiddenDevelopmentComponent>
-              <LogoAndSearchModule />
-            </ProtectedHiddenDevelopmentComponent>
+            <LogoAndSearchModule />
             <AccessibilityJumpKey />
             {!isSmallScreen && (
               <>

@@ -12,6 +12,7 @@ import LogoColorful from "../../assets/logo-colorful.webp";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 const Search = dynamic(
   async () =>
     (await import("@/components/custom/UXNavbar/BetterSearchBar")).Search
@@ -38,15 +39,17 @@ export default function LogoAndSearchModule() {
           <Image src={LogoColorful} width={160} alt="Logo SIB" priority />
         )}
       </NextLink>
-      <Search className="ml-8">
-        <SearchIconWrapper>
-          <SearchIcon />
-        </SearchIconWrapper>
-        <StyledInputBase
-          placeholder={text("SEARCH_TEXT")}
-          inputProps={{ "aria-label": "search" }}
-        />
-      </Search>
+      <ProtectedHiddenDevelopmentComponent>
+        <Search className="ml-8">
+          <SearchIconWrapper>
+            <SearchIcon />
+          </SearchIconWrapper>
+          <StyledInputBase
+            placeholder={text("SEARCH_TEXT")}
+            inputProps={{ "aria-label": "search" }}
+          />
+        </Search>
+      </ProtectedHiddenDevelopmentComponent>
     </>
   );
 }
