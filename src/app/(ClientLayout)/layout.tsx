@@ -11,7 +11,8 @@ import GeneralFunctionWrapper from "@/components/base/GeneralWrapper";
 import { headers } from "next/headers";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 const NProgressWrapper = dynamic(() => import("@/components/base/NProgress"));
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
@@ -85,6 +86,8 @@ export default async function RootLayout(
         <html lang={locale}>
           <CssBaseline enableColorScheme />
           <body className={inter.className} data-smooth-color-transition>
+            <SpeedInsights />
+            <Analytics />
             <WordpressMigration />
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
               <NProgressWrapper>
