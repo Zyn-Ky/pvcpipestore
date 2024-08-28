@@ -1,12 +1,13 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "4.10.0-coming.0",
+  "version": "4.10.1-coming.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "increment-patch:coming": "npm version prepatch --no-git-tag-version --preid coming"
   },
   "dependencies": {
     "@edge-csrf/nextjs": "^2.2.2",
@@ -24,6 +25,7 @@
     "axios": "^1.7.2",
     "cloudinary": "^2.4.0",
     "cookies-next": "^4.2.1",
+    "date-fns": "^3.6.0",
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "gray-matter": "^4.0.3",
@@ -32,6 +34,7 @@
     "jsonwebtoken": "^9.0.2",
     "next": "^14.2.5",
     "next-intl": "^3.17.2",
+    "next-mdx-remote": "^5.0.0",
     "next-nprogress-bar": "^2.3.12",
     "react": "^18",
     "react-dom": "^18",
