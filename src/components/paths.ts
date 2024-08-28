@@ -41,4 +41,8 @@ export function GenerateShopFilterUrl({ filterID }: { filterID?: number[] }) {
   return `${paths.ACTUAL_SHOP}${filterID && `?fquery=${filterID.join(",")}`}`;
 }
 
+export function GeneratePostURL(id: string, absolute?: boolean) {
+  return `${paths.ARTICLE_PAGE}/${id}`;
+}
+
 export default paths;

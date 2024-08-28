@@ -30,14 +30,7 @@ export default function CheckoutPage() {
 
   return (
     <div className={CSS.CheckoutContainer}>
-      <FormControl
-        className={CSS.Form}
-        sx={{
-          ".MuiFormGroup-root": {
-            my: 1,
-          },
-        }}
-      >
+      <FormControl className={`${CSS.Form} [&_.MuiFormGroup-root]:my-4`}>
         <h1>Checkout</h1>
         <FormGroup>
           <FormLabel id="demo-radio-buttons-group-label">

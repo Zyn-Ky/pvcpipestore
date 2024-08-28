@@ -56,9 +56,7 @@ export default function UserSummaryModule({
                     alt={`Photo of ${userInfo.displayName}`}
                   />
                 )}
-                {!userInfo.photoURL && (
-                  <Avatar sx={{ width: 64, height: 64 }} />
-                )}
+                {!userInfo.photoURL && <Avatar className="w-16" />}
               </div>
 
               <Typography flex={1}>{userInfo.displayName}</Typography>

@@ -6,6 +6,7 @@ import { remark } from "remark";
 import html from "remark-html";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { ReactElement } from "react";
+import components from "@/components/custom/MDRender/components";
 
 const postsDirectory = path.join(process.cwd(), "src", "posts");
 
@@ -18,14 +19,25 @@ export async function getPost(postid: string): Promise<{
     [key: string]: any;
   };
 }> {
-  const filepath = path.join(postsDirectory, `${postid}.mdx`);
-  const exists = existsSync(filepath);
-  if (!exists)
+  let decidedFilepath = "";
+  const assumedMDXFilepath = path.join(postsDirectory, `${postid}.mdx`);
+  const assumedMDFilepath = path.join(postsDirectory, `${postid}.md`);
+  const MDXFileExists = existsSync(assumedMDXFilepath);
+  const MDFileExists = existsSync(assumedMDFilepath);
+  if (MDXFileExists) decidedFilepath = assumedMDXFilepath;
+  if (MDFileExists) {
+    decidedFilepath = assumedMDFilepath;
+  }
+  if (MDXFileExists && MDFileExists) {
+    decidedFilepath = assumedMDXFilepath;
+  }
+  if (!MDFileExists && !MDXFileExists) {
     return {
       exists: false,
       content: null,
     };
-  const file = await readFile(filepath, "utf8");
+  }
+  const file = await readFile(decidedFilepath, "utf8");
   const matterResult = matter(file);
 
   // Use remark to convert markdown into HTML string
@@ -36,6 +48,7 @@ export async function getPost(postid: string): Promise<{
   const { content, frontmatter } = await compileMDX<{ title: string }>({
     source: file,
     options: { parseFrontmatter: true },
+    components,
   });
   return {
     exists: true,
@@ -55,7 +68,7 @@ export async function getDateSortedPostsData() {
     await Promise.all(
       fileNames.map(async (fileName) => {
         // Remove ".md" from file name to get id
-        const id = fileName.replace(/\.md$/, "");
+        const id = fileName.replace(/\.md$/, "").replace(/\.mdx$/, "");
 
         // Read markdown file as string
         const fullPath = path.join(postsDirectory, fileName);

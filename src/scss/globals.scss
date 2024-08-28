@@ -16,6 +16,11 @@ body {
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   user-select: none;
   height: 100%;
+  @layer base {
+    & {
+      @apply dangerWidth:overflow-hidden dangerHeight:overflow-hidden;
+    }
+  }
 }
 
 body[data-smooth-color-transition] {

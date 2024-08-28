@@ -130,7 +130,7 @@ export default function SellerAppBar(props: PropsWithChildren) {
         onClose={() => setOpenSidebar(false)}
       >
         <Toolbar />
-        <List sx={{ flex: 1 }}>
+        <List className="flex-1">
           <ListItem
             sx={{
               display: "block",

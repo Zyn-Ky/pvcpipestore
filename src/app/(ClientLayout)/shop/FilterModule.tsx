@@ -70,7 +70,7 @@ export default memo(function AdvancedFilterModule({
           <Button
             LinkComponent={Link}
             href={paths.ACTUAL_SHOP}
-            sx={{ mb: 1 }}
+            className="mb-4"
             variant="outlined"
           >
             Hapus filter
@@ -152,10 +152,10 @@ export default memo(function AdvancedFilterModule({
         in={isBiggerScreen && isOpened}
         unmountOnExit
         mountOnEnter
-        sx={{ mt: 1 }}
+        className="mt-4"
       >
         <Typography variant="h5">Filter</Typography>
-        <Divider sx={{ my: 1 }} />
+        <Divider className="my-4" />
         <Child />
       </Collapse>
       <Popover
@@ -163,7 +163,9 @@ export default memo(function AdvancedFilterModule({
         anchorEl={popupAnchor}
         onClose={CloseModal}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        slotProps={{ paper: { sx: { p: 2, width: 400 } } }}
+        slotProps={{
+          paper: { className: "p-8 min-h-[400px]" },
+        }}
       >
         <Stack direction="row" spacing={1} mb={1} alignItems="center">
           <Typography variant="h5" flex={1}>
@@ -173,7 +175,7 @@ export default memo(function AdvancedFilterModule({
             <CloseIcon />
           </IconButton>
         </Stack>
-        <Divider sx={{ mb: 1 }} />
+        <Divider className="mb-4" />
         <Child />
       </Popover>
       <SwipeableDrawer
@@ -182,7 +184,7 @@ export default memo(function AdvancedFilterModule({
         onClose={CloseModal}
         onOpen={() => {}}
         disableSwipeToOpen
-        PaperProps={{ sx: { borderRadius: "24px 24px 0 0" } }}
+        PaperProps={{ style: { borderRadius: "24px 24px 0 0" } }}
       >
         <Puller />
         <Stack
@@ -200,8 +202,8 @@ export default memo(function AdvancedFilterModule({
             <CloseIcon />
           </IconButton>
         </Stack>
-        <Divider sx={{ mb: 1 }} />
-        <Box sx={{ px: 2 }}>
+        <Divider className="mb-4" />
+        <Box className="px-8">
           <Child />
         </Box>
       </SwipeableDrawer>

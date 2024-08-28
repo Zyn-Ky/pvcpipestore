@@ -49,7 +49,7 @@ export default function FirstTimeSetupButton() {
               </IconButton>
             </ListItemIcon>
           </ListItemButton>
-          <Divider sx={{ my: 2 }} />
+          <Divider className="my-8" />
         </>
       </Collapse>
     )

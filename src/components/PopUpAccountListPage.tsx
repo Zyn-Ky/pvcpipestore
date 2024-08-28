@@ -74,7 +74,7 @@ export const Menus = memo(function Menus(props: menus) {
                 .length !== props.items[parentIndex + 1].length && (
                 <>
                   <Divider
-                    sx={{ my: 1 }}
+                    className="mt-4"
                     key={`PARENT_MENU_DIVIDER_${parentIndex}`}
                   />
                 </>

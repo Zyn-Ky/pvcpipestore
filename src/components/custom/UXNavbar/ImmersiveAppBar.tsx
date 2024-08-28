@@ -102,7 +102,7 @@ export default function ImmersiveAppBar() {
   return (
     <>
       <Box
-        className="fixed top-0 left-0 w-full h-[70px] px-20 py-20 flex items-center max-[415px]:px-1 max-muiMd:transition-[padding] z-muiAppBar"
+        className="fixed top-0 left-0 w-full h-[70px] px-20 py-20 flex items-center max-[415px]:px-1 transition-[padding] z-muiAppBar"
         style={{
           padding: `${padding}rem`,
           backdropFilter: `blur(${blur}px)`,
@@ -138,13 +138,13 @@ export default function ImmersiveAppBar() {
             }
           >
             <IconButton
-              sx={{
-                ml: 2,
+              style={{
                 color:
                   y >= AUTO_ICON_COLOR_SCROLL_THRESHOLD
-                    ? (theme) => theme.palette.text.primary
-                    : (theme) => theme.palette.common.white,
+                    ? theme.palette.text.primary
+                    : theme.palette.common.white,
               }}
+              className="ml-8"
               onClick={() => {
                 if (ThemeMode === "system") SetThemeMode("light");
                 if (ThemeMode === "light") SetThemeMode("dark");

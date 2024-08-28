@@ -16,9 +16,12 @@ module.exports = {
         muiModal: "1300",
         muiSnackbar: "1400",
         muiTooltip: "1500",
+        godMode: "99999999999",
       },
     },
     screens: {
+      dangerWidth: { raw: "(max-width:230px)" },
+      dangerHeight: { raw: "(max-height:150px)" },
       muiXs: "0px",
       muiSm: "600px",
       muiMd: "900px",

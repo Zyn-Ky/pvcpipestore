@@ -38,7 +38,7 @@ export function CartsClient() {
     return (
       <PromptAuth
         message="Masuk untuk melihat keranjang anda!"
-        icon={<LoginIcon sx={{ fontSize: "7.5rem" }} />}
+        icon={<LoginIcon className="text-[7.5rem]" />}
         redirectPath={paths.CARTS_ITEM_LIST}
       />
     );
@@ -47,9 +47,9 @@ export function CartsClient() {
       <div className={CSS.WrapperList}>
         <div className={CSS.ItemListing}>
           <Typography gutterBottom>No items</Typography>
-          <Card sx={{ display: "flex", minHeight: 151 }} elevation={5}>
+          <Card className="flex min-h-[151px]" elevation={5}>
             <Image src={SampleImg} alt="1" width={151} height={151} />
-            <Box sx={{ flex: 1, padding: 3 }}>
+            <Box className="flex-1 p-12">
               <Typography variant="h5">Pipa PVC</Typography>
               <Typography variant="caption">Rp 45.999</Typography>
               <br />
@@ -64,7 +64,7 @@ export function CartsClient() {
           <TextLR rightItem="Rp. 99.999">Item Total</TextLR>
           <TextLR rightItem="Rp. 1.500">Services</TextLR>
           <TextLR rightItem="FREE">Shipping Fee</TextLR>
-          <Divider sx={{ mb: 1 }} />
+          <Divider className="mb-4" />
           <TextLR rightItem="Rp. 101.499">Total</TextLR>
           <Button variant="contained" fullWidth>
             Checkout

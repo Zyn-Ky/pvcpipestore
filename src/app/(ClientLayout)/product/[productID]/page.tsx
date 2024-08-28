@@ -136,7 +136,7 @@ export default async function ProductPage({
             </div>
             <div className={CSS.ProductInfo}>
               {productItem.ResolvedCatalogID && (
-                <Breadcrumbs sx={{ mb: 1 }}>
+                <Breadcrumbs className="mb-4">
                   <Link
                     underline="hover"
                     color="inherit"
@@ -191,7 +191,7 @@ export default async function ProductPage({
 
               <Button
                 variant="contained"
-                sx={{ mr: 1 }}
+                className="mr-4"
                 LinkComponent={NextLink}
                 href={paths.CHECKOUT_PAGE + "?test_param_direct_buy_id=1"}
                 disabled={IsDisabledOnProduction()}

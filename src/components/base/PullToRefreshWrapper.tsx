@@ -3,7 +3,7 @@ import { useMediaQuery, useTheme } from "@mui/material";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState, type PropsWithChildren } from "react";
-import MainContentTheming from "./ColorModeProvider";
+import MainContentTheming from "./BackgroundOverlay";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { useEffectOnce } from "react-use";
 const Box = dynamic(() => import("@mui/material/Box"));

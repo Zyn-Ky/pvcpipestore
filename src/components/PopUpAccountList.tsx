@@ -99,7 +99,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         slotProps={{
-          paper: { sx: { minWidth: 300, maxHeight: "40vh" } },
+          paper: { className: "min-w-[300px] max-h-[40vh]" },
         }}
       >
         <Menus
@@ -172,7 +172,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         slotProps={{
-          paper: { sx: { minWidth: 275 } },
+          paper: { className: "min-w-[275px]" },
         }}
       >
         <Menus
@@ -229,7 +229,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           slotProps={{
-            paper: { sx: { minWidth: 275 } },
+            paper: { className: "min-w-[265px]" },
           }}
         >
           <MenuItem
@@ -242,7 +242,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
             </ListItemIcon>
             Debug Mode
           </MenuItem>
-          <Divider sx={{ my: 2 }} />
+          <Divider />
           <Link href="/testpage" passHref>
             <MenuItem onClick={handleClosePopup}>
               <ListItemIcon>
@@ -281,9 +281,9 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
               SUPPORT_LINK
             </MenuItem>
           </Link>
-          <Divider sx={{ my: 2 }} />
+          <Divider className="my-2" />
           <Typography px={2} py={1} width="300px">
-            <InfoOutlinedIcon sx={{ verticalAlign: "bottom", mr: 1 }} />
+            <InfoOutlinedIcon className="mr-2 align-middle" />
             Be aware! These features may break in the future! Proceed with
             caution
           </Typography>

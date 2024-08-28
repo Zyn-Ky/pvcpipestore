@@ -38,7 +38,7 @@ export default function LogoAndSearchModule() {
           <Image src={LogoColorful} width={160} alt="Logo SIB" priority />
         )}
       </NextLink>
-      <Search sx={{ ml: 2 }}>
+      <Search className="ml-8">
         <SearchIconWrapper>
           <SearchIcon />
         </SearchIconWrapper>

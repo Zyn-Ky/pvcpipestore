@@ -1,12 +1,11 @@
 "use client";
-import CSS from "@/scss/custom/AppBar.module.scss";
-
 import { Badge, Box, IconButton, Toolbar, Tooltip } from "@mui/material";
 import { useTranslations } from "next-intl";
 import BetterAppBar from "./BetterAppBar";
 import LogoAndSearchModule from "./HomePage";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import { MoreVert, Notifications } from "@mui/icons-material";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 
 export default function RegularAppBar({
   isSmallScreen,
@@ -25,14 +24,16 @@ export default function RegularAppBar({
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box flexGrow={1}>
         <BetterAppBar>
-          <Toolbar role="menubar" className={CSS.NavigationPanel}>
-            <LogoAndSearchModule />
+          <Toolbar role="menubar" className="transition-[min-height]">
+            <ProtectedHiddenDevelopmentComponent>
+              <LogoAndSearchModule />
+            </ProtectedHiddenDevelopmentComponent>
             <AccessibilityJumpKey />
             {!isSmallScreen && (
               <>
-                <div className={CSS.Filler} />
+                <div className="grow" />
                 <Box className="flex">
                   <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
                     <IconButton
@@ -74,7 +75,7 @@ export default function RegularAppBar({
           </Toolbar>
         </BetterAppBar>
       </Box>
-      <Toolbar />
+      <Toolbar className="transition-[min-height]" />
     </>
   );
 }

@@ -44,12 +44,12 @@ export default function LoginClient() {
       gap={1}
     >
       {userManager.currentUser && (
-        <Alert severity="success" sx={{ mb: 2 }}>
+        <Alert severity="success" className="mb-8">
           Anda telah login! Anda akan teralihkan...
         </Alert>
       )}
       {userManager.authError && (
-        <Alert severity="error" sx={{ mb: 2 }}>
+        <Alert severity="error" className="mb-8">
           Terjadi kesalahan! {userManager.authError.message as string}
         </Alert>
       )}

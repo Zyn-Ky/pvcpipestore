@@ -18,6 +18,8 @@ import HomePage_CoverPipaPVC_Img from "./HomePage/cover-pipa-pvc.png";
 
 import AuthUISharedLayout_Benefit_id_ID from "./AuthUISharedLayout/Benefit-ID_ID.png";
 
+import AnimResizeIcon from "./anim-resize.gif";
+
 export {
   PartnerHocoImg,
   PartnerItronImg,
@@ -36,4 +38,5 @@ export {
   HomePage_KelebihanPipaPVC_Img,
   HomePage_CoverPipaPVC_Img,
   AuthUISharedLayout_Benefit_id_ID,
+  AnimResizeIcon,
 };

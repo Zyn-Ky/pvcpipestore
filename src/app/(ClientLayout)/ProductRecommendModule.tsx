@@ -54,11 +54,7 @@ const itemData = [
 export default function ProductRecommendModule() {
   return (
     <>
-      <ImageList
-        sx={{ width: "100%", height: "100%" }}
-        cols={3}
-        rowHeight={164}
-      >
+      <ImageList className="size-full" cols={3} rowHeight={164}>
         {itemData.map((item) => (
           <ImageListItem key={item.img} onClick={() => {}}>
             <img

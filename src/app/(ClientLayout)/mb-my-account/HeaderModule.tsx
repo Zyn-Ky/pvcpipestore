@@ -74,7 +74,7 @@ export function SummaryCurrentUser() {
       )}
       {!userManager.currentUser && !userManager.loading && (
         <>
-          <Avatar sx={{ width: PFP_IMAGE_SIZE, height: PFP_IMAGE_SIZE }} />
+          <Avatar style={{ width: PFP_IMAGE_SIZE, height: PFP_IMAGE_SIZE }} />
           <Typography fontWeight="bold">Belum masuk</Typography>
         </>
       )}

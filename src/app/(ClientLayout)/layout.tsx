@@ -13,6 +13,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import ResizeToContinue from "./ResizeToContinue";
 const NProgressWrapper = dynamic(() => import("@/components/base/NProgress"));
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
@@ -79,7 +80,6 @@ export default async function RootLayout(
   const csrfToken = headers().get("X-CSRF-Token") || "MISSING";
   const messages = await getMessages();
   const locale = await getLocale();
-
   return (
     <NextIntlClientProvider messages={messages}>
       <ColorModeProvider>
@@ -88,6 +88,7 @@ export default async function RootLayout(
           <body className={inter.className} data-smooth-color-transition>
             <SpeedInsights />
             <Analytics />
+            <ResizeToContinue />
             <WordpressMigration />
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
               <NProgressWrapper>

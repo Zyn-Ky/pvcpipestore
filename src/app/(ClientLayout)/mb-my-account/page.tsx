@@ -17,9 +17,11 @@ import { LogoutBtn } from "./MenuModule";
 import PromptEmailVerification from "@/components/base/PromptEmailVerification";
 import { useTranslations } from "next-intl";
 import SettingsIcon from "@mui/icons-material/Settings";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
+import ProtectedSellerOnlyRoute from "@/components/base/ProtectedSellerOnlyRoute";
 
 export const metadata: Metadata = {
-  title: `Akun - ${SITE_CONFIG.SEO.Title}`,
+  title: `Akun`,
 };
 
 export default function AccountSummary() {
@@ -38,44 +40,52 @@ export default function AccountSummary() {
         </Paper>
       </div>
       <List component="nav">
-        <ListItemButton>
-          <ListItemIcon>
-            <InfoOutlined />
-          </ListItemIcon>
-          <ListItemText primary="SELLER_CENTER_LINK" />
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <InfoOutlined />
-          </ListItemIcon>
-          <ListItemText primary="STATUS_LINK" />
-        </ListItemButton>
+        <ProtectedHiddenDevelopmentComponent>
+          <ProtectedSellerOnlyRoute>
+            <ListItemButton>
+              <ListItemIcon>
+                <InfoOutlined />
+              </ListItemIcon>
+              <ListItemText primary="SELLER_CENTER_LINK" />
+            </ListItemButton>
+          </ProtectedSellerOnlyRoute>
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoOutlined />
+            </ListItemIcon>
+            <ListItemText primary="STATUS_LINK" />
+          </ListItemButton>
+        </ProtectedHiddenDevelopmentComponent>
         <ListItemButton LinkComponent={Link} href={paths.SETTINGS_PAGE}>
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary={t("SETTINGS_TEXT")} />
         </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <InfoOutlined />
-          </ListItemIcon>
-          <ListItemText primary="CARTS_LINK" />
-        </ListItemButton>
-        <Divider sx={{ my: 1 }} />
+        <ProtectedHiddenDevelopmentComponent>
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoOutlined />
+            </ListItemIcon>
+            <ListItemText primary="CARTS_LINK" />
+          </ListItemButton>
+        </ProtectedHiddenDevelopmentComponent>
+        <Divider className="my-4" />
         <LogoutBtn />
-        <ListItemButton>
-          <ListItemIcon>
-            <InfoOutlined />
-          </ListItemIcon>
-          <ListItemText primary="GO_TOS_LINK" />
-        </ListItemButton>
-        <ListItemButton>
-          <ListItemIcon>
-            <InfoOutlined />
-          </ListItemIcon>
-          <ListItemText primary="GO_PRIVACY_LINK" />
-        </ListItemButton>
+        <ProtectedHiddenDevelopmentComponent>
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoOutlined />
+            </ListItemIcon>
+            <ListItemText primary="GO_TOS_LINK" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <InfoOutlined />
+            </ListItemIcon>
+            <ListItemText primary="GO_PRIVACY_LINK" />
+          </ListItemButton>
+        </ProtectedHiddenDevelopmentComponent>
       </List>
     </div>
   );
