@@ -10,6 +10,7 @@ import {
   ReactNode,
   RefObject,
   useContext,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -100,7 +101,6 @@ export function SearchButtonProvider(
   const searchModalRef = useRef<HTMLDivElement>(null);
   const [searchBoxOpened, setSearchBoxOpened] = useState(false);
   const searchBoxAnimTl = useRef<gsap.core.Timeline | null>(null);
-  useLockBodyScroll(searchBoxOpened);
 
   function calculatePosition(element: HTMLElement) {
     const root = document.documentElement;
@@ -172,7 +172,15 @@ export function SearchButtonProvider(
     function onComplete() {
       if (!searchBoxAnimTl.current) return;
       searchBoxAnimTl.current
-        .fromTo(clone, { opacity: 1 }, { opacity: 0 }, 0)
+        .fromTo(
+          clone,
+          { opacity: 1 },
+          {
+            opacity: 0,
+            duration: 0.25,
+          },
+          0
+        )
         .fromTo(
           toElement,
           {
@@ -182,6 +190,7 @@ export function SearchButtonProvider(
           {
             visibility: "visible",
             opacity: 1,
+            duration: 0.25,
           },
           0
         )
@@ -191,6 +200,10 @@ export function SearchButtonProvider(
           }
           if (content) content.style.removeProperty("display");
           body.removeChild(clone);
+          setTimeout(() => {
+            if (!searchBoxOpened)
+              document.body.style.removeProperty("overflow-x");
+          }, (props.duration ?? 0) * 1000 + 250);
         });
     }
   }
@@ -205,6 +218,15 @@ export function SearchButtonProvider(
       ctx.kill(true);
     };
   });
+  useEffect(() => {
+    const lockedPostionY = window.scrollY;
+    const lockedPostionX = window.scrollX;
+    if (searchBoxOpened)
+      document.body.style.setProperty("overflow-x", "hidden");
+    document.body.onscroll = searchBoxOpened
+      ? () => window.scrollTo(lockedPostionX, lockedPostionY)
+      : null;
+  }, [searchBoxOpened]);
   return (
     <srchBtnContext.Provider
       value={{

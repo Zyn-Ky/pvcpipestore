@@ -1,27 +1,13 @@
 "use client";
-import {
-  alpha,
-  Backdrop,
-  Button,
-  InputBase,
-  Portal,
-  styled,
-  useTheme,
-} from "@mui/material";
+import { Button, Portal, useTheme } from "@mui/material";
 import { css } from "@emotion/css";
-import gsap, { Expo } from "gsap";
-import { MutableRefObject, useContext, useRef, useState } from "react";
-import {
-  useDebounce,
-  useIsomorphicLayoutEffect,
-  useLockBodyScroll,
-} from "react-use";
+import { useState } from "react";
+import { useDebounce } from "react-use";
 import SearchIcon from "@mui/icons-material/Search";
 import {
   SearchButtonConsumer,
   SearchButtonProvider,
   SearchModal,
-  srchBtnContext,
 } from "./base/SearchAnimated";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
@@ -65,9 +51,9 @@ export default function SearchButton() {
     background-color: ${theme.palette.background.paper};
     color: ${theme.palette.text.primary};
   `;
-  const buttonClassnames = `px-8 py-2 flex items-center text-base justify-center gap-3 border-0 cursor-pointer rounded-3xl mx-3 ${buttonStyles}`;
+  const buttonClassnames = `px-8 py-2 flex items-center text-base justify-center gap-3 border-0 cursor-pointer rounded-3xl  ${buttonStyles}`;
   return (
-    <SearchButtonProvider borderRadiusBtn="24px" duration={0.5}>
+    <SearchButtonProvider borderRadiusBtn="24px" duration={0.45}>
       <SearchButtonConsumer>
         {({ searchButtonRef, triggerSearchButton, opened }) => (
           <>
