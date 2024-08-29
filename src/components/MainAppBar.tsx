@@ -1,27 +1,18 @@
 "use client";
 import * as React from "react";
 import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import BetterAppBar from "./custom/UXNavbar/BetterAppBar";
-import { Collapse, Portal, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { useRouter } from "next-nprogress-bar";
 import { usePathname } from "next/navigation";
 import paths from "./paths";
-import LogoAndSearchModule from "@/components/custom/UXNavbar/HomePage";
-import AccessibilityJumpKey from "./base/AccessibilityJumpKey";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import dynamic from "next/dynamic";
-import Link from "next/link";
-import { useTranslations } from "next-intl";
 import ImmersiveAppBar from "./custom/UXNavbar/ImmersiveAppBar";
-
+import RegularAppBar from "./custom/UXNavbar/RegularAppBar";
 const BottomNavigation = dynamic(
   () => import("./custom/UXNavbar/BottomNavigation")
 );
 
-const RegularAppBar = dynamic(() => import("./custom/UXNavbar/RegularAppBar"));
+// const RegularAppBar = dynamic(() => import("./custom/UXNavbar/RegularAppBar"));
 
 const PopUpAccountList = dynamic(() => import("./PopUpAccountList"));
 const PopUpNotifcationList = dynamic(() => import("./PopUpNotificationList"));

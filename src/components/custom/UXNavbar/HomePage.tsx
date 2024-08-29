@@ -4,15 +4,12 @@
 //   SearchIconWrapper,
 //   StyledInputBase,
 // } from "@/components/custom/UXNavbar/BetterSearchBar";
-import SearchIcon from "@mui/icons-material/Search";
-import { Link, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import Image from "next/image";
 import LogoMonochrome from "../../assets/logo-monochrome.webp";
 import LogoColorful from "../../assets/logo-colorful.webp";
 import NextLink from "next/link";
 import dynamic from "next/dynamic";
-import { useTranslations } from "next-intl";
-import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 const Search = dynamic(
   async () =>
     (await import("@/components/custom/UXNavbar/BetterSearchBar")).Search
@@ -27,8 +24,7 @@ const StyledInputBase = dynamic(
     (await import("@/components/custom/UXNavbar/BetterSearchBar"))
       .StyledInputBase
 );
-export default function LogoAndSearchModule() {
-  const text = useTranslations("BASE");
+export default function LogoModule() {
   const themes = useTheme();
   return (
     <>
@@ -39,17 +35,6 @@ export default function LogoAndSearchModule() {
           <Image src={LogoColorful} width={160} alt="Logo SIB" priority />
         )}
       </NextLink>
-      <ProtectedHiddenDevelopmentComponent>
-        <Search className="ml-8">
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder={text("SEARCH_TEXT")}
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
-      </ProtectedHiddenDevelopmentComponent>
     </>
   );
 }

@@ -2,9 +2,11 @@
 import { Badge, Box, IconButton, Toolbar, Tooltip } from "@mui/material";
 import { useTranslations } from "next-intl";
 import BetterAppBar from "./BetterAppBar";
-import LogoAndSearchModule from "./HomePage";
+import LogoModule from "./HomePage";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import { MoreVert, Notifications } from "@mui/icons-material";
+import dynamic from "next/dynamic";
+const SearchButton = dynamic(() => import("@/components/SearchButton"));
 
 export default function RegularAppBar({
   isSmallScreen,
@@ -26,11 +28,12 @@ export default function RegularAppBar({
       <Box flexGrow={1}>
         <BetterAppBar>
           <Toolbar role="menubar" className="transition-[min-height]">
-            <LogoAndSearchModule />
+            <LogoModule />
             <AccessibilityJumpKey />
+            <div className="grow" />
+            <SearchButton />
             {!isSmallScreen && (
               <>
-                <div className="grow" />
                 <Box className="flex">
                   <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
                     <IconButton

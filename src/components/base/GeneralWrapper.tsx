@@ -25,6 +25,8 @@ import NotificationManager, {
 import paths from "../paths";
 import { useEffectOnce } from "react-use";
 import { StoredUserClaimsFB } from "@/libs/axios";
+import { InstantSearch } from "react-instantsearch";
+import algoliasearch from "algoliasearch";
 
 export type AvailableLoginMethod = "google";
 
@@ -90,6 +92,11 @@ export const useGeneralFunction = () => {
 
   return context;
 };
+
+const searchClient = algoliasearch(
+  "8JTN8AXH6R",
+  "223489da85af51793344fc6438e64c57"
+);
 
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
@@ -172,9 +179,11 @@ export default function GeneralFunctionWrapper(
         ClearLocalData,
       }}
     >
-      <NotificationManager>
-        {props.children && props.children}
-      </NotificationManager>
+      <InstantSearch searchClient={searchClient} indexName="Untitled-1">
+        <NotificationManager>
+          {props.children && props.children}
+        </NotificationManager>
+      </InstantSearch>
     </GeneralFunctionContext.Provider>
   );
 }

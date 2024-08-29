@@ -10,7 +10,6 @@ import {
   Configure,
   Highlight,
   Hits,
-  HitsProps,
   InstantSearch,
   SearchBox,
 } from "react-instantsearch";
@@ -18,7 +17,6 @@ import { Hit as AlgoliaHit } from "instantsearch.js";
 import algoliasearch from "algoliasearch";
 import "instantsearch.css/themes/satellite.css";
 import { StoredSearchRecordItem } from "@/libs/config";
-
 const searchClient = algoliasearch(
   "8JTN8AXH6R",
   "223489da85af51793344fc6438e64c57"
@@ -84,6 +82,7 @@ export default function XTest() {
       { authToken: await user.getIdToken() }
     );
   }
+
   return (
     <>
       <h1>Apply as a seller</h1>
@@ -94,7 +93,9 @@ export default function XTest() {
       >
         Apply
       </button>
-      <Search />
+      <hr />
+      <button onClick={() => {}}>Open search</button>
+      <button onClick={() => {}}>Close search</button>
     </>
   );
 }

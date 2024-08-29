@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "4.11.1-coming.0",
+  "version": "4.12.0-coming.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@edge-csrf/nextjs": "^2.2.2",
-    "@emotion/react": "^11.11.4",
+    "@emotion/css": "^11.13.0",
+    "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.11.5",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
@@ -32,6 +33,7 @@
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "gray-matter": "^4.0.3",
+    "gsap": "^3.12.5",
     "instantsearch.css": "^8.5.0",
     "instantsearch.js": "^4.74.0",
     "jsonwebtoken": "^9.0.2",

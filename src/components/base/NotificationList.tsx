@@ -86,7 +86,7 @@ export default function NotificationList() {
                   secondary={
                     <>
                       <Typography
-                        sx={{ display: "inline" }}
+                        className="inline"
                         component="span"
                         variant="body2"
                         color="text.primary"
@@ -102,7 +102,9 @@ export default function NotificationList() {
 
         {Notifications && Notifications.length === 0 && (
           <>
-            <p>Notifikasi anda bersih</p>
+            <Typography textAlign="center" p={2}>
+              Notifikasi anda bersih
+            </Typography>
           </>
         )}
         <ProtectedHiddenDevelopmentComponent>
