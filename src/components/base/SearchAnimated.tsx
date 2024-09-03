@@ -9,24 +9,27 @@ import {
   PropsWithChildren,
   ReactNode,
   RefObject,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { useIsomorphicLayoutEffect, useLockBodyScroll } from "react-use";
+import { useIsomorphicLayoutEffect } from "react-use";
 
 type contextProp = {
   searchButtonRef: MutableRefObject<HTMLButtonElement | null> | null;
   searchModalRef: MutableRefObject<HTMLDivElement | null> | null;
   opened: boolean;
   triggerSearchButton: (open?: boolean) => void;
+  finishedAnimating: boolean;
 };
 export const srchBtnContext = createContext<contextProp>({
   opened: false,
   triggerSearchButton() {},
   searchButtonRef: null,
   searchModalRef: null,
+  finishedAnimating: true,
 });
 
 interface SearchModalProps<T = HTMLDivElement>
@@ -48,6 +51,25 @@ export function SearchModal(props: SearchModalProps<HTMLDivElement>) {
     style,
     ...anotherContentProps
   } = contentProps || {};
+  function getScrollbarWidth() {
+    // Creating invisible container
+    const outer = document.createElement("div");
+    outer.style.visibility = "hidden";
+    outer.style.overflow = "scroll"; // forcing scrollbar to appear
+    document.body.appendChild(outer);
+
+    // Creating inner element and placing it in the container
+    const inner = document.createElement("div");
+    outer.appendChild(inner);
+
+    // Calculating difference between container's full width and the child width
+    const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+
+    // Removing temporary elements from the DOM
+    outer.parentNode && outer.parentNode.removeChild(outer);
+
+    return scrollbarWidth;
+  }
   return (
     <>
       <Backdrop
@@ -55,38 +77,39 @@ export function SearchModal(props: SearchModalProps<HTMLDivElement>) {
         className="z-muiModal"
         onClick={() => ctx.triggerSearchButton(false)}
       />
-      <FocusTrap open={ctx.opened}>
-        <div className="invisible">
+      <div className="invisible">
+        <div
+          ref={ctx.searchModalRef}
+          className={`fixed h-[100vh] w-[100vw] overflow-auto top-0 left-0 z-muiModal will-change-[transform,top,left,width,height,border-radius,opacity] ${
+            className && className
+          }`}
+          {...rootProps}
+        >
           <div
-            ref={ctx.searchModalRef}
-            className={`fixed h-[100vh] w-[100vw] overflow-hidden top-0 left-0 z-muiModal will-change-[transform,top,left,width,height,border-radius,opacity] ${
-              className && className
-            }`}
-            {...rootProps}
+            className="relative h-full"
+            style={{
+              display: "none",
+            }}
+            data-splash
           >
+            {searchButtonCloneNode && searchButtonCloneNode}
+          </div>
+          {ctx.opened && (
             <div
-              className="relative h-full"
-              style={{
-                display: "none",
-              }}
-              data-splash
-            >
-              {searchButtonCloneNode && searchButtonCloneNode}
-            </div>
-            <DialogContent
-              className={`p-4 ${contentClassName && contentClassName}`}
+              className={`${contentClassName && contentClassName}`}
               data-search-content
               style={{
                 display: "block",
+                marginRight: `${getScrollbarWidth()}px`,
                 ...(style && style),
               }}
               {...anotherContentProps}
             >
               {children && children}
-            </DialogContent>
-          </div>
+            </div>
+          )}
         </div>
-      </FocusTrap>
+      </div>
     </>
   );
 }
@@ -101,7 +124,7 @@ export function SearchButtonProvider(
   const searchModalRef = useRef<HTMLDivElement>(null);
   const [searchBoxOpened, setSearchBoxOpened] = useState(false);
   const searchBoxAnimTl = useRef<gsap.core.Timeline | null>(null);
-
+  const [finishedAnimating, setFinishedAnimating] = useState(true);
   function calculatePosition(element: HTMLElement) {
     const root = document.documentElement;
     var rect = element.getBoundingClientRect();
@@ -134,13 +157,12 @@ export function SearchButtonProvider(
     const content = fromElement.querySelector<HTMLElement>(
       "[data-search-content]"
     );
-
+    setFinishedAnimating(false);
     if (splash) {
       splash.style.setProperty("display", "block");
     }
     if (content) content.style.setProperty("display", "none");
     console.log(from, to);
-
     const clone = fromElement.cloneNode(true);
     searchBoxAnimTl.current.set([fromElement, toElement], {
       visibility: "hidden",
@@ -200,6 +222,7 @@ export function SearchButtonProvider(
           }
           if (content) content.style.removeProperty("display");
           body.removeChild(clone);
+          setFinishedAnimating(true);
           setTimeout(() => {
             if (!searchBoxOpened)
               document.body.style.removeProperty("overflow-x");
@@ -207,6 +230,17 @@ export function SearchButtonProvider(
         });
     }
   }
+  const triggerSearchButton = useCallback(
+    function (open?: boolean) {
+      setSearchBoxOpened(open ?? !searchBoxOpened);
+      if (!searchButtonRef.current || !searchModalRef.current) return;
+      if (!searchBoxOpened)
+        toggleSearchBox(searchButtonRef.current, searchModalRef.current, false);
+      if (searchBoxOpened)
+        toggleSearchBox(searchModalRef.current, searchButtonRef.current, true);
+    },
+    [searchModalRef.current, searchButtonRef.current, searchBoxOpened]
+  );
   useIsomorphicLayoutEffect(() => {
     let ctx = gsap.context(() => {
       const tl = gsap.timeline();
@@ -233,22 +267,8 @@ export function SearchButtonProvider(
         opened: searchBoxOpened,
         searchButtonRef,
         searchModalRef,
-        triggerSearchButton(open) {
-          setSearchBoxOpened(open ?? !searchBoxOpened);
-          if (!searchButtonRef.current || !searchModalRef.current) return;
-          if (!searchBoxOpened)
-            toggleSearchBox(
-              searchButtonRef.current,
-              searchModalRef.current,
-              false
-            );
-          if (searchBoxOpened)
-            toggleSearchBox(
-              searchModalRef.current,
-              searchButtonRef.current,
-              true
-            );
-        },
+        triggerSearchButton,
+        finishedAnimating,
       }}
     >
       {props.children}

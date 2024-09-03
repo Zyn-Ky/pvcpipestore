@@ -20,7 +20,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { useEffectOnce } from "react-use";
 import { FileUploader } from "react-drag-drop-files";
 import {
@@ -97,16 +97,56 @@ export default function ClientForm() {
     },
     [userManager.currentUser]
   );
-  async function UploadImages(productName: string, binary: File) {
+  const UploadImages = useCallback(
+    async function (productName: string, binary: File) {
+      if (!userManager.currentUser) return;
+      const uploadResult = await AxiosPostToImageUploadServer(
+        apiManager.xsrfToken,
+        await userManager.currentUser.getIdToken(true),
+        productName,
+        binary
+      );
+      console.log(uploadResult);
+      return uploadResult;
+    },
+    [userManager.currentUser, apiManager.xsrfToken]
+  );
+  const FetchAccurateTime = useCallback(
+    async function () {
+      try {
+        const data = (
+          await AxiosFetchV1Api(
+            "GET",
+            API_PATH.PUBLIC_SERVER_TIME,
+            apiManager.xsrfToken
+          )
+        ).data;
+        return parseInt(data);
+      } catch {
+        return await FetchAccurateTime();
+      }
+    },
+    [apiManager.xsrfToken]
+  );
+  const ImageBlobURL = useMemo(() => {
+    return imagesForm.map(({ binary }) => URL.createObjectURL(binary));
+  }, [imagesForm]);
+  async function UpdateSearchRecord(product: StoredProductCardInfo) {
     if (!userManager.currentUser) return;
-    const uploadResult = await AxiosPostToImageUploadServer(
-      apiManager.xsrfToken,
-      await userManager.currentUser.getIdToken(true),
-      productName,
-      binary
-    );
-    console.log(uploadResult);
-    return uploadResult;
+    const data = (
+      await AxiosFetchV1Api(
+        "POST",
+        API_PATH.SELLER_ADD_NEW_PRODUCT,
+        apiManager.xsrfToken,
+        {
+          authToken: await userManager.currentUser.getIdToken(),
+          condition: "indexnewproduct",
+          productID: [product],
+        }
+      )
+    ).data;
+    console.log(data);
+    return data;
   }
   async function PostToFirestore(
     form: {
@@ -118,30 +158,37 @@ export default function ClientForm() {
     /**{name: 't57tyfgf6', available_stock: '99', category_id: '53,76767,7676', price: '244234', slug_url: 't57tyfgf6-hda1ozZTuQh0P', price_mode: 'FIXED_PRICE'} */
     const firestore = getFirestore(firebaseApp);
     try {
+      const timestamp = await FetchAccurateTime();
+      const data: StoredProductCardInfo = {
+        AvailableStock: parseInt((form.available_stock as string) ?? "0"),
+        CatalogID: (form.category_id as string)
+          .split(",")
+          .map((id) => parseInt(id)),
+        Description: htmlDescription,
+        Images: images.map((img) => img?.url ?? ""),
+        LinkedUser: userManager.currentUser.uid,
+        Name: form.name as string,
+        Price: parseInt((form.price as string) ?? 0),
+        PriceMode: "FIXED_PRICE",
+        SuggestedCurrency: (form.suggested_currency as string) ?? "IDR",
+        UrlID: slugURL,
+        CreatedAt: timestamp,
+        LastModifiedAt: timestamp,
+      };
       await setDoc<StoredProductCardInfo, StoredProductCardInfo>(
         doc(
           firestore,
           SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH,
           form.slug_url as string
         ),
-        {
-          AvailableStock: parseInt((form.available_stock as string) ?? "0"),
-          CatalogID: (form.category_id as string)
-            .split(",")
-            .map((id) => parseInt(id)),
-          Description: htmlDescription,
-          Images: images.map((img) => img?.url ?? ""),
-          LinkedUser: userManager.currentUser.uid,
-          Name: form.name as string,
-          Price: parseInt((form.price as string) ?? 0),
-          PriceMode: "FIXED_PRICE",
-          SuggestedCurrency: (form.suggested_currency as string) ?? "IDR",
-        }
+        data
       );
+      await UpdateSearchRecord(data);
       setIsCreating(false);
       setProductState("PUBLISHED");
     } catch {
       setProductState("UNPUBLISHED");
+      window.location.reload();
     }
   }
   const CreateNewProduct = async (e: FormEvent<HTMLFormElement>) => {
@@ -168,10 +215,9 @@ export default function ClientForm() {
           )
         : [];
     console.timeEnd("upload image");
-
     console.log(formPropsCleaned, Images);
     await PostToFirestore(formPropsCleaned, Images);
-    e.currentTarget.reset();
+    e.currentTarget && e.currentTarget.reset && e.currentTarget.reset();
   };
   useEffect(() => {
     CheckImgServer();
@@ -217,6 +263,7 @@ export default function ClientForm() {
               }}
               helperText={slugURL && `URL : ${slugURL}`}
               required
+              disabled={isCreating}
             />
           </FormGroup>
           <FormGroup sx={{ mb: 1 }}>
@@ -229,6 +276,7 @@ export default function ClientForm() {
               }}
               value={catalogID}
               required
+              disabled={isCreating}
             />
           </FormGroup>
           {uploadServerOK && (
@@ -238,6 +286,7 @@ export default function ClientForm() {
                 hoverTitle="Taruh disini"
                 maxSize={3}
                 multiple
+                disabled={isCreating}
                 handleChange={(files: FileList) => {
                   if (!files) return;
                   const arrayFiles = Array.from(files);
@@ -266,7 +315,7 @@ export default function ClientForm() {
                       >
                         <img
                           alt={`Product Image ${file.id}`}
-                          src={URL.createObjectURL(file.binary)}
+                          src={ImageBlobURL[i]}
                           width={80}
                           height={80}
                         />
@@ -289,6 +338,7 @@ export default function ClientForm() {
                 overflow: "auto",
                 maxHeight: "50vh",
               }}
+              disabled={isCreating}
               containerProps={{ style: { width: "100%" } }}
             >
               <Toolbar>
@@ -311,9 +361,15 @@ export default function ClientForm() {
             </Editor>
           </FormGroup>
           <FormGroup sx={{ flexDirection: "row", gap: 1 }}>
-            <TextField type="number" name="available_stock" label="Stok" />
             <TextField
               type="number"
+              name="available_stock"
+              label="Stok"
+              disabled={isCreating}
+            />
+            <TextField
+              type="number"
+              disabled={isCreating}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -323,6 +379,7 @@ export default function ClientForm() {
                       placeholder="Mata uang"
                       variant="outlined"
                       size="small"
+                      disabled={isCreating}
                     >
                       <MenuItem value="IDR">IDR</MenuItem>
                     </Select>
@@ -333,11 +390,17 @@ export default function ClientForm() {
               name="price"
             />
           </FormGroup>
-          <VisuallyHiddenInput type="text" value={slugURL} name="slug_url" />
+          <VisuallyHiddenInput
+            type="text"
+            value={slugURL}
+            name="slug_url"
+            disabled={isCreating}
+          />
           <VisuallyHiddenInput
             type="text"
             value="FIXED_PRICE"
             name="price_mode"
+            disabled={isCreating}
           />
 
           <LoadingButton

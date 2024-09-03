@@ -15,7 +15,7 @@ import NProgressWrapper from "@/components/base/NProgress";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Seller Center - PP",
+  title: "Seller Center - KP",
   description: "",
 };
 

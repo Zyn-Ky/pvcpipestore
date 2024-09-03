@@ -27,6 +27,7 @@ import { useEffectOnce } from "react-use";
 import { StoredUserClaimsFB } from "@/libs/axios";
 import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
+import { ALGOLIA_INDICES } from "@/libs/config";
 
 export type AvailableLoginMethod = "google";
 
@@ -94,8 +95,8 @@ export const useGeneralFunction = () => {
 };
 
 const searchClient = algoliasearch(
-  "8JTN8AXH6R",
-  "223489da85af51793344fc6438e64c57"
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? "",
+  process.env.NEXT_PUBLIC_ALGOLA_APP_KEY ?? ""
 );
 
 export default function GeneralFunctionWrapper(
@@ -179,7 +180,10 @@ export default function GeneralFunctionWrapper(
         ClearLocalData,
       }}
     >
-      <InstantSearch searchClient={searchClient} indexName="Untitled-1">
+      <InstantSearch
+        searchClient={searchClient}
+        // indexName={ALGOLIA_INDICES.PRODUCTS}
+      >
         <NotificationManager>
           {props.children && props.children}
         </NotificationManager>

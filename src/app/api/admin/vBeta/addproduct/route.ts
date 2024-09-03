@@ -7,6 +7,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import CheckCloudinaryStatus from "@/libs/api/CheckCloudinaryStatus";
 import SITE_BACKEND_CONFIG, { API_PATH } from "@/libs/config";
 import IsActiveSeller from "@/libs/api/IsActiveSeller";
+import { UpdateNewProductIndex } from "@/libs/api/algolia/UpdateSearchIndex";
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,12 +43,15 @@ export async function POST(request: NextRequest) {
             },
             nextAction: "CONTINUE_IMAGE_UPLOAD",
           });
-        return NextResponse.json<ApiResponse>({
-          code: 500,
-          message: "UPLOAD_SERVER_BUSY",
-          response: {},
-          nextAction: "HALT_IMAGE_UPLOAD",
-        });
+        return NextResponse.json<ApiResponse>(
+          {
+            code: 500,
+            message: "UPLOAD_SERVER_BUSY",
+            response: {},
+            nextAction: "HALT_IMAGE_UPLOAD",
+          },
+          { status: 500 }
+        );
       }
       if (requestJSON.condition === "postnewproduct") {
         return NextResponse.json<ApiResponse>({
@@ -56,6 +60,36 @@ export async function POST(request: NextRequest) {
           nextAction: "USE_CLIENT_SDK",
           response: {},
         });
+      }
+      if (requestJSON.condition === "indexnewproduct") {
+        const productID = requestJSON.productID;
+        if (!productID || !Array.isArray(productID))
+          return NextResponse.json<ApiResponse>(
+            {
+              code: 400,
+              message: "INVALID_REQUEST",
+              response: {},
+            },
+            { status: 400 }
+          );
+        const { success, submitedData } = await UpdateNewProductIndex(
+          productID
+        );
+        console.log({ success, submitedData });
+        if (success)
+          return NextResponse.json<ApiResponse>({
+            code: 200,
+            message: "OK",
+            response: {},
+          });
+        return NextResponse.json<ApiResponse>(
+          {
+            code: 400,
+            message: "INVALID_REQUEST",
+            response: {},
+          },
+          { status: 400 }
+        );
       }
     } else {
       return NextResponse.json<ApiResponse>(

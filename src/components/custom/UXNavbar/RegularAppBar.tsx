@@ -6,6 +6,7 @@ import LogoModule from "./HomePage";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import { MoreVert, Notifications } from "@mui/icons-material";
 import dynamic from "next/dynamic";
+import { ALGOLIA_INDICES } from "@/libs/config";
 const SearchButton = dynamic(() => import("@/components/SearchButton"));
 
 export default function RegularAppBar({
@@ -31,7 +32,9 @@ export default function RegularAppBar({
             <LogoModule />
             <AccessibilityJumpKey />
             <div className="grow" />
-            <SearchButton />
+            <SearchButton
+              indexes={[ALGOLIA_INDICES.PRODUCTS, ALGOLIA_INDICES.ARTICLES]}
+            />
             {!isSmallScreen && (
               <>
                 <Box className="flex">

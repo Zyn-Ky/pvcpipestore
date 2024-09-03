@@ -91,6 +91,7 @@ const StyledBoxContainer = styled(Box)(({ theme }) => ({
 import CategoryIcon from "@mui/icons-material/Category";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import HomeIcon from "@mui/icons-material/Home";
+import FeedbackIcon from "@mui/icons-material/Feedback";
 import { useGlobalThemeSettings } from "./base/ClientThemeWrapper";
 export default function SellerAppBar(props: PropsWithChildren) {
   const theme = useTheme();
@@ -181,7 +182,14 @@ export default function SellerAppBar(props: PropsWithChildren) {
                 >
                   <Add />
                   <Collapse orientation="horizontal" in={openSidebar}>
-                    <Typography sx={{ ml: 1 }}>Tambah Produk</Typography>
+                    <Typography
+                      sx={{ ml: 1 }}
+                      display="flex"
+                      alignItems="center"
+                      height="100%"
+                    >
+                      Tambah Produk
+                    </Typography>
                   </Collapse>
                 </Fab>
               </Zoom>
@@ -192,6 +200,7 @@ export default function SellerAppBar(props: PropsWithChildren) {
               [<HomeIcon key={1} />, "Dasbor"],
               [<InventoryIcon key={2} />, "Produk"],
               [<CategoryIcon key={3} />, "Kategori"],
+              [<FeedbackIcon key={4} />, "Masukan"],
             ] as [ReactNode, string][]
           ).map((item, index) => (
             <ListItem

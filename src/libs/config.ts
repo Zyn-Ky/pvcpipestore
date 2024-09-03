@@ -7,13 +7,17 @@ const SITE_BACKEND_CONFIG = {
   FIRESTORE_SHOP_CONFIG_ROOT_PATH: "ShopConfig/",
 };
 
+export const ALGOLIA_INDICES = {
+  PRODUCTS: "Products",
+  ARTICLES: "Articles",
+};
 export const ADMIN_APPROVED_SELLER_USER_ROLE = "ACTIVE_SELLER";
-
 export const ADMIN_API_VERSION = process.env.API_VERSION || "vBeta";
 export const API_PATH = {
   IMAGE_UPLOAD_SERVER: `admin/${ADMIN_API_VERSION}/upload`,
   HIDDEN_APPLY_SELLER_ROLE: `admin/${ADMIN_API_VERSION}/applysellerrole`,
   SELLER_ADD_NEW_PRODUCT: `admin/${ADMIN_API_VERSION}/addproduct`,
+  PUBLIC_SERVER_TIME: `public/servertime`,
 };
 
 type AcceptedCurrency = "IDR" | string;
@@ -38,6 +42,7 @@ export interface StoredProductCardInfo {
   SuggestedCurrency?: AcceptedCurrency;
   CreatedAt?: number;
   LastModifiedAt?: number;
+  UrlID?: string;
 }
 
 export interface ProductCardInfo extends StoredProductCardInfo {
@@ -68,8 +73,8 @@ export interface StoredSearchRecordItem {
   type: "ARTICLE TIPS" | "PRODUCT";
   primaryTitle: string;
   shortDescription: string;
-  id: string;
   relativeUrl: string;
+  [key: string]: any;
 }
 
 export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
