@@ -89,8 +89,8 @@ export default async function RootLayout(
             <SpeedInsights />
             <Analytics />
             <ResizeToContinue />
-            <WordpressMigration />
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
+              <WordpressMigration />
               <NProgressWrapper>
                 <XAppBar />
                 <div id="root-content-ui">{props.children}</div>

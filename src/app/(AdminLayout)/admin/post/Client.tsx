@@ -54,6 +54,7 @@ import {
 import { firebaseApp } from "@/libs/firebase/config";
 import { UploadedImageResult } from "@/libs/api/UploadToCloudinary";
 import Link from "next/link";
+import { useLogger } from "@/components/hooks/logger";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -73,6 +74,7 @@ export default function ClientForm() {
   const [productTitle, setProductTitle] = useState("");
   const [catalogID, setCatalogID] = useState("");
   const [slugURL, setSlugURL] = useState("");
+  const { Console } = useLogger();
   const [imagesForm, setImagesForm] = useState<
     {
       id: number;
@@ -106,7 +108,7 @@ export default function ClientForm() {
         productName,
         binary
       );
-      console.log(uploadResult);
+      Console("log", uploadResult);
       return uploadResult;
     },
     [userManager.currentUser, apiManager.xsrfToken]
@@ -145,7 +147,7 @@ export default function ClientForm() {
         }
       )
     ).data;
-    console.log(data);
+    Console("log", data);
     return data;
   }
   async function PostToFirestore(
@@ -215,7 +217,7 @@ export default function ClientForm() {
           )
         : [];
     console.timeEnd("upload image");
-    console.log(formPropsCleaned, Images);
+    Console("log", formPropsCleaned, Images);
     await PostToFirestore(formPropsCleaned, Images);
     e.currentTarget && e.currentTarget.reset && e.currentTarget.reset();
   };

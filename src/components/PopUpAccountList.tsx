@@ -30,6 +30,7 @@ import {
 import { Menus } from "./PopUpAccountListPage";
 import { useGeneralFunction } from "./base/GeneralWrapper";
 import { useTranslations } from "next-intl";
+import { useLogger } from "./hooks/logger";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const CheckIcon = dynamic(() => import("@mui/icons-material/Check"));
@@ -71,6 +72,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
   const [enableDebug, setEnableDebug] = useState(false);
   const [CurrentPage, setCurrentPage] = useState("home");
   const { userManager } = useGeneralFunction();
+  const { Console } = useLogger();
   const handleClosePopup = useCallback(() => {
     setCurrentPage("home");
     props.onClose?.({}, "backdropClick");
@@ -80,7 +82,8 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
     const RemoteConfig = getRemoteConfig(firebaseApp);
     await fetchAndActivate(RemoteConfig);
     const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
-    console.log(EnableDebugUI);
+
+    Console("log", EnableDebugUI);
     setEnableDebug(EnableDebugUI);
   }
   useEffect(() => {

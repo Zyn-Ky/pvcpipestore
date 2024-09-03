@@ -35,6 +35,7 @@ import {
 import setupIndexedDB, { useIndexedDBStore } from "use-indexeddb";
 import { IndexedDBConfig } from "use-indexeddb/dist/interfaces";
 import { useGeneralFunction } from "./GeneralWrapper";
+import { useLogger } from "../hooks/logger";
 
 interface NotificationItem {
   collapse_key: string;
@@ -96,15 +97,19 @@ const IDB_NotiCache_Config: IndexedDBConfig = {
 export default function NotificationManager(props: PropsWithChildren) {
   const [idbCacheStarted, setIdbCacheStarted] = useState(false);
   const { userManager } = useGeneralFunction();
+  const { Console } = useLogger();
+
   useEffect(() => {
     setupIndexedDB(IDB_NotiCache_Config)
       .then(() => {
         setIdbCacheStarted(true);
-        console.log("noti cache started");
+
+        Console("log", "noti cache started");
       })
       .catch(console.error);
   }, []);
   const { fcmToken, notificationPermissionStatus } = useFcmToken();
+
   const [listNotifications, setListNotifications] = useState<
     NotificationItem[]
   >([]);
@@ -141,7 +146,7 @@ export default function NotificationManager(props: PropsWithChildren) {
         img_src_url: url,
       };
     } catch (e) {
-      console.log(e);
+      Console("error", e);
       return {
         img_bin: null,
         img_src_url: url,
@@ -151,7 +156,7 @@ export default function NotificationManager(props: PropsWithChildren) {
   const HandleNewNotifications = useCallback(
     async function HandleNewNotifications(payload: MessagePayload) {
       if (!payload.notification) return;
-      console.log("Foreground push notification received:", payload);
+      Console("log", "Foreground push notification received:", payload);
 
       let data: StoredNotificationItem = {
         title: payload.notification.title,
@@ -159,7 +164,7 @@ export default function NotificationManager(props: PropsWithChildren) {
         collapse_key: payload.collapseKey,
         additional_data: "",
       };
-      console.log(payload.notification);
+      Console("log", payload.notification);
       if (typeof payload.notification.image === "string") {
         const bin = await SaveAndCacheImage(payload.notification.image);
         data = {
@@ -167,7 +172,7 @@ export default function NotificationManager(props: PropsWithChildren) {
           ...bin,
         };
       }
-      console.log(data);
+      Console("log", data);
       if (!idbCache) return;
       idbCache.add(data);
       await UpdateNotificationList();

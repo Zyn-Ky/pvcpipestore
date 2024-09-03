@@ -14,6 +14,14 @@
     "LIGHT_THEME_TEXT": "Tema Terang",
     "SETTINGS_TEXT": "Setelan"
   },
+  "SEARCH_INDICE_SETTINGS_PAGE": "Setelan",
+  "SEARCH_INDICE_ACCOUNT_PAGE": "Akun",
+  "SEARCH_INDICE_CART_PAGE": "Keranjang",
+  "SEARCH_INDICES": {
+    "Articles": "Artikel",
+    "Products": "Produk",
+    "Pages": "Halaman"
+  },
   "NAVBAR": {
     "NOTIFICATION_TEXT": "Notifikasi",
     "ACCCOUNT_MENU_POPUP": "Opsi Lainnya"

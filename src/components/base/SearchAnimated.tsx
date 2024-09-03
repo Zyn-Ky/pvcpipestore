@@ -16,6 +16,7 @@ import {
   useState,
 } from "react";
 import { useIsomorphicLayoutEffect } from "react-use";
+import { useLogger } from "../hooks/logger";
 
 type contextProp = {
   searchButtonRef: MutableRefObject<HTMLButtonElement | null> | null;
@@ -120,6 +121,7 @@ export function SearchButtonProvider(
     duration?: number;
   }>
 ) {
+  const { Console } = useLogger();
   const searchButtonRef = useRef<HTMLButtonElement>(null);
   const searchModalRef = useRef<HTMLDivElement>(null);
   const [searchBoxOpened, setSearchBoxOpened] = useState(false);
@@ -162,7 +164,8 @@ export function SearchButtonProvider(
       splash.style.setProperty("display", "block");
     }
     if (content) content.style.setProperty("display", "none");
-    console.log(from, to);
+    Console("log", from, to);
+
     const clone = fromElement.cloneNode(true);
     searchBoxAnimTl.current.set([fromElement, toElement], {
       visibility: "hidden",

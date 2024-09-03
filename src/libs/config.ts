@@ -68,15 +68,25 @@ export interface StoredUserConfig {
     Province: string;
     ZipCode: string;
   };
+  FeedbackIDs: string[];
 }
 export interface StoredSearchRecordItem {
-  type: "ARTICLE TIPS" | "PRODUCT";
+  type: "ARTICLE TIPS" | "PRODUCT" | "PAGES";
   primaryTitle: string;
   shortDescription: string;
   relativeUrl: string;
   [key: string]: any;
 }
-
+export interface StoredFeedbackInfo {
+  DebugJSLog: string;
+  SystemDevInfo: string;
+  Title: string;
+  Description: string;
+  Email: string;
+  FormType: "BETA_FORM" | "SUPPORT_FORM";
+  IPAddress: string;
+  LinkedUID: "Anonymous" | ("Unknown" & string);
+}
 export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
 export type SortOrderType = "ascending" | "descending" | "ignore";
 export type OptionalArray<T> = (T | undefined)[];

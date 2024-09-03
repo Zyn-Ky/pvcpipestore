@@ -41,6 +41,7 @@ import { useAutocomplete } from "./hooks/algolia";
 import { ALGOLIA_INDICES } from "@/libs/config";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLogger } from "./hooks/logger";
 
 interface SearchButtonProps {
   searchProps?: UseSearchBoxProps;
@@ -96,6 +97,7 @@ function ItemResult({
               )}
               {shortDescription && (
                 <div
+                  className="overflow-hidden line-clamp-5"
                   dangerouslySetInnerHTML={{ __html: shortDescription }}
                 ></div>
               )}
@@ -137,9 +139,10 @@ function AutocompleteResultBox({
   indiceName: string;
 }) {
   const { status, refresh } = useInstantSearch();
-  const { currentRefinement, indices, refine } = useAutocomplete({
+  const { indices, refine } = useAutocomplete({
     escapeHTML: true,
   });
+  const t = useTranslations();
   useEffect(() => {
     refine(keyword);
   }, [keyword]);
@@ -174,12 +177,15 @@ function AutocompleteResultBox({
                     indice.indexName === indiceName && indice.hits.length !== 0
                 )
                 .map(({ indexName, indexId, hits }) => (
-                  <GroupItem key={indexId} title={indexName ?? ""}>
+                  <GroupItem
+                    key={indexId}
+                    title={t(`SEARCH_INDICES.${indexName ?? ""}`)}
+                  >
                     {hits.map(
                       ({ id, primaryTitle, shortDescription, relativeUrl }) => (
                         <ItemResult
                           key={id ?? ""}
-                          primaryTitle={primaryTitle ?? ""}
+                          primaryTitle={t(primaryTitle ?? "")}
                           shortDescription={shortDescription}
                           relativeURL={relativeUrl ?? ""}
                         />
@@ -206,13 +212,14 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
   const searchTextInputRef = useRef<HTMLInputElement>(null);
   const { searchButtonRef, triggerSearchButton, opened, finishedAnimating } =
     useContext(srchBtnContext);
+  const { Console } = useLogger();
   const pathname = usePathname();
   useKey(
     "Escape",
     (event) => {
-      console.log(finishedAnimating);
+      Console("log", finishedAnimating);
       if (opened && finishedAnimating) {
-        console.log(event);
+        Console("log", event);
         triggerSearchButton(false);
       }
     },
@@ -225,7 +232,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
       return !filter.includes(event.key) && typeOnFocus;
     },
     (e) => {
-      console.log(e);
+      Console("log", e);
       setSearchVal((prev) => prev + e.key);
       if (document.activeElement === searchButtonRef?.current)
         triggerSearchButton(true);
@@ -271,7 +278,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
           searchButtonRef.current &&
           searchButtonRef.current.focus();
       setPrevOpenedState(opened);
-      console.log(opened, searchTextInputRef.current);
+      Console("log", opened, searchTextInputRef.current);
     }, ANIM_DURATION_IN_MS);
     return () => {
       clearTimeout(timeout);
@@ -284,7 +291,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
     }
   }, [opened]);
   useEffect(() => {
-    triggerSearchButton(false);
+    if (opened) triggerSearchButton(false);
   }, [pathname]);
   return (
     <>

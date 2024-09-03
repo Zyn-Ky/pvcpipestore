@@ -53,6 +53,10 @@ type GeneralFunctionContextProps = {
   swManager: {
     getSWRegistration: () => ServiceWorkerRegistration | undefined;
   };
+  baseManager: {
+    AddLog: (type: string, message: any[]) => void;
+    ReadAllLog: () => { type: string; message: any[] }[] | null;
+  };
   ClearLocalData: () => void;
 };
 
@@ -82,6 +86,12 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
     },
   },
   ClearLocalData() {},
+  baseManager: {
+    AddLog() {},
+    ReadAllLog() {
+      return null;
+    },
+  },
 });
 
 export const useGeneralFunction = () => {
@@ -114,6 +124,9 @@ export default function GeneralFunctionWrapper(
     ServiceWorkerRegistration | undefined
   >(undefined);
   const [forceHaltAuth, setForceHaltAuth] = useState(false);
+  const [loggingCache, setLoggingCache] = useState<
+    { type: string; message: any[] }[]
+  >([]);
   async function Login(method: AvailableLoginMethod) {
     setForceHaltAuth(false);
     switch (method) {
@@ -153,9 +166,16 @@ export default function GeneralFunctionWrapper(
     });
     SetSWRegistration(Registration);
   }
+  function AddLog(type: string, ...message: any[]) {
+    setLoggingCache((prev) => [...prev, { type, message }]);
+  }
+  function ReadAllLog() {
+    return loggingCache;
+  }
   useEffectOnce(() => {
     InitServiceWorker();
   });
+
   return (
     <GeneralFunctionContext.Provider
       value={{
@@ -176,6 +196,10 @@ export default function GeneralFunctionWrapper(
 
         swManager: {
           getSWRegistration: () => SWRegistration,
+        },
+        baseManager: {
+          AddLog,
+          ReadAllLog,
         },
         ClearLocalData,
       }}

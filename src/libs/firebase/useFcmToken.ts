@@ -5,12 +5,14 @@ import { firebaseApp, FirebaseAuth } from "./config";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { AxiosFetchV1Api } from "../axios";
 import { useIdToken } from "react-firebase-hooks/auth";
+import { useLogger } from "@/components/hooks/logger";
 
 const useFcmToken = () => {
   const [token, setToken] = useState("");
   const [notificationPermissionStatus, setNotificationPermissionStatus] =
     useState("");
   const { userManager, apiManager, swManager } = useGeneralFunction();
+  const { Console } = useLogger();
   useEffect(() => {
     const retrieveToken = async () => {
       try {
@@ -44,14 +46,15 @@ const useFcmToken = () => {
                 }
               );
             } else {
-              console.log(
+              Console(
+                "error",
                 "No registration token available. Request permission to generate one."
               );
             }
           }
         }
       } catch (error) {
-        console.log("An error occurred while retrieving token:", error);
+        Console("error", "An error occurred while retrieving token:", error);
       }
     };
 

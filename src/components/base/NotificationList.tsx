@@ -26,16 +26,18 @@ import {
 } from "firebase/remote-config";
 import { useEffectOnce } from "react-use";
 import ProtectedHiddenDevelopmentComponent from "./ProtectedHiddenDevComponent";
+import { useLogger } from "../hooks/logger";
 
 export default function NotificationList() {
   const { userManager } = useGeneralFunction();
   const [enableDebug, setEnableDebug] = useState(false);
   const { Notifications, fcm_token } = useFCMNotification();
+  const { Console } = useLogger();
   async function DebugMode() {
     const RemoteConfig = getRemoteConfig(firebaseApp);
     await fetchAndActivate(RemoteConfig);
     const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
-    console.log(EnableDebugUI);
+    Console("log", EnableDebugUI);
     setEnableDebug(EnableDebugUI);
   }
   useEffectOnce(() => {
