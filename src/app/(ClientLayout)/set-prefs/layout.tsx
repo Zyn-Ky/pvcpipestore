@@ -29,7 +29,6 @@ export default async function SettingsUISharedLayout({
           <div className={CSS.Sidebar}>
             <h1>Pengaturan</h1>
             <List component="nav" aria-label="Settings Section">
-              <FirstTimeSetupButton />
               {[
                 ["/set-prefs/account", "Akun"],
                 ["/set-prefs/mb-themes", "Tema"],

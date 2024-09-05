@@ -20,7 +20,7 @@ import { useEffectOnce, useWindowSize } from "react-use";
 import paths from "./paths";
 import dynamic from "next/dynamic";
 import { useGlobalThemeSettings } from "./base/ClientThemeWrapper";
-import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import {
   fetchAndActivate,
   getBoolean,
@@ -79,9 +79,9 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
   }, [props]);
 
   async function DebugMode() {
-    const RemoteConfig = getRemoteConfig(firebaseApp);
-    await fetchAndActivate(RemoteConfig);
-    const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
+    const rc = getRemoteConfig(firebaseApp);
+    await fetchAndActivate(rc);
+    const EnableDebugUI = getBoolean(rc, "ENABLE_DEBUG_UI");
 
     Console("log", EnableDebugUI);
     setEnableDebug(EnableDebugUI);

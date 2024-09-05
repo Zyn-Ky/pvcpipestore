@@ -7,8 +7,9 @@ import paths from "@/components/paths";
 import { Fade, Portal, Toolbar, useTheme } from "@mui/material";
 import { Slide, useMediaQuery } from "@mui/material";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next-nprogress-bar";
 import dynamic from "next/dynamic";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));
 const PersonIcon = dynamic(() => import("@mui/icons-material/Person"));
 const ShoppingCartIcon = dynamic(

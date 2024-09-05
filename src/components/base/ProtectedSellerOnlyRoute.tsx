@@ -1,7 +1,7 @@
 "use client";
 
 import { StoredUserClaimsFB, UserRoleState } from "@/libs/axios";
-import { FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import { getAuth } from "firebase/auth";
 import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -11,7 +11,9 @@ import { usePathname } from "next/navigation";
 import SellerCenterSplashScreen from "../custom/SellerCenter/SellerCenterSplashScreen";
 
 export default function ProtectedSellerOnlyRoute(props: PropsWithChildren) {
-  const [userState, userLoading, userLoadError] = useAuthState(FirebaseAuth);
+  const [userState, userLoading, userLoadError] = useAuthState(
+    getAuth(firebaseApp)
+  );
   const [roleState, setRoleState] = useState<UserRoleState | undefined>(
     undefined
   );

@@ -5,14 +5,19 @@ const SITE_BACKEND_CONFIG = {
   FIRESTORE_PRODUCT_ROOT_PATH: "Products/",
   FIRESTORE_CATALOGS_LIST_ROOT_PATH: "CatalogsList/",
   FIRESTORE_SHOP_CONFIG_ROOT_PATH: "ShopConfig/",
+  FIRESTORE_FEEDBACKS_ROOT_PATH: "Feedbacks/",
 };
 
 export const ALGOLIA_INDICES = {
   PRODUCTS: "Products",
   ARTICLES: "Articles",
+  PAGES: "Pages",
 };
 export const ADMIN_APPROVED_SELLER_USER_ROLE = "ACTIVE_SELLER";
 export const ADMIN_API_VERSION = process.env.API_VERSION || "vBeta";
+export const FCM_PARTIAL_TOPIC_NAME = "FCM-TOPIC-SYSTEM-";
+export const GenerateFcmTopicName = (...param: string[]) =>
+  `${FCM_PARTIAL_TOPIC_NAME}-${param.join("-")}`;
 export const API_PATH = {
   IMAGE_UPLOAD_SERVER: `admin/${ADMIN_API_VERSION}/upload`,
   HIDDEN_APPLY_SELLER_ROLE: `admin/${ADMIN_API_VERSION}/applysellerrole`,
@@ -85,7 +90,7 @@ export interface StoredFeedbackInfo {
   Email: string;
   FormType: "BETA_FORM" | "SUPPORT_FORM";
   IPAddress: string;
-  LinkedUID: "Anonymous" | ("Unknown" & string);
+  LinkedUID: string | ("Anonymous" & "Unknown");
 }
 export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
 export type SortOrderType = "ascending" | "descending" | "ignore";

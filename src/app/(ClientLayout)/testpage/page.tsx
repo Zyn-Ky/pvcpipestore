@@ -2,7 +2,7 @@
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { RedirectLoginPage } from "@/components/paths";
 import { AxiosFetchV1Api } from "@/libs/axios";
-import { FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -17,6 +17,7 @@ import { Hit as AlgoliaHit } from "instantsearch.js";
 import algoliasearch from "algoliasearch";
 import "instantsearch.css/themes/satellite.css";
 import { StoredSearchRecordItem } from "@/libs/config";
+import { getAuth } from "firebase/auth";
 const searchClient = algoliasearch(
   "8JTN8AXH6R",
   "223489da85af51793344fc6438e64c57"
@@ -53,7 +54,7 @@ const Search = () => {
   );
 };
 export default function XTest() {
-  const [user, loading, error] = useAuthState(FirebaseAuth);
+  const [user, loading, error] = useAuthState(getAuth(firebaseApp));
   const { apiManager } = useGeneralFunction();
   const router = useRouter();
 

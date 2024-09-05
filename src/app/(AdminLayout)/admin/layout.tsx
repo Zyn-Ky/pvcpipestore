@@ -42,7 +42,7 @@ export default async function SellerRootLayout({
                   <Box className="flex">
                     <SellerAppBar>
                       <Toolbar />
-                      <Box component="main" className="p-3">
+                      <Box component="main" className="p-6">
                         {children}
                       </Box>
                     </SellerAppBar>

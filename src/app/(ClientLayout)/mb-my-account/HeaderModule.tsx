@@ -3,7 +3,6 @@ import paths, {
   RedirectLoginPage,
   RedirectRegisterPage,
 } from "@/components/paths";
-import { FirebaseAuth } from "@/libs/firebase/config";
 import CSS from "@/scss/ClientMyAccount.module.scss";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";

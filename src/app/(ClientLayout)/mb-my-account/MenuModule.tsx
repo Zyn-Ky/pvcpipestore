@@ -1,16 +1,17 @@
 "use client";
 
 import paths from "@/components/paths";
-import { FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { getAuth } from "firebase/auth";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 
 export function LogoutBtn() {
   const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
-    useAuthState(FirebaseAuth);
+    useAuthState(getAuth(firebaseApp));
 
-  const [SignOutCall] = useSignOut(FirebaseAuth);
+  const [SignOutCall] = useSignOut(getAuth(firebaseApp));
   if (!ClientUserInfo) return <></>;
   async function HandleSignout() {
     try {

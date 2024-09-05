@@ -1,7 +1,6 @@
 "use client";
 import ItemProductCard from "@/components/base/ProductCard";
 import { ProductCardInfo } from "@/libs/config";
-import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
 import { Box, styled } from "@mui/material";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, doc } from "firebase/firestore";

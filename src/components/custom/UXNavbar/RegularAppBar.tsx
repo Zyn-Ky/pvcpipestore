@@ -33,7 +33,11 @@ export default function RegularAppBar({
             <AccessibilityJumpKey />
             <div className="grow" />
             <SearchButton
-              indexes={[ALGOLIA_INDICES.PRODUCTS, ALGOLIA_INDICES.ARTICLES]}
+              indexes={[
+                ALGOLIA_INDICES.PRODUCTS,
+                ALGOLIA_INDICES.ARTICLES,
+                ALGOLIA_INDICES.PAGES,
+              ]}
             />
             {!isSmallScreen && (
               <>

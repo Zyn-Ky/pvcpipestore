@@ -4,11 +4,12 @@ import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { useLogger } from "@/components/hooks/logger";
 import { AxiosFetchV1Api } from "@/libs/axios";
 import { StoredFeedbackInfo } from "@/libs/config";
-import { FormEvent, PropsWithChildren } from "react";
+import { FormEvent, PropsWithChildren, useState } from "react";
 
 export default function HelpFormModule(props: PropsWithChildren) {
   const { Console, GetAllLog } = useLogger();
-  const { apiManager } = useGeneralFunction();
+  const { apiManager, userManager } = useGeneralFunction();
+  const [submited, setSubmited] = useState(false);
   function GenerateSystemInfo() {
     const {
       doNotTrack,
@@ -83,15 +84,19 @@ export default function HelpFormModule(props: PropsWithChildren) {
       LinkedUID: "Unknown",
       SystemDevInfo: JSON.stringify(GenerateSystemInfo()),
     };
-    AxiosFetchV1Api("POST", "client/betaFeedback", apiManager.xsrfToken, {
+    await AxiosFetchV1Api("POST", "client/betaFeedback", apiManager.xsrfToken, {
       ...data,
+      authToken: await userManager.currentUser?.getIdToken(),
     });
+    setSubmited(true);
     Console("log", data);
+    e.currentTarget.reset();
   }
   return (
     <>
       <form onSubmit={SubmitData} className="text-center">
-        {props.children && props.children}
+        {!submited && <p>Terkirim!</p>}
+        {submited && props.children && props.children}
       </form>
     </>
   );

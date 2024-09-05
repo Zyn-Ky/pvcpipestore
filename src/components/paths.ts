@@ -14,6 +14,7 @@ const paths = {
   CHECKOUT_PAGE: "/sp-checkout",
   SELLER_ADMIN_PAGE: "/admin",
   POST_PRODUCT_ADMIN_PAGE: "/admin/post",
+  FEEDBACKS_LIST_ADMIN_PAGE: "/admin/feedbacks",
 };
 
 export function RedirectLoginPage(url: string) {

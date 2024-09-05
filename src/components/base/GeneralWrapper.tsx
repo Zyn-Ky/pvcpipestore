@@ -1,8 +1,9 @@
 "use client";
-import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import { FirebaseApp, deleteApp } from "firebase/app";
 import {
   AuthError,
+  getAuth,
   sendEmailVerification,
   User,
   UserCredential,
@@ -112,14 +113,18 @@ const searchClient = algoliasearch(
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
 ) {
-  const [CurrentUser, AuthLoading, AuthError] = useAuthState(FirebaseAuth);
+  const [CurrentUser, AuthLoading, AuthError] = useAuthState(
+    getAuth(firebaseApp)
+  );
   const [
     SignInWithGoogle,
     GoogleUserValue,
     GoogleUserLoading,
     GoogleUserSignInError,
-  ] = useSignInWithGoogle(FirebaseAuth);
-  const [SignOut, AuthOutLoading, AuthOutError] = useSignOut(FirebaseAuth);
+  ] = useSignInWithGoogle(getAuth(firebaseApp));
+  const [SignOut, AuthOutLoading, AuthOutError] = useSignOut(
+    getAuth(firebaseApp)
+  );
   const [SWRegistration, SetSWRegistration] = useState<
     ServiceWorkerRegistration | undefined
   >(undefined);

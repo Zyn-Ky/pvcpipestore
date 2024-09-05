@@ -15,10 +15,12 @@ import Image from "next/image";
 import CounterModule from "./countermodule";
 import SampleImg from "./PIPA PVC.jpg";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import paths, { RedirectLoginPage } from "@/components/paths";
 import { PromptAuth } from "@/components";
 import LoginIcon from "@mui/icons-material/Login";
+import { getAuth } from "firebase/auth";
+import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 function TextLR(props: PropsWithChildren<{ rightItem?: string }>) {
   return (
     <>
@@ -31,10 +33,9 @@ function TextLR(props: PropsWithChildren<{ rightItem?: string }>) {
 }
 
 export function CartsClient() {
-  const [ClientUserInfo, ClientUserInfoLoading, ClientUserInfoError] =
-    useAuthState(FirebaseAuth);
+  const { userManager } = useGeneralFunction();
 
-  if (!ClientUserInfo)
+  if (!userManager.currentUser)
     return (
       <PromptAuth
         message="Masuk untuk melihat keranjang anda!"

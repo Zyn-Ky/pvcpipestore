@@ -1,5 +1,10 @@
 import * as admin from "firebase-admin";
 import { App } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import { getMessaging } from "firebase-admin/messaging";
+import { getStorage } from "firebase-admin/storage";
+import { getRemoteConfig } from "firebase-admin/remote-config";
+import { getDatabase } from "firebase-admin/database";
 
 const AdminFirebaseApp =
   admin.apps.length === 0
@@ -14,6 +19,11 @@ const AdminFirebaseApp =
             ),
         }),
       })
-    : admin.apps[0];
+    : (admin.apps[0] as admin.app.App);
+
+export const AdminFirebaseMessaging = getMessaging(AdminFirebaseApp);
+export const AdminFirebaseStore = getFirestore(AdminFirebaseApp);
+export const AdminFirebaseStorage = getStorage(AdminFirebaseApp);
+export const AdminFirebaseRemoteConfig = getRemoteConfig(AdminFirebaseApp);
 
 export default AdminFirebaseApp as App;

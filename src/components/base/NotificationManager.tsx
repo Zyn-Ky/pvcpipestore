@@ -157,11 +157,12 @@ export default function NotificationManager(props: PropsWithChildren) {
     async function HandleNewNotifications(payload: MessagePayload) {
       if (!payload.notification) return;
       Console("log", "Foreground push notification received:", payload);
-
+      const collapseKey =
+        payload.collapseKey ?? `NOTI_KEY_SYSTEM_${Date.now()}`;
       let data: StoredNotificationItem = {
         title: payload.notification.title,
         body: payload.notification.body,
-        collapse_key: payload.collapseKey,
+        collapse_key: collapseKey,
         additional_data: "",
       };
       Console("log", payload.notification);

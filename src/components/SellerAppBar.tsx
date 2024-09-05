@@ -197,11 +197,15 @@ export default function SellerAppBar(props: PropsWithChildren) {
           </ListItem>
           {(
             [
-              [<HomeIcon key={1} />, "Dasbor"],
-              [<InventoryIcon key={2} />, "Produk"],
-              [<CategoryIcon key={3} />, "Kategori"],
-              [<FeedbackIcon key={4} />, "Masukan"],
-            ] as [ReactNode, string][]
+              [<HomeIcon key={1} />, "Dasbor", paths.SELLER_ADMIN_PAGE],
+              [<InventoryIcon key={2} />, "Produk", paths.SELLER_ADMIN_PAGE],
+              [<CategoryIcon key={3} />, "Kategori", paths.SELLER_ADMIN_PAGE],
+              [
+                <FeedbackIcon key={4} />,
+                "Masukan",
+                paths.FEEDBACKS_LIST_ADMIN_PAGE,
+              ],
+            ] as [ReactNode, string, string][]
           ).map((item, index) => (
             <ListItem
               key={item[1].toString() + index.toString()}
@@ -215,7 +219,7 @@ export default function SellerAppBar(props: PropsWithChildren) {
               >
                 <ListItemButton
                   LinkComponent={Link}
-                  href="/admin"
+                  href={item[2]}
                   key={item[1].toString() + index.toString()}
                   sx={{
                     minHeight: 48,

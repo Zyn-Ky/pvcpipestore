@@ -1,14 +1,18 @@
 import { getMessaging } from "firebase-admin/messaging";
 import { getAuth } from "firebase-admin/auth";
 import { NextRequest, NextResponse } from "next/server";
-import AdminFirebaseApp from "@/libs/firebase/adminConfig";
+import AdminFirebaseApp, {
+  AdminFirebaseMessaging,
+} from "@/libs/firebase/adminConfig";
 import UserVerifyID from "@/libs/api/VerifyID";
+import { ApiResponse } from "@/libs/axios";
+import { GenerateFcmTopicName } from "@/libs/config";
 
 export async function POST(request: NextRequest) {
   try {
     const requestJSON = await request.json();
     if (!requestJSON.authToken)
-      return NextResponse.json(
+      return NextResponse.json<ApiResponse>(
         { code: 400, message: "INVALID_REQUEST" },
         { status: 400 }
       );
@@ -18,19 +22,33 @@ export async function POST(request: NextRequest) {
     );
     if (UserExists && IsValid) {
       const auth = getAuth(AdminFirebaseApp);
-      return NextResponse.json({
+      if (!requestJSON.deviceFCMKey)
+        return NextResponse.json<ApiResponse>(
+          { code: 401, message: "INVALID_TOKEN" },
+          { status: 401 }
+        );
+      const topicName = GenerateFcmTopicName(uid, requestJSON.deviceFCMKey);
+      const { successCount } = await AdminFirebaseMessaging.subscribeToTopic(
+        requestJSON.deviceFCMKey,
+        "yesking"
+      );
+
+      return NextResponse.json<ApiResponse>({
         code: 200,
         message: "OK",
-        auth: await auth.getUser(uid),
+        response: {
+          successCount,
+        },
       });
     } else {
-      return NextResponse.json(
+      return NextResponse.json<ApiResponse>(
         { code: 401, message: "INVALID_TOKEN" },
         { status: 401 }
       );
     }
-  } catch {
-    return NextResponse.json(
+  } catch (e) {
+    console.log(e);
+    return NextResponse.json<ApiResponse>(
       { code: 400, message: "INVALID_REQUEST" },
       { status: 400 }
     );

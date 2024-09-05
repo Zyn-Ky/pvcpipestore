@@ -3,6 +3,17 @@
 import { getAuth } from "firebase/auth";
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getInstallations } from "firebase/installations";
+import { getRemoteConfig } from "firebase/remote-config";
+import { getDatabase } from "firebase/database";
+import { getMessaging, isSupported } from "firebase/messaging";
+import { getAnalytics } from "firebase/analytics";
+import { getPerformance } from "firebase/performance";
+import { getFunctions } from "firebase/functions";
+
+export const isWindowEnv =
+  typeof window !== "undefined" || typeof global.window !== "undefined";
 
 // Load .env variables
 const firebaseConfig = {
@@ -16,6 +27,3 @@ const firebaseConfig = {
 
 export const firebaseApp =
   getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
-export const FirebaseAuth = getAuth(firebaseApp);
-export const FirebaseStore = getFirestore(firebaseApp);

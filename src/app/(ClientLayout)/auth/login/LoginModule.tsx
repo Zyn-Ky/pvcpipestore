@@ -1,6 +1,5 @@
 "use client";
 import paths from "@/components/paths";
-import { FirebaseAuth } from "@/libs/firebase/config";
 import { LoadingButton } from "@mui/lab";
 import { Alert, Box } from "@mui/material";
 import { useSearchParams } from "next/navigation";

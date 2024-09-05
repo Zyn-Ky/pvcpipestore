@@ -12,7 +12,7 @@ import PromptAuth from "./GeneratePromptAuth";
 import LoginIcon from "@mui/icons-material/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useToken } from "react-firebase-hooks/messaging";
-import { firebaseApp, FirebaseAuth } from "@/libs/firebase/config";
+import { firebaseApp } from "@/libs/firebase/config";
 import paths from "../paths";
 import { getMessaging, onMessage } from "firebase/messaging";
 import { useEffect, useState } from "react";
@@ -34,9 +34,9 @@ export default function NotificationList() {
   const { Notifications, fcm_token } = useFCMNotification();
   const { Console } = useLogger();
   async function DebugMode() {
-    const RemoteConfig = getRemoteConfig(firebaseApp);
-    await fetchAndActivate(RemoteConfig);
-    const EnableDebugUI = getBoolean(RemoteConfig, "ENABLE_DEBUG_UI");
+    const rc = getRemoteConfig(firebaseApp);
+    await fetchAndActivate(rc);
+    const EnableDebugUI = getBoolean(rc, "ENABLE_DEBUG_UI");
     Console("log", EnableDebugUI);
     setEnableDebug(EnableDebugUI);
   }
