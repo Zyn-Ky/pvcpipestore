@@ -41,6 +41,7 @@ const nextConfig = {
   },
   compress: true,
   poweredByHeader: false,
+  transpilePackages: ["next-mdx-remote"],
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },

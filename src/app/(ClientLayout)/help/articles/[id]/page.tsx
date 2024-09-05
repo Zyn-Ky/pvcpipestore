@@ -6,12 +6,23 @@ import { notFound } from "next/navigation";
 import { WhatsappShare } from "react-share-kit";
 import ShareButton from "./ShareButton";
 import { Metadata } from "next";
+import { unstable_cache } from "next/cache";
+export const dynamic = "force-dynamic";
+const getCachedPost = unstable_cache(getPost, ["FETCH_POST_ITEM"], {
+  tags: ["FETCH_POST_ITEM"],
+  revalidate:
+    process.env.NODE_ENV === "development"
+      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
+      : 60 * 120,
+  // revalidate: 1,
+});
+
 export async function generateMetadata({
   params,
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const postData = await getPost(params.id);
+  const postData = await getCachedPost(params.id);
   if (!postData.exists)
     return {
       title: "Post tidak tersedia",
@@ -58,6 +69,7 @@ export async function generateMetadata({
 }
 export default async function MDPage({ params }: { params: { id: string } }) {
   const postData = await getPost(params.id);
+  console.log(params);
   if (!postData.exists) return notFound();
   const dateString = postData.content?.date ?? "";
   const date = parseISO(dateString);

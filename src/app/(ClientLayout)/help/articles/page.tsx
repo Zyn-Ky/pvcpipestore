@@ -8,6 +8,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { unstable_cache } from "next/cache";
+import { DynamicParamTypes } from "next/dist/server/app-render/types";
 import Link from "next/link";
 
 export default async function HelpArticlesPage() {

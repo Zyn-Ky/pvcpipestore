@@ -1,9 +1,10 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "4.16.0-coming.0",
+  "version": "4.16.1-coming.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
