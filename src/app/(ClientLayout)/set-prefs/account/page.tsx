@@ -5,9 +5,11 @@ import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHidd
 import paths from "@/components/paths";
 import LoginIcon from "@mui/icons-material/Login";
 import Image from "next/image";
+import { useState } from "react";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
+  const [openedPhotoUploader, setOpenPhotoUploader] = useState(false);
   return (
     <>
       <h1>Akun</h1>
@@ -21,6 +23,7 @@ export default function AccountSettingsUI(params: any) {
                 alt={`Photo of ${userManager.currentUser.displayName}`}
                 width={64}
                 height={64}
+                onClick={() => setOpenPhotoUploader(true)}
               />
             )}
             <p>{userManager.currentUser.displayName}</p>

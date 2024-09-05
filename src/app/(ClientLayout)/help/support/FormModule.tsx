@@ -90,13 +90,13 @@ export default function HelpFormModule(props: PropsWithChildren) {
     });
     setSubmited(true);
     Console("log", data);
-    e.currentTarget.reset();
+    e.currentTarget && e.currentTarget.reset && e.currentTarget.reset();
   }
   return (
     <>
       <form onSubmit={SubmitData} className="text-center">
-        {!submited && <p>Terkirim!</p>}
-        {submited && props.children && props.children}
+        {submited && <p>Terkirim!</p>}
+        {!submited && props.children && props.children}
       </form>
     </>
   );
