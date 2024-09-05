@@ -71,36 +71,34 @@ export default function NotificationList() {
       )}
 
       <List sx={{ width: "100%" }}>
-        <ProtectedHiddenDevelopmentComponent>
-          {Notifications &&
-            Notifications.map((item, i) => (
-              <ListItemButton alignItems="flex-start" key={i}>
-                {item.current_blob_img_url && (
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={`Photo Notification of ${item.title}`}
-                      src={item.current_blob_img_url}
-                    />
-                  </ListItemAvatar>
-                )}
-                <ListItemText
-                  primary={item.title && item.title}
-                  secondary={
-                    <>
-                      <Typography
-                        className="inline"
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        {item.body && item.body}
-                      </Typography>
-                    </>
-                  }
-                />
-              </ListItemButton>
-            ))}
-        </ProtectedHiddenDevelopmentComponent>
+        {Notifications &&
+          Notifications.map((item, i) => (
+            <ListItemButton alignItems="flex-start" key={i}>
+              {item.current_blob_img_url && (
+                <ListItemAvatar>
+                  <Avatar
+                    alt={`Photo Notification of ${item.title}`}
+                    src={item.current_blob_img_url}
+                  />
+                </ListItemAvatar>
+              )}
+              <ListItemText
+                primary={item.title && item.title}
+                secondary={
+                  <>
+                    <Typography
+                      className="inline"
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {item.body && item.body}
+                    </Typography>
+                  </>
+                }
+              />
+            </ListItemButton>
+          ))}
 
         {Notifications && Notifications.length === 0 && (
           <>
