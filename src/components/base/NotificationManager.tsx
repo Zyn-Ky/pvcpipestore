@@ -44,6 +44,7 @@ interface NotificationItem {
   additional_data: string;
   current_blob_img_url?: string;
   img_src_url?: string;
+  message_id: string;
 }
 
 interface StoredNotificationItem extends NotificationItem {
@@ -77,12 +78,16 @@ const IDB_NotiCache_Config: IndexedDBConfig = {
   stores: [
     {
       name: IDB_NotiCache_DBStoreName,
-      id: { keyPath: "collapse_key", autoIncrement: true },
+      id: { keyPath: "message_id", autoIncrement: true },
       indices: [
+        {
+          name: "message_id",
+          keyPath: "message_id",
+          options: { unique: false },
+        },
         {
           name: "collapse_key",
           keyPath: "collapse_key",
-          options: { unique: false },
         },
         { name: "title", keyPath: "title" },
         { name: "body", keyPath: "body" },
@@ -158,8 +163,9 @@ export default function NotificationManager(props: PropsWithChildren) {
       if (!payload.notification) return;
       Console("log", "Foreground push notification received:", payload);
       const collapseKey =
-        payload.collapseKey ?? `NOTI_KEY_SYSTEM_${Date.now()}`;
+        payload.collapseKey ?? `NOTI_UNKNOWN_COLLAPSE_KEY_${Date.now()}`;
       let data: StoredNotificationItem = {
+        message_id: payload.messageId,
         title: payload.notification.title,
         body: payload.notification.body,
         collapse_key: collapseKey,
@@ -174,6 +180,7 @@ export default function NotificationManager(props: PropsWithChildren) {
         };
       }
       Console("log", data);
+      Console("log", payload.messageId);
       if (!idbCache) return;
       idbCache.add(data);
       await UpdateNotificationList();

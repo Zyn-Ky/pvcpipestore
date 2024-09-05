@@ -181,7 +181,7 @@ export default function PostingProductPage() {
         doc(
           firestore,
           SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH,
-          form.slug_url as string
+          slugURL
         ),
         data
       );

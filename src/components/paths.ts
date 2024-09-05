@@ -15,8 +15,12 @@ const paths = {
   SELLER_ADMIN_PAGE: "/admin",
   POST_PRODUCT_ADMIN_PAGE: "/admin/post",
   FEEDBACKS_LIST_ADMIN_PAGE: "/admin/feedbacks",
+  PRODUCTS_LIST_ADMIN_PAGE: "/admin/products",
+  PRODUCT_ITEM_ADMIN_PAGE: "/admin/products/",
 };
-
+export function GetAdminProductUrl(id: string) {
+  return `${paths.PRODUCT_ITEM_ADMIN_PAGE}${id}`;
+}
 export function RedirectLoginPage(url: string) {
   return `${paths.AUTH_LOGIN}?next=${url}`;
 }

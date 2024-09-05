@@ -62,7 +62,7 @@ const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   revalidate:
     process.env.NODE_ENV === "development"
       ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
-      : 60 * 5,
+      : 60 * 10,
   // revalidate: 1,
 });
 

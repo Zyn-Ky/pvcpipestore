@@ -198,7 +198,11 @@ export default function SellerAppBar(props: PropsWithChildren) {
           {(
             [
               [<HomeIcon key={1} />, "Dasbor", paths.SELLER_ADMIN_PAGE],
-              [<InventoryIcon key={2} />, "Produk", paths.SELLER_ADMIN_PAGE],
+              [
+                <InventoryIcon key={2} />,
+                "Produk",
+                paths.PRODUCTS_LIST_ADMIN_PAGE,
+              ],
               [<CategoryIcon key={3} />, "Kategori", paths.SELLER_ADMIN_PAGE],
               [
                 <FeedbackIcon key={4} />,
@@ -318,7 +322,8 @@ export default function SellerAppBar(props: PropsWithChildren) {
         style={
           openSidebar
             ? {
-                transform: "scale(0.75) translateX(-105px)",
+                transform:
+                  "scale(0.75) translateX(-105px) translateY(-16.635%)",
               }
             : {}
         }

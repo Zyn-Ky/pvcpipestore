@@ -47,7 +47,7 @@ export default function NotificationList() {
     return (
       <PromptAuth
         message="Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi"
-        icon={<LoginIcon sx={{ fontSize: "6rem" }} />}
+        icon={<LoginIcon className="text-8xl" />}
         redirectPath={paths.MOBILE_NOTIFICATION}
       />
     );
@@ -56,17 +56,19 @@ export default function NotificationList() {
     <>
       {enableDebug && (
         <>
-          <p
-            style={{
-              userSelect: "text",
-              whiteSpace: "wrap",
-              wordWrap: "break-word",
-              width: "100%",
-            }}
-          >
-            FCM Token : {fcm_token}
-          </p>
-          <br />
+          <details>
+            <summary>FCM Token</summary>
+            <p
+              style={{
+                userSelect: "text",
+                whiteSpace: "wrap",
+                wordWrap: "break-word",
+                width: "100%",
+              }}
+            >
+              {fcm_token}
+            </p>
+          </details>
         </>
       )}
 
