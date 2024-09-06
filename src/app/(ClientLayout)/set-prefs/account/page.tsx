@@ -6,6 +6,7 @@ import paths from "@/components/paths";
 import LoginIcon from "@mui/icons-material/Login";
 import Image from "next/image";
 import { useState } from "react";
+import UpdatePhotoModule from "./UpdatePhotoModule";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
@@ -28,6 +29,10 @@ export default function AccountSettingsUI(params: any) {
             )}
             <p>{userManager.currentUser.displayName}</p>
             <button>Edit Profil</button>
+            <UpdatePhotoModule
+              open={openedPhotoUploader}
+              onClose={() => setOpenPhotoUploader(false)}
+            />
           </>
         )}
         {!userManager.currentUser && (

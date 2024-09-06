@@ -5,6 +5,7 @@ import {
   AuthError,
   getAuth,
   sendEmailVerification,
+  updateProfile,
   User,
   UserCredential,
 } from "firebase/auth";
@@ -32,34 +33,43 @@ import { ALGOLIA_INDICES } from "@/libs/config";
 
 export type AvailableLoginMethod = "google";
 
-type GeneralFunctionContextProps = {
+interface UserManager {
+  loading: boolean;
+  currentUser: User | null | undefined;
+  emailVerified: boolean;
+  method: {
+    Login: (
+      method: AvailableLoginMethod
+    ) => Promise<void | UserCredential | undefined>;
+    SignOut: () => Promise<boolean>;
+    SendVerificationEmail: () => Promise<boolean>;
+    UpdateInfo: (profile: {
+      displayName?: string | null;
+      photoURL?: string | null;
+    }) => Promise<boolean>;
+  };
+  isFirstSetup: boolean;
+  authError?: AuthError | Error;
+}
+
+interface APIManager {
+  xsrfToken: string;
+}
+interface SWManager {
+  getSWRegistration: () => ServiceWorkerRegistration | undefined;
+}
+interface BaseManager {
+  AddLog: (type: string, message: any[]) => void;
+  ReadAllLog: () => { type: string; message: any[] }[] | null;
+}
+interface GeneralFunctionContextProps {
   ambatakam_value: FirebaseApp | null;
-  userManager: {
-    loading: boolean;
-    currentUser: User | null | undefined;
-    emailVerified: boolean;
-    method: {
-      Login: (
-        method: AvailableLoginMethod
-      ) => Promise<void | UserCredential | undefined>;
-      SignOut: () => Promise<boolean>;
-      SendVerificationEmail: () => Promise<boolean>;
-    };
-    isFirstSetup: boolean;
-    authError?: AuthError | Error;
-  };
-  apiManager: {
-    xsrfToken: string;
-  };
-  swManager: {
-    getSWRegistration: () => ServiceWorkerRegistration | undefined;
-  };
-  baseManager: {
-    AddLog: (type: string, message: any[]) => void;
-    ReadAllLog: () => { type: string; message: any[] }[] | null;
-  };
+  userManager: UserManager;
+  apiManager: APIManager;
+  swManager: SWManager;
+  baseManager: BaseManager;
   ClearLocalData: () => void;
-};
+}
 
 const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
   ambatakam_value: null,
@@ -74,6 +84,9 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
         return false;
       },
       async SendVerificationEmail() {
+        return false;
+      },
+      async UpdateInfo() {
         return false;
       },
     },
@@ -171,6 +184,18 @@ export default function GeneralFunctionWrapper(
     });
     SetSWRegistration(Registration);
   }
+  async function UpdateInfo(props: {
+    displayName?: string | null;
+    photoURL?: string | null;
+  }) {
+    if (!CurrentUser) return false;
+    try {
+      updateProfile(CurrentUser, props);
+      return true;
+    } catch {
+      return false;
+    }
+  }
   function AddLog(type: string, ...message: any[]) {
     setLoggingCache((prev) => [...prev, { type, message }]);
   }
@@ -193,6 +218,7 @@ export default function GeneralFunctionWrapper(
             Login,
             SignOut: SignOutCall,
             SendVerificationEmail,
+            UpdateInfo,
           },
           authError: GoogleUserSignInError || AuthError,
           isFirstSetup: true,

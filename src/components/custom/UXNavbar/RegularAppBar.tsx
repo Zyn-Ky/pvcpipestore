@@ -1,5 +1,5 @@
 "use client";
-import { Badge, Box, IconButton, Toolbar, Tooltip } from "@mui/material";
+import { Badge, Box, IconButton, Slide, Toolbar, Tooltip } from "@mui/material";
 import { useTranslations } from "next-intl";
 import BetterAppBar from "./BetterAppBar";
 import LogoModule from "./HomePage";
@@ -39,46 +39,44 @@ export default function RegularAppBar({
                 ALGOLIA_INDICES.PAGES,
               ]}
             />
-            {!isSmallScreen && (
-              <>
-                <Box className="flex">
-                  <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
-                    <IconButton
-                      size="large"
-                      aria-label="17 notifications available"
-                      color="inherit"
-                      ref={(el) => {
-                        notiBtnRef.current = el;
-                      }}
-                      onClick={() => {
-                        onToggleNotiBtn();
-                      }}
-                    >
-                      <Badge color="error">
-                        <Notifications />
-                      </Badge>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={mainNavbarText("ACCCOUNT_MENU_POPUP")}>
-                    <IconButton
-                      size="large"
-                      edge="end"
-                      aria-label="Account of current user"
-                      aria-haspopup="true"
-                      color="inherit"
-                      ref={(el) => {
-                        accountBtnRef.current = el;
-                      }}
-                      onClick={() => {
-                        onToggleMoreBtn();
-                      }}
-                    >
-                      <MoreVert />
-                    </IconButton>
-                  </Tooltip>
-                </Box>
-              </>
-            )}
+            <Slide direction="left" unmountOnExit in={!isSmallScreen}>
+              <Box className="flex ml-2">
+                <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
+                  <IconButton
+                    size="large"
+                    aria-label="17 notifications available"
+                    color="inherit"
+                    ref={(el) => {
+                      notiBtnRef.current = el;
+                    }}
+                    onClick={() => {
+                      onToggleNotiBtn();
+                    }}
+                  >
+                    <Badge color="error">
+                      <Notifications />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title={mainNavbarText("ACCCOUNT_MENU_POPUP")}>
+                  <IconButton
+                    size="large"
+                    edge="end"
+                    aria-label="Account of current user"
+                    aria-haspopup="true"
+                    color="inherit"
+                    ref={(el) => {
+                      accountBtnRef.current = el;
+                    }}
+                    onClick={() => {
+                      onToggleMoreBtn();
+                    }}
+                  >
+                    <MoreVert />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Slide>
           </Toolbar>
         </BetterAppBar>
       </Box>
