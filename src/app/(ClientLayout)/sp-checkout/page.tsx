@@ -37,7 +37,9 @@ export default function CheckoutPage() {
   return (
     <>
       {dataLoading && <CircularProgress />}
-      {dataError && "An error occurred! Please check your internet connection!"}
+      {dataError && productID
+        ? "An error occurred! Please check your internet connection!"
+        : "Missing Product ID"}
       {productRawData && (
         <>
           <div className="p-8">
