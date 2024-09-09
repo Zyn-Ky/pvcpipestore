@@ -11,7 +11,8 @@ import {
 import { ComponentProps, useCallback } from "react";
 import NotificationList from "./base/NotificationList";
 import { useWindowSize } from "react-use";
-
+import { useFCMNotification } from "./base/NotificationManager";
+import ClearAllOutlinedIcon from "@mui/icons-material/ClearAllOutlined";
 const OuterBox = styled(Box)(({ theme }) => ({
   position: "relative",
   display: "flex",
@@ -41,7 +42,7 @@ export default function PopUpNotifcationList(props: {
     const heightNoMarginHeader = height - 16 - 64 - 32;
     return Math.min(heightNoMarginHeader, 400);
   }, [props.open, height]);
-
+  const { clearAll, Notifications } = useFCMNotification();
   return (
     <>
       <Popover
@@ -51,23 +52,42 @@ export default function PopUpNotifcationList(props: {
         onClose={props.onClose}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        disableScrollLock
       >
         <OuterBox>
           <Header
             title="Notifikasi"
             action={
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="Close Notification Panel"
-                aria-haspopup="true"
-                color="inherit"
-                autoFocus
-                onClick={() => props.onClose?.({}, "backdropClick")}
-              >
-                <Close />
-              </IconButton>
+              <div className="flex items-center mr-4">
+                {Notifications && Notifications.length > 0 && (
+                  <IconButton
+                    size="large"
+                    aria-label="Clear All Notification"
+                    aria-haspopup="true"
+                    color="inherit"
+                    autoFocus
+                    className="mr-1"
+                    onClick={() => {
+                      clearAll();
+                      props.onClose?.({}, "backdropClick");
+                    }}
+                  >
+                    <ClearAllOutlinedIcon />
+                  </IconButton>
+                )}
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="Close Notification Panel"
+                  aria-haspopup="true"
+                  color="inherit"
+                  autoFocus={
+                    (Notifications && Notifications.length > 0) ?? true
+                  }
+                  onClick={() => props.onClose?.({}, "backdropClick")}
+                >
+                  <Close />
+                </IconButton>
+              </div>
             }
           />
           <WrapperBox style={{ height: currentHeight() + "px" }}>

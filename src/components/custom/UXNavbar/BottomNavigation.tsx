@@ -1,10 +1,11 @@
 "use client";
 
+import { useFCMNotification } from "@/components/base/NotificationManager";
 import BetterBottomNavigation, {
   BetterBottomNavigationAction,
 } from "@/components/BetterBtmBar";
 import paths from "@/components/paths";
-import { Fade, Portal, Toolbar, useTheme } from "@mui/material";
+import { Badge, Fade, Portal, Toolbar, useTheme } from "@mui/material";
 import { Slide, useMediaQuery } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next-nprogress-bar";
@@ -21,6 +22,7 @@ const NotificationsIcon = dynamic(
 );
 
 export default function BottomNavigation() {
+  const { unreadCounter } = useFCMNotification();
   const router = useRouter();
   const text = useTranslations("BTM_NAVBAR");
   const URLPathname = usePathname();
@@ -64,7 +66,11 @@ export default function BottomNavigation() {
           <BetterBottomNavigationAction
             value={paths.MOBILE_NOTIFICATION}
             label={text("MOBILE_NOTIFICATION_PAGE")}
-            icon={<NotificationsIcon />}
+            icon={
+              <Badge badgeContent={unreadCounter} color="error">
+                <NotificationsIcon />
+              </Badge>
+            }
           />
           <BetterBottomNavigationAction
             value={paths.CARTS_ITEM_LIST}

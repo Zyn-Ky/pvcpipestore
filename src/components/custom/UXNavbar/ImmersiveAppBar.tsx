@@ -1,6 +1,8 @@
 "use client";
 import CSS from "@/scss/custom/AppBar.module.scss";
 import {
+  Avatar,
+  Badge,
   Box,
   ButtonBase,
   Fade,
@@ -25,6 +27,8 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { useGlobalThemeSettings } from "@/components/base/ClientThemeWrapper";
+import { Notifications } from "@mui/icons-material";
+import { useFCMNotification } from "@/components/base/NotificationManager";
 
 const NORMAL_BLUR_PX = 0;
 const MIN_BLUR_PX = 18;
@@ -57,15 +61,26 @@ const BigButton = styled(ButtonBase)<BigButtonProps>(({ theme }) => ({
     fontSize: "80%",
   },
 }));
-export default function ImmersiveAppBar() {
+export default function ImmersiveAppBar({
+  notiBtnRef,
+  onToggleNotiBtn,
+}: {
+  notiBtnRef: React.MutableRefObject<HTMLElement | null>;
+  onToggleNotiBtn: () => void;
+}) {
   const theme = useTheme();
   const { y } = useWindowScroll();
   const text = useTranslations("BASE");
+  const mainNavbarText = useTranslations("NAVBAR");
+
   const isUpperMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const NORMAL_PADDING_REM = isUpperMediumScreen ? 6.5 : 5;
   const MIN_PADDING_REM = 2;
+  const NORMAL_AVATAR_SCALE = isUpperMediumScreen ? 1.75 : 1;
+  const MIN_AVATAR_SCALE = 1;
   const { SetThemeMode, ThemeMode } = useGlobalThemeSettings();
-
+  const { unreadCounter } = useFCMNotification();
+  const { userManager } = useGeneralFunction();
   const scrollPercentage = Math.min(
     Math.max(
       (100 * (y - MIN_SCROLL_THRESHOLD)) /
@@ -89,6 +104,12 @@ export default function ImmersiveAppBar() {
     : Math.max(
         NORMAL_PADDING_REM - (NORMAL_PADDING_REM * scrollPercentage) / 100,
         MIN_PADDING_REM
+      );
+  const userAvatarScale = isSmallScreen
+    ? MIN_AVATAR_SCALE
+    : Math.max(
+        NORMAL_AVATAR_SCALE - (NORMAL_AVATAR_SCALE * scrollPercentage) / 100,
+        MIN_AVATAR_SCALE
       );
   const blur = Math.min(
     -(NORMAL_BLUR_PX - (MIN_BLUR_PX * scrollPercentage) / 100),
@@ -127,7 +148,7 @@ export default function ImmersiveAppBar() {
             )}
           </Link>
         </div>
-        <div className="flex-1">
+        <div className="flex-1 flex items-center">
           <Tooltip
             title={
               <>
@@ -144,7 +165,7 @@ export default function ImmersiveAppBar() {
                     ? theme.palette.text.primary
                     : theme.palette.common.white,
               }}
-              className="ml-2 sm:ml-8"
+              className="ml-2 mr-2 sm:ml-8"
               onClick={() => {
                 if (ThemeMode === "system") SetThemeMode("light");
                 if (ThemeMode === "light") SetThemeMode("dark");
@@ -156,22 +177,68 @@ export default function ImmersiveAppBar() {
               {ThemeMode === "light" && <LightModeIcon />}
             </IconButton>
           </Tooltip>
+          <Tooltip
+            title={mainNavbarText("NOTIFICATION_TEXT")}
+            className={`hidden ${unreadCounter > 0 && "sm:block"}`}
+          >
+            <IconButton
+              size="large"
+              aria-label={`${unreadCounter} notifications available`}
+              color="inherit"
+              ref={(el) => {
+                notiBtnRef.current = el;
+              }}
+              onClick={() => {
+                onToggleNotiBtn();
+              }}
+            >
+              <Badge color="error" badgeContent={unreadCounter}>
+                <Notifications />
+              </Badge>
+            </IconButton>
+          </Tooltip>
           <AccessibilityJumpKey notFloating />
         </div>
         <div className="flex items-center">
-          <Slide in={showShopBtn} direction="down" unmountOnExit>
-            <div>
-              <Fade in={showShopBtn}>
-                <BigButton
-                  focusRipple
-                  component={Link}
-                  href={paths.ACTUAL_SHOP}
-                >
-                  {text("SHOP_NOW")}
-                </BigButton>
-              </Fade>
-            </div>
-          </Slide>
+          {!userManager.currentUser && (
+            <>
+              <Slide in={showShopBtn} direction="down" unmountOnExit>
+                <div>
+                  <Fade in={showShopBtn}>
+                    <BigButton
+                      focusRipple
+                      component={Link}
+                      href={paths.ACTUAL_SHOP}
+                    >
+                      {text("SHOP_NOW")}
+                    </BigButton>
+                  </Fade>
+                </div>
+              </Slide>
+            </>
+          )}
+          {userManager.currentUser?.photoURL && (
+            <Tooltip
+              title={text("MY_ACCOUNT")}
+              style={{ transform: `scale(${userAvatarScale})` }}
+            >
+              <IconButton
+                LinkComponent={Link}
+                href={paths.MOBILE_MY_ACCOUNT}
+                centerRipple
+                disableTouchRipple={userAvatarScale > 1}
+              >
+                <Avatar>
+                  <Image
+                    src={userManager.currentUser.photoURL}
+                    alt={`Photo of ${userManager.currentUser.displayName}`}
+                    sizes="25vw"
+                    fill
+                  />
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+          )}
         </div>
       </Box>
     </>

@@ -29,7 +29,7 @@ import { useEffectOnce } from "react-use";
 import { StoredUserClaimsFB } from "@/libs/axios";
 import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
-import { ALGOLIA_INDICES } from "@/libs/config";
+import { SnackbarProvider } from "notistack";
 
 export type AvailableLoginMethod = "google";
 
@@ -235,14 +235,21 @@ export default function GeneralFunctionWrapper(
         ClearLocalData,
       }}
     >
-      <InstantSearch
-        searchClient={searchClient}
-        // indexName={ALGOLIA_INDICES.PRODUCTS}
+      <SnackbarProvider
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        classes={{ containerAnchorOriginTopRight: "pt-16" }}
+        preventDuplicate
+        dense
       >
-        <NotificationManager>
-          {props.children && props.children}
-        </NotificationManager>
-      </InstantSearch>
+        <InstantSearch
+          searchClient={searchClient}
+          // indexName={ALGOLIA_INDICES.PRODUCTS}
+        >
+          <NotificationManager>
+            {props.children && props.children}
+          </NotificationManager>
+        </InstantSearch>
+      </SnackbarProvider>
     </GeneralFunctionContext.Provider>
   );
 }

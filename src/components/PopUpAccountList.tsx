@@ -31,6 +31,7 @@ import { Menus } from "./PopUpAccountListPage";
 import { useGeneralFunction } from "./base/GeneralWrapper";
 import { useTranslations } from "next-intl";
 import { useLogger } from "./hooks/logger";
+import Image from "next/image";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const CheckIcon = dynamic(() => import("@mui/icons-material/Check"));
@@ -102,12 +103,35 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         slotProps={{
-          paper: { className: "min-w-[300px] max-h-[40vh]" },
+          paper: { className: "min-w-[300px] max-h-[5v5h]" },
         }}
       >
         <Menus
           items={[
             [
+              {
+                disableClosePopupOnClick: true,
+                disableRipple: true,
+                text: (
+                  <>
+                    <Avatar className="mb-2" sx={{ width: 48, height: 48 }}>
+                      {userManager.currentUser?.photoURL && (
+                        <Image
+                          src={userManager.currentUser?.photoURL}
+                          width={48}
+                          height={48}
+                          alt={`Photo of ${userManager.currentUser.displayName}`}
+                        />
+                      )}
+                    </Avatar>
+                    <Typography>
+                      {userManager.currentUser?.displayName &&
+                        userManager.currentUser.displayName}
+                    </Typography>
+                  </>
+                ),
+                hidden: !Boolean(userManager.currentUser),
+              },
               {
                 text: text("MY_ACCOUNT"),
                 href: paths.MOBILE_MY_ACCOUNT,

@@ -30,12 +30,16 @@ import {
   useContext,
   useEffect,
   useInsertionEffect,
+  useRef,
   useState,
 } from "react";
 import setupIndexedDB, { useIndexedDBStore } from "use-indexeddb";
 import { IndexedDBConfig } from "use-indexeddb/dist/interfaces";
 import { useGeneralFunction } from "./GeneralWrapper";
 import { useLogger } from "../hooks/logger";
+import { enqueueSnackbar } from "notistack";
+import { useLocalStorage } from "react-use";
+import { IState } from "react-use/lib/usePermission";
 
 interface NotificationItem {
   collapse_key: string;
@@ -50,18 +54,26 @@ interface NotificationItem {
 interface StoredNotificationItem extends NotificationItem {
   img_bin?: Blob | null;
 }
-type NotiManager = {
+interface NotiManager {
   yesking: boolean;
-  PermissionStatus: string;
+  PermissionStatus: IState;
   Notifications: NotificationItem[] | null;
   fcm_token: string;
-};
+  unreadCounter: number;
+  clearUnread: () => void;
+  clearAll: () => void;
+  requestPermission: () => void;
+}
 
 const NotiManager = createContext<NotiManager>({
   yesking: false,
-  PermissionStatus: "",
+  PermissionStatus: "denied",
   Notifications: null,
   fcm_token: "",
+  unreadCounter: 0,
+  clearUnread() {},
+  clearAll() {},
+  requestPermission() {},
 });
 
 export const useFCMNotification = () => {
@@ -99,11 +111,14 @@ const IDB_NotiCache_Config: IndexedDBConfig = {
   ],
 };
 
+const HOW_TO_ENABLE_NOTI_MANUAL_URL = `https://pushassist.com/knowledgebase/how-to-enable-or-disable-push-notifications-on-chrome-firefox-safari-b/`;
+
 export default function NotificationManager(props: PropsWithChildren) {
   const [idbCacheStarted, setIdbCacheStarted] = useState(false);
   const { userManager } = useGeneralFunction();
   const { Console } = useLogger();
-
+  const defaultWindowTitle = useRef("");
+  const [unreadCounter, setUnreadCounter] = useState(0);
   useEffect(() => {
     setupIndexedDB(IDB_NotiCache_Config)
       .then(() => {
@@ -113,7 +128,7 @@ export default function NotificationManager(props: PropsWithChildren) {
       })
       .catch(console.error);
   }, []);
-  const { fcmToken, notificationPermissionStatus } = useFcmToken();
+  const { fcmToken, notificationState } = useFcmToken();
 
   const [listNotifications, setListNotifications] = useState<
     NotificationItem[]
@@ -183,11 +198,37 @@ export default function NotificationManager(props: PropsWithChildren) {
       Console("log", payload.messageId);
       if (!idbCache) return;
       idbCache.add(data);
+      setUnreadCounter((prev) => prev + 1);
+      enqueueSnackbar("You have a new notification!");
       await UpdateNotificationList();
     },
     [idbCache, UpdateNotificationList]
   );
-
+  function clearUnread() {
+    setUnreadCounter(0);
+  }
+  function clearAll() {
+    clearUnread();
+    idbCache.deleteAll().then(() => enqueueSnackbar("Notification cleared!"));
+    UpdateNotificationList();
+  }
+  async function requestPermission() {
+    const result = await Notification.requestPermission();
+    if (result === "denied")
+      window.open(HOW_TO_ENABLE_NOTI_MANUAL_URL, "_blank");
+  }
+  const updateWindowTitle = useCallback(() => {
+    if (!defaultWindowTitle.current)
+      defaultWindowTitle.current = document.title;
+    if (unreadCounter >= 1) {
+      document.title = `(${unreadCounter}) | ${defaultWindowTitle.current}`;
+    } else {
+      document.title = defaultWindowTitle.current;
+    }
+  }, [unreadCounter]);
+  useEffect(() => {
+    updateWindowTitle();
+  }, [unreadCounter]);
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -212,9 +253,13 @@ export default function NotificationManager(props: PropsWithChildren) {
     <NotiManager.Provider
       value={{
         yesking: true,
-        PermissionStatus: notificationPermissionStatus,
+        PermissionStatus: notificationState,
         Notifications: listNotifications,
         fcm_token: fcmToken ?? "",
+        clearUnread,
+        unreadCounter,
+        clearAll,
+        requestPermission,
       }}
     >
       {props.children && props.children}

@@ -44,7 +44,7 @@ export default function Home() {
         <Typography fontWeight="bold" variant="h4" gutterBottom>
           {text("WHY_CHOOSE_US")}
         </Typography>
-        <div className="flex h-[250px] mt-4 items-baseline justify-center gap-4 max-md:flex-col max-md:h-auto max-md:items-center">
+        <div className="flex mt-4 justify-center gap-4 flex-col md:flex-row h-auto md:h-[250px] items-center md:items-start">
           <OurServices
             icon={<FlightLandIcon fontSize="large" />}
             header={text("REASON_TO_CHOOSE_US_1")}

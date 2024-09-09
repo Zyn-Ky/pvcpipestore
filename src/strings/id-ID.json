@@ -12,7 +12,27 @@
     "SYSTEM_THEME_TEXT": "Tema Sesuai Sistem",
     "DARK_THEME_TEXT": "Tema Gelap",
     "LIGHT_THEME_TEXT": "Tema Terang",
-    "SETTINGS_TEXT": "Setelan"
+    "SETTINGS_TEXT": "Setelan",
+    "LOGIN_TEXT": "Masuk",
+    "MY_ACCOUNT": "Akun saya",
+    "COPIED_TO_CLIPBOARD_TEXT": "Telah tersalin ke papan klip"
+  },
+  "PROMPT_AUTH_UI": {
+    "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",
+    "REQUEST_NOTI_PERMISSION": "Izinkan pemberitahuan untuk menerima pemberitahuan baru",
+    "REQUEST_NOTI_BTN_TEXT": "Izinkan",
+    "REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT": "Masuk untuk merubah preferensi akun anda",
+    "REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT": "Masuk untuk merubah alamat default anda"
+  },
+  "ACCOUNT_MANAGER": {
+    "EDIT_PHOTO_URL_TEXT": "Edit foto profil",
+    "COPY_UID_TO_CLIPBOARD_TEXT": "Salin User ID",
+    "EDITOR_ROTATION_TEXT": "Rotasi",
+    "EDITOR_ZOOM_TEXT": "Perbesar",
+    "EDITOR_SAVE": "Simpan",
+    "EDITOR_CANCEL": "Batal",
+    "EDITOR_UPLOADING": "Mengunggah...",
+    "TITLE_TEXT": "Kelola Akun"
   },
   "SEARCH_INDICE_SETTINGS_PAGE": "Setelan",
   "SEARCH_INDICE_ACCOUNT_PAGE": "Akun",
@@ -34,7 +54,7 @@
     "MB_MY_ACCOUNT_PAGE": "Akunku"
   },
   "POPUP_ACCOUNT_MENU": {
-    "MY_ACCOUNT": "Akun saya",
+    "MY_ACCOUNT": "Kelola akun saya",
     "CARTS_TEXT": "Keranjang",
     "TRANSACTION_TEXT": "Transaksi",
     "THEME_TEXT": "Tema",

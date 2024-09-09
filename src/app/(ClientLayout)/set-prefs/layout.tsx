@@ -50,7 +50,7 @@ export default async function SettingsUISharedLayout({
             orientation="vertical"
             variant="middle"
             flexItem
-            className="block max-[600px]:hidden"
+            className="hidden muiSm:block"
           />
         </SettingsSidebarResponsive>
         <ChildPageResponsive>

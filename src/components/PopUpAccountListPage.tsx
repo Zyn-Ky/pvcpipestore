@@ -6,13 +6,16 @@ type menus = {
   items: {
     href?: string;
     onClick?: () => void;
-    text: string;
+    text: ReactNode;
     startIcon?: ReactNode;
     endIcon?: ReactNode;
     disableClosePopupOnClick?: boolean;
     disabled?: boolean;
     hidden?: boolean;
     inset?: boolean;
+    disableRipple?: boolean;
+    disableTouchRipple?: boolean;
+    disableGutters?: boolean;
   }[][];
   handleClosePopup: () => void;
 };
@@ -32,11 +35,12 @@ export const Menus = memo(function Menus(props: menus) {
                     item.onClick && item.onClick();
                   }}
                   component={Link}
-                  key={`PARENT_${parentIndex}_ITEM_${
-                    item.text.toUpperCase() ?? "UNDEFINED"
-                  }`}
+                  key={`PARENT_${parentIndex}_ITEM_${i}`}
                   href={item.href}
                   disabled={item.disabled}
+                  disableRipple={item.disableRipple ?? false}
+                  disableTouchRipple={item.disableTouchRipple ?? false}
+                  disableGutters={item.disableGutters ?? false}
                   autoFocus={parentIndex === 0 && i === 0}
                 >
                   {item.startIcon && (
@@ -52,10 +56,11 @@ export const Menus = memo(function Menus(props: menus) {
                       props.handleClosePopup && props.handleClosePopup();
                     item.onClick && item.onClick();
                   }}
-                  key={`PARENT_${parentIndex}_ITEM_${
-                    item.text.toUpperCase() ?? "UNDEFINED"
-                  }`}
+                  key={`PARENT_${parentIndex}_ITEM_${i}`}
                   disabled={item.disabled}
+                  disableRipple={item.disableRipple ?? false}
+                  disableTouchRipple={item.disableTouchRipple ?? false}
+                  disableGutters={item.disableGutters ?? false}
                   autoFocus={parentIndex === 0 && i === 0}
                 >
                   {item.startIcon && (

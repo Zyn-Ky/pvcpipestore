@@ -85,7 +85,14 @@ export default function XAppBar() {
           isSmallScreen={isSmallScreen}
         />
       )}
-      {URLPathname === paths.HOME_PAGE && <ImmersiveAppBar />}
+      {URLPathname === paths.HOME_PAGE && (
+        <ImmersiveAppBar
+          notiBtnRef={refTriggerBtnNotfPopUp}
+          onToggleNotiBtn={() => {
+            setOpenNotificationBar(!openNotificationBar);
+          }}
+        />
+      )}
       <PopUpAccountList
         open={openAccountListPopup}
         anchorElement={refTriggerBtnAccPopUp.current}

@@ -7,8 +7,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  LinearProgress,
   Slider,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDropArea, useMouseWheel } from "react-use";
@@ -17,8 +19,10 @@ import { compress, compressAccurately, EImageType } from "image-conversion";
 
 import { LoadingButton } from "@mui/lab";
 import {
+  deleteObject,
   getDownloadURL,
   getStorage,
+  listAll,
   ref,
   StorageReference,
   TaskState,
@@ -27,6 +31,9 @@ import {
 import { firebaseApp } from "@/libs/firebase/config";
 import SITE_BACKEND_CONFIG from "@/libs/config";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
+import { enqueueSnackbar } from "notistack";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
+import { useTranslations } from "next-intl";
 interface UpdatePhotoModuleProps {
   onClose: () => void;
   open: boolean;
@@ -58,6 +65,7 @@ export default function UpdatePhotoModule({
   const [enableEdit, setEnableEdit] = useState(false);
   const [editedImageRotation, setEditedImageRotation] = useState(0);
   const [editedImageZoom, setEditedImageZoom] = useState(DefaultZoom);
+  const t = useTranslations("ACCOUNT_MANAGER");
   const { userManager } = useGeneralFunction();
   const [uploadStatus, setUploadStatus] = useState<ImageUploadProgress | null>(
     null
@@ -75,6 +83,18 @@ export default function UpdatePhotoModule({
     () => imageFile && URL.createObjectURL(imageFile),
     [imageFile]
   );
+  function onCloseHandler() {
+    onClose();
+    setImageFile(null);
+    const el = document.querySelector<HTMLInputElement>(
+      "input#avatar-fileinput"
+    );
+    el && (el.value = "");
+  }
+  function onComplete() {
+    enqueueSnackbar("Photo profile changed!");
+    onCloseHandler();
+  }
   function GetImageToBlobPromise(): Promise<Blob | null> {
     return new Promise(function (resolve, reject) {
       editor.current &&
@@ -87,7 +107,16 @@ export default function UpdatePhotoModule({
         });
     });
   }
-
+  async function RemoveAllPicture() {
+    if (!userManager.currentUser) return;
+    const storage = getStorage(firebaseApp);
+    const listAllPicRef = ref(
+      storage,
+      `${SITE_BACKEND_CONFIG.FBSTORAGE_PHOTO_PROFILE_ROOT_PATH}${userManager.currentUser?.uid}`
+    );
+    const files = await listAll(listAllPicRef);
+    Promise.all(files.items.map(async (item) => await deleteObject(item)));
+  }
   async function GeneratePfpImage(blob?: boolean, isScaledDown?: boolean) {
     if (!editor.current) return;
     const blobFile = await GetImageToBlobPromise();
@@ -102,7 +131,7 @@ export default function UpdatePhotoModule({
     if (blob) return isScaledDown ? scaled : blobFile;
     if (!blob) return URL.createObjectURL(isScaledDown ? scaled : blobFile);
   }
-  async function UploadToStoragePromise(
+  function UploadToStoragePromise(
     imageSavePathRef: StorageReference,
     blobFile: Blob
   ) {
@@ -118,6 +147,7 @@ export default function UpdatePhotoModule({
           totalSize: totalBytes,
           url: "",
         });
+        Console("log", "PfpChanger state :", uploadStatus);
       },
       (error) => {
         Console("error", "PfpChanger ERROR :", error);
@@ -126,15 +156,26 @@ export default function UpdatePhotoModule({
       },
       async () => {
         const url = await getDownloadURL(task.snapshot.ref);
-        setUploadStatus((status) => {
-          return { ...status, url };
-        });
+        if (url) {
+          Console(
+            "log",
+            "PfpChanger photoURL changed :",
+            await userManager.method.UpdateInfo({
+              photoURL: url,
+            })
+          );
+          setUploadStatus((status) => {
+            return { ...status, state: "success", url };
+          });
+          onComplete();
+        }
         // resolve({finished: true, url: })
       }
     );
   }
   async function onClickSave() {
     if (!userManager.currentUser) return;
+    await RemoveAllPicture();
     const storage = getStorage(firebaseApp);
     const imageSavePathRef = ref(
       storage,
@@ -143,22 +184,13 @@ export default function UpdatePhotoModule({
       }/${Math.floor(Date.now() / 1000)}.png`
     );
     const blobFile = (await GeneratePfpImage(true, true)) as Blob;
-    await UploadToStoragePromise(imageSavePathRef, blobFile);
-    uploadStatus &&
-      uploadStatus.state === "success" &&
-      userManager.method.UpdateInfo({ photoURL: uploadStatus.url });
+    UploadToStoragePromise(imageSavePathRef, blobFile);
+    Console("log", "PfpChanger state :", uploadStatus);
   }
   useEffect(() => {
     setEnableEdit(Boolean(imageFile));
   }, [imageFile]);
-  function onCloseHandler() {
-    onClose();
-    setImageFile(null);
-    const el = document.querySelector<HTMLInputElement>(
-      "input#avatar-fileinput"
-    );
-    el && (el.value = "");
-  }
+
   const Page1 = (
     <>
       <label
@@ -210,7 +242,7 @@ export default function UpdatePhotoModule({
         rotate={editedImageRotation}
       />
       <div className="flex-1">
-        <p>Zoom</p>
+        <p>{t("EDITOR_ZOOM_TEXT")}</p>
         <Slider
           defaultValue={DefaultZoom}
           aria-label="Default"
@@ -229,7 +261,7 @@ export default function UpdatePhotoModule({
             )
           }
         />
-        <p>Rotasi</p>
+        <p>{t("EDITOR_ROTATION_TEXT")}</p>
         <Slider
           defaultValue={DefaultRotation}
           aria-label="Default"
@@ -249,22 +281,33 @@ export default function UpdatePhotoModule({
   return (
     <>
       <Dialog open={open} onClose={() => onCloseHandler()}>
-        <DialogTitle>Ubah Foto Profil</DialogTitle>
+        <DialogTitle>{t("EDIT_PHOTO_URL_TEXT")}</DialogTitle>
         <DialogContent>
           <DialogContentText className="min-w-80">
             {!Boolean(blobUrl) && Page1}
             {Boolean(blobUrl) && Page2}
-            {JSON.stringify(uploadStatus)}
+            {uploadStatus?.state === "running" && (
+              <>
+                <div className="my-4 px-4">
+                  <Typography gutterBottom>
+                    {t("EDITOR_UPLOADING")} |{" "}
+                    {uploadStatus?.totalSize &&
+                      uploadStatus.totalSize + " Bytes"}
+                  </Typography>
+                  <LinearProgress variant="determinate" value={100} />
+                </div>
+              </>
+            )}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onCloseHandler}>Batalkan</Button>
+          <Button onClick={onCloseHandler}>{t("EDITOR_CANCEL")}</Button>
           {blobUrl && (
             <LoadingButton
               onClick={onClickSave}
               loading={uploadStatus?.state === "running"}
             >
-              Simpan
+              {t("EDITOR_SAVE")}
             </LoadingButton>
           )}
         </DialogActions>

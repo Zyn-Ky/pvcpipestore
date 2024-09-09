@@ -193,8 +193,7 @@ export default async function ProductPage({
                 variant="contained"
                 className="mr-4"
                 LinkComponent={NextLink}
-                href={paths.CHECKOUT_PAGE + "?test_param_direct_buy_id=1"}
-                disabled={IsDisabledOnProduction()}
+                href={`${paths.CHECKOUT_PAGE}?direct_buy_id=${productItem.ProductID}`}
               >
                 Beli
               </Button>

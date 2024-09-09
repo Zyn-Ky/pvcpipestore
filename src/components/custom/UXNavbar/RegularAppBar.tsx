@@ -7,6 +7,7 @@ import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import { MoreVert, Notifications } from "@mui/icons-material";
 import dynamic from "next/dynamic";
 import { ALGOLIA_INDICES } from "@/libs/config";
+import { useFCMNotification } from "@/components/base/NotificationManager";
 const SearchButton = dynamic(() => import("@/components/SearchButton"));
 
 export default function RegularAppBar({
@@ -23,6 +24,7 @@ export default function RegularAppBar({
   onToggleMoreBtn: () => void;
 }) {
   const mainNavbarText = useTranslations("NAVBAR");
+  const { unreadCounter } = useFCMNotification();
 
   return (
     <>
@@ -44,7 +46,7 @@ export default function RegularAppBar({
                 <Tooltip title={mainNavbarText("NOTIFICATION_TEXT")}>
                   <IconButton
                     size="large"
-                    aria-label="17 notifications available"
+                    aria-label={`${unreadCounter} notifications available`}
                     color="inherit"
                     ref={(el) => {
                       notiBtnRef.current = el;
@@ -53,7 +55,7 @@ export default function RegularAppBar({
                       onToggleNotiBtn();
                     }}
                   >
-                    <Badge color="error">
+                    <Badge color="error" badgeContent={unreadCounter}>
                       <Notifications />
                     </Badge>
                   </IconButton>

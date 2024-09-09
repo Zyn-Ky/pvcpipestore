@@ -1,6 +1,7 @@
 "use client";
 import {
   Avatar,
+  Button,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,6 +11,7 @@ import {
 } from "@mui/material";
 import PromptAuth from "./GeneratePromptAuth";
 import LoginIcon from "@mui/icons-material/Login";
+import NotificationsOffOutlinedIcon from "@mui/icons-material/NotificationsOffOutlined";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useToken } from "react-firebase-hooks/messaging";
 import { firebaseApp } from "@/libs/firebase/config";
@@ -27,11 +29,21 @@ import {
 import { useEffectOnce } from "react-use";
 import ProtectedHiddenDevelopmentComponent from "./ProtectedHiddenDevComponent";
 import { useLogger } from "../hooks/logger";
+import { useTranslations } from "next-intl";
 
 export default function NotificationList() {
   const { userManager } = useGeneralFunction();
   const [enableDebug, setEnableDebug] = useState(false);
-  const { Notifications, fcm_token } = useFCMNotification();
+  const {
+    Notifications,
+    PermissionStatus,
+    fcm_token,
+    clearUnread,
+    clearAll,
+    requestPermission,
+  } = useFCMNotification();
+  const t_authui = useTranslations("PROMPT_AUTH_UI");
+
   const { Console } = useLogger();
   async function DebugMode() {
     const rc = getRemoteConfig(firebaseApp);
@@ -42,13 +54,33 @@ export default function NotificationList() {
   }
   useEffectOnce(() => {
     DebugMode();
+    clearUnread();
   });
+
   if (!userManager.currentUser)
     return (
       <PromptAuth
-        message="Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi"
+        message={t_authui("ENABLE_NOTIFICATION")}
         icon={<LoginIcon className="text-8xl" />}
         redirectPath={paths.MOBILE_NOTIFICATION}
+      />
+    );
+
+  if (PermissionStatus !== "granted")
+    return (
+      <PromptAuth
+        message={t_authui("REQUEST_NOTI_PERMISSION")}
+        icon={<NotificationsOffOutlinedIcon className="text-8xl" />}
+        disableLoginButton
+        actions={
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => requestPermission()}
+          >
+            {t_authui("REQUEST_NOTI_BTN_TEXT")}
+          </Button>
+        }
       />
     );
 
