@@ -70,8 +70,8 @@ export default function AccountSettingsUI(params: any) {
               {[
                 ["Display Name", userManager.currentUser.displayName],
                 ["Email", userManager.currentUser.email],
-              ].map((val) => (
-                <tr>
+              ].map((val, i) => (
+                <tr key={i}>
                   <td className="text-right">{val[0]}</td>
                   <td>{val[1]}</td>
                 </tr>

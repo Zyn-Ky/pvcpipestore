@@ -17,14 +17,15 @@ export default function CheckoutPage() {
   const { userManager } = useGeneralFunction();
   const searchParam = useSearchParams();
   const productID = searchParam.get("direct_buy_id");
-  if (!productID) return <></>;
   const [productRawData, dataLoading, dataError] =
     useDocument<StoredProductCardInfo>(
       doc(
         getFirestore(firebaseApp),
-        `${SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH}${productID}`
+        `${SITE_BACKEND_CONFIG.FIRESTORE_PRODUCT_ROOT_PATH}${productID ?? ""}`
       )
     );
+  if (!productID) return <></>;
+
   if (!userManager.currentUser)
     return (
       <PromptAuth
