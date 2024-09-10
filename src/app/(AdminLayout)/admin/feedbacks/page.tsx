@@ -1,5 +1,6 @@
 "use client";
 
+import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 import SITE_BACKEND_CONFIG, { StoredFeedbackInfo } from "@/libs/config";
 import { firebaseApp } from "@/libs/firebase/config";
 import { Close, DeleteForever } from "@mui/icons-material";
@@ -77,7 +78,7 @@ export default function FeedbacksList() {
   return (
     <>
       {dataLoading ? (
-        <CircularProgress />
+        <InfiniteCircularProgress />
       ) : (
         <>
           {dataError && <p>An error occured! Please refresh page</p>}

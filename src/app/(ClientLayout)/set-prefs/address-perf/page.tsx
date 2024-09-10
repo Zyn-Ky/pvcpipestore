@@ -16,8 +16,8 @@ export default function SetDefaultAddressSettingsUI(params: any) {
         icon={
           <LoginIcon className="text-7xl md:text-9xl !transition-[font-size,fill]" />
         }
-        redirectPath={paths.SETTINGS_PAGE}
-        message={t_authui("REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT")}
+        redirectPath={paths.SETTINGS_ADDRESS_PAGE}
+        message={t_authui("REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT")}
       />
     );
   return (

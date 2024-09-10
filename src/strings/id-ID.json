@@ -35,6 +35,14 @@
     "EDITOR_UPLOADING": "Mengunggah...",
     "TITLE_TEXT": "Kelola Akun"
   },
+  "SETTINGS_PAGE": {
+    "SIDEBAR_TITLE": "Setelan",
+    "SIDEBAR_ACCOUNT_MANAGER_TEXT": "Akun",
+    "SIDEBAR_THEME_MANAGER_TEXT": "Tema",
+    "SIDEBAR_LANGUAGE_MANAGER_TEXT": "Bahasa & Wilayah",
+    "SIDEBAR_ADDRESS_MANAGER_TEXT": "Alamat Pengiriman",
+    "SIDEBAR_PAYMENT_MANAGER_TEXT": "Metode Pembayaran"
+  },
   "SEARCH_INDICE_SETTINGS_PAGE": "Setelan",
   "SEARCH_INDICE_ACCOUNT_PAGE": "Akun",
   "SEARCH_INDICE_CART_PAGE": "Keranjang",

@@ -22,6 +22,14 @@ body {
     }
   }
 }
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#root-content-ui {
+  height: 100%;
+}
 
 body[data-smooth-color-transition] {
   transition-property: all;

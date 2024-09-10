@@ -7,13 +7,19 @@ import { Metadata } from "next";
 import SITE_CONFIG from "@/components/config";
 import LoginClient from "./LoginModule";
 export const metadata: Metadata = {
-  title: `Masuk`,
+  title: `Login`,
 };
 export default function LoginUI() {
   return (
     <>
-      <h1>Masuk</h1>
-      <Typography></Typography>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        fontWeight="bold"
+        component="h1"
+      >
+        Masuk
+      </Typography>
       <LoginClient />
       <Typography>
         Belum mempunyai akun?

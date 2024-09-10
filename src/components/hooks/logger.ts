@@ -12,6 +12,7 @@ export function useLogger() {
   const { baseManager } = useGeneralFunction();
   return {
     Console(type: LoggingType, ...message: any[]) {
+      if (process.env.BUILD_STATE === "production") return;
       console[type](message);
       baseManager.AddLog(type, message);
       return { type, message };

@@ -26,7 +26,6 @@ const Transition = forwardRef(function Transition(
 export default function ResponsivePopup(props: PropsWithChildren) {
   const theme = useTheme();
   const router = useRouter();
-  const isSmallerMediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallerSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isBiggerScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const [closedStatus, setClosedStatus] = useState(false);
@@ -41,7 +40,7 @@ export default function ResponsivePopup(props: PropsWithChildren) {
   return (
     <>
       {isBiggerScreen && (
-        <Paper className={CSS.OuterFormContainer} elevation={12}>
+        <Paper className={`${CSS.OuterFormContainer} p-6`} elevation={12}>
           {props.children && props.children}
         </Paper>
       )}
@@ -51,7 +50,7 @@ export default function ResponsivePopup(props: PropsWithChildren) {
         onClose={CloseLogin}
         TransitionComponent={Transition}
         PaperProps={{
-          sx: { minWidth: isSmallerSmallScreen ? 0 : 500 },
+          className: isSmallerSmallScreen ? "min-w-[0px]" : "min-w-[500px]",
         }}
       >
         <DialogContent dividers>

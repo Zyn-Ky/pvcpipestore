@@ -7,7 +7,7 @@ import {
 } from "next/constants.js";
 import createNextIntlPlugin from "next-intl/plugin";
 import createMDX from "@next/mdx";
-
+import packageJSON from "./package.json" with {type: "json"};
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -21,6 +21,10 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   sassOptions: {
     includePaths: [path.join(__dirname, "src", "scss")],
+  },
+  env: {
+    BUILD_STATE: process.env.NODE_ENV,
+    BUILD_VERSION: packageJSON.version,
   },
   images: {
     remotePatterns: [

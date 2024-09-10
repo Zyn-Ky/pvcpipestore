@@ -1,7 +1,14 @@
 "use client";
 import paths from "@/components/paths";
 import { LoadingButton } from "@mui/lab";
-import { Alert, Box } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Divider,
+  FormControl,
+  FormGroup,
+  TextField,
+} from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
@@ -11,6 +18,7 @@ import {
   AvailableLoginMethod,
   useGeneralFunction,
 } from "@/components/base/GeneralWrapper";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 const GoogleIcon = dynamic(() => import("@mui/icons-material/Google"));
 const EmailIcon = dynamic(() => import("@mui/icons-material/Email"));
 export default function LoginClient() {
@@ -35,32 +43,41 @@ export default function LoginClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userManager.currentUser]);
   return (
-    <Box
-      display="flex"
-      alignItems="center"
-      flexDirection="column"
-      my={3}
-      gap={1}
-    >
+    <div className="flex items-center flex-col my-3 gap-4">
       {userManager.currentUser && (
-        <Alert severity="success" className="mb-8">
+        <Alert severity="success" className="mb-2 mt-1">
           Anda telah login! Anda akan teralihkan...
         </Alert>
       )}
       {userManager.authError && (
-        <Alert severity="error" className="mb-8">
+        <Alert severity="error" className="mb-2 mt-1">
           Terjadi kesalahan! {userManager.authError.message as string}
         </Alert>
       )}
-      <LoadingButton
-        onClick={async () => {}}
-        loading={userManager.loading}
-        disabled={Boolean(userManager.currentUser)}
-        startIcon={<EmailIcon />}
-        variant="outlined"
-      >
-        Masuk dengan Email & Sandi
-      </LoadingButton>
+      <ProtectedHiddenDevelopmentComponent>
+        <FormControl component="form">
+          <FormGroup className="mb-3">
+            <TextField type="email" name="email" label="Email" />
+          </FormGroup>
+          <FormGroup className="mb-3">
+            <TextField type="password" name="pwd" label="Password" />
+          </FormGroup>
+          <LoadingButton
+            onClick={async () => {}}
+            loading={userManager.loading}
+            disabled={Boolean(userManager.currentUser)}
+            variant="outlined"
+            type="submit"
+          >
+            Masuk
+          </LoadingButton>
+          <Divider
+            orientation="horizontal"
+            flexItem
+            className="w-full mt-4 self-center"
+          />
+        </FormControl>
+      </ProtectedHiddenDevelopmentComponent>
       <LoadingButton
         onClick={async () => {
           SignIn("google");
@@ -72,6 +89,6 @@ export default function LoginClient() {
       >
         Masuk dengan Google
       </LoadingButton>
-    </Box>
+    </div>
   );
 }

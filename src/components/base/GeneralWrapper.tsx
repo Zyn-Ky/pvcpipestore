@@ -32,6 +32,8 @@ import algoliasearch from "algoliasearch";
 import { SnackbarProvider } from "notistack";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
 import publicSearchClient from "@/libs/algolia";
+import { useMediaQuery, useTheme } from "@mui/material";
+import DismissSnackbarButton from "../custom/Snackbar/DismissSnackbarButton";
 
 export type AvailableLoginMethod = "google";
 
@@ -123,6 +125,8 @@ export const useGeneralFunction = () => {
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
 ) {
+  const muiTheme = useTheme();
+  const isSmallScreen = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const [CurrentUser, AuthLoading, AuthError] = useAuthState(
     getAuth(firebaseApp)
   );
@@ -233,9 +237,20 @@ export default function GeneralFunctionWrapper(
       }}
     >
       <SnackbarProvider
-        anchorOrigin={{ horizontal: "right", vertical: "top" }}
-        classes={{ containerAnchorOriginTopRight: "pt-16" }}
+        anchorOrigin={
+          isSmallScreen
+            ? { horizontal: "left", vertical: "bottom" }
+            : { horizontal: "right", vertical: "top" }
+        }
+        classes={
+          isSmallScreen
+            ? { containerAnchorOriginBottomLeft: "pb-16" }
+            : { containerAnchorOriginTopRight: "pt-16" }
+        }
         preventDuplicate
+        action={(elementKey) => (
+          <DismissSnackbarButton snackbarKey={elementKey} />
+        )}
         dense
       >
         <NotificationManager>

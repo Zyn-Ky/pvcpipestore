@@ -13,9 +13,18 @@ const useFcmToken = () => {
   const [token, setToken] = useState("");
 
   const [hasSubscribed, setHasSubscribed] = useState(false);
+  const [userHasNotified, setUserHasNotified] = useState(false);
   const { userManager, apiManager, swManager } = useGeneralFunction();
   const { Console } = useLogger();
   const notificationState = usePermission({ name: "notifications" });
+  function promptToEnableNotification() {
+    if ((window as any)["_i_hate_notifications"]) return;
+    enqueueSnackbar("Nyalakan notifikasi untuk pengalaman yang lebih baik", {
+      variant: "info",
+      persist: true,
+    });
+    (window as any)["_i_hate_notifications"] = true;
+  }
   const retrieveToken = useCallback(async () => {
     try {
       if (typeof window !== "undefined" && "serviceWorker" in navigator) {
@@ -27,9 +36,7 @@ const useFcmToken = () => {
             vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
             serviceWorkerRegistration: swManager.getSWRegistration(),
           }).catch((e) => {
-            enqueueSnackbar(
-              "Nyalakan notifikasi untuk pengalaman yang lebih baik"
-            );
+            promptToEnableNotification();
             Console(
               "error",
               "NotiManager: No registration token available. Request permission to generate one.",
@@ -60,9 +67,7 @@ const useFcmToken = () => {
                 )
               );
           } else {
-            enqueueSnackbar(
-              "Nyalakan notifikasi untuk pengalaman yang lebih baik"
-            );
+            promptToEnableNotification();
             Console(
               "error",
               "NotiManager: No registration token available. Request permission to generate one."
@@ -83,7 +88,7 @@ const useFcmToken = () => {
 
   useEffect(() => {
     if (notificationState === "denied" || notificationState === "prompt")
-      enqueueSnackbar("Nyalakan notifikasi untuk pengalaman yang lebih baik");
+      promptToEnableNotification();
     retrieveToken();
   }, [
     apiManager.xsrfToken,

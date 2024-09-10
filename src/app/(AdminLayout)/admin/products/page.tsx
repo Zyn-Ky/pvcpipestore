@@ -1,4 +1,5 @@
 "use client";
+import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 import { GetAdminProductUrl } from "@/components/paths";
 import SITE_BACKEND_CONFIG, { StoredProductCardInfo } from "@/libs/config";
 import { firebaseApp } from "@/libs/firebase/config";
@@ -18,7 +19,7 @@ export default function AdminProductsManager() {
   return (
     <>
       {productsLoading ? (
-        <CircularProgress />
+        <InfiniteCircularProgress />
       ) : (
         <>
           {productsError && <p>An error occured! Please refresh page</p>}

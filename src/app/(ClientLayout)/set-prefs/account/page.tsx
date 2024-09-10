@@ -20,6 +20,7 @@ import { useTranslations } from "next-intl";
 import UpdateDisplaynameModule from "./UpdateDisplaynameModule";
 import { Edit } from "@mui/icons-material";
 import AccountProviderLinkerModule from "./AccountProviderLinkerModule";
+import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
@@ -31,7 +32,7 @@ export default function AccountSettingsUI(params: any) {
   const [openedDisplaynameEditor, setOpenedDisplaynameEditor] = useState(false);
   return userManager.loading ? (
     <>
-      <CircularProgress />
+      <InfiniteCircularProgress />
     </>
   ) : (
     <>
@@ -118,8 +119,8 @@ export default function AccountSettingsUI(params: any) {
           icon={
             <LoginIcon className="text-7xl md:text-9xl !transition-[font-size,fill]" />
           }
-          redirectPath={paths.SETTINGS_PAGE}
-          message={t_authui("REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT")}
+          redirectPath={paths.SETTINGS_ACCOUNT_PAGE}
+          message={t_authui("REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT")}
         />
       )}
     </>
