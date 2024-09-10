@@ -26,6 +26,7 @@
   },
   "ACCOUNT_MANAGER": {
     "EDIT_PHOTO_URL_TEXT": "Edit foto profil",
+    "EDIT_DISPLAY_NAME_TEXT": "Edit nama tampilan",
     "COPY_UID_TO_CLIPBOARD_TEXT": "Salin User ID",
     "EDITOR_ROTATION_TEXT": "Rotasi",
     "EDITOR_ZOOM_TEXT": "Perbesar",

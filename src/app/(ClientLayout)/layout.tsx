@@ -7,18 +7,26 @@ import { XAppBar } from "@/components";
 import SITE_CONFIG from "@/components/config";
 import ColorModeProvider from "@/components/base/ClientThemeWrapper";
 import dynamic from "next/dynamic";
-import GeneralFunctionWrapper from "@/components/base/GeneralWrapper";
 import { headers } from "next/headers";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
-import ResizeToContinue from "./ResizeToContinue";
-const NProgressWrapper = dynamic(() => import("@/components/base/NProgress"));
+import GeneralFunctionWrapper from "@/components/base/GeneralWrapper";
+import NProgressWrapper from "@/components/base/NProgress";
+import { SnackbarProvider } from "notistack";
+import { InstantSearch } from "react-instantsearch";
+import algoliasearch from "algoliasearch";
+import NotificationManager from "@/components/base/NotificationManager";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
   { ssr: false }
 );
+const ResizeToContinue = dynamic(() => import("./ResizeToContinue"), {
+  ssr: false,
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,7 +64,6 @@ export const metadata: Metadata = {
     description: SITE_CONFIG.SEO.Description,
   },
   generator: "Next.JS",
-  alternates: { canonical: "/shop" },
   category: SITE_CONFIG.SEO.Category,
   creator: SITE_CONFIG.SEO.Author,
   icons: [
@@ -66,7 +73,6 @@ export const metadata: Metadata = {
     { sizes: "64x64", url: "/favicon-64.ico" },
     { sizes: "256x256", url: "/favicon-256.ico" },
   ],
-
   formatDetection: {
     telephone: false,
   },
@@ -81,24 +87,25 @@ export default async function RootLayout(
   const messages = await getMessages();
   const locale = await getLocale();
   return (
-    <NextIntlClientProvider messages={messages}>
-      <ColorModeProvider>
-        <html lang={locale}>
-          <CssBaseline enableColorScheme />
-          <body className={inter.className} data-smooth-color-transition>
-            <SpeedInsights />
-            <Analytics />
-            <ResizeToContinue />
+    // <ColorModeProvider>
+    <html lang={locale}>
+      <CssBaseline enableColorScheme />
+      <body className={inter.className} data-smooth-color-transition>
+        <AppRouterCacheProvider>
+          <SpeedInsights />
+          <Analytics />
+          <ResizeToContinue />
+          <NextIntlClientProvider messages={messages}>
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
               <WordpressMigration />
-              <NProgressWrapper>
-                <XAppBar />
-                <div id="root-content-ui">{props.children}</div>
-              </NProgressWrapper>
+              <XAppBar />
+              <div id="root-content-ui">{props.children}</div>
+              <NProgressWrapper />
             </GeneralFunctionWrapper>
-          </body>
-        </html>
-      </ColorModeProvider>
-    </NextIntlClientProvider>
+          </NextIntlClientProvider>
+        </AppRouterCacheProvider>
+      </body>
+    </html>
+    // </ColorModeProvider>
   );
 }

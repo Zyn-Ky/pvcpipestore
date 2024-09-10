@@ -7,10 +7,19 @@ import LoginIcon from "@mui/icons-material/Login";
 import Image from "next/image";
 import { useState } from "react";
 import UpdatePhotoModule from "./UpdatePhotoModule";
-import { Avatar, Button, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useCopyToClipboard } from "react-use";
 import { enqueueSnackbar } from "notistack";
 import { useTranslations } from "next-intl";
+import UpdateDisplaynameModule from "./UpdateDisplaynameModule";
+import { Edit } from "@mui/icons-material";
+import AccountProviderLinkerModule from "./AccountProviderLinkerModule";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
@@ -19,7 +28,12 @@ export default function AccountSettingsUI(params: any) {
   const t = useTranslations("ACCOUNT_MANAGER");
   const [clipboardState, setClipboard] = useCopyToClipboard();
   const [openedPhotoUploader, setOpenPhotoUploader] = useState(false);
-  return (
+  const [openedDisplaynameEditor, setOpenedDisplaynameEditor] = useState(false);
+  return userManager.loading ? (
+    <>
+      <CircularProgress />
+    </>
+  ) : (
     <>
       <h1>{t("TITLE_TEXT")}</h1>
       {userManager.currentUser && (
@@ -68,8 +82,23 @@ export default function AccountSettingsUI(params: any) {
           <div className="my-4">
             <table className="border-spacing-4">
               {[
-                ["Display Name", userManager.currentUser.displayName],
+                [
+                  "Display Name",
+                  <>
+                    {userManager.currentUser.displayName}{" "}
+                    <IconButton
+                      size="small"
+                      onClick={() => setOpenedDisplaynameEditor(true)}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </>,
+                ],
                 ["Email", userManager.currentUser.email],
+                [
+                  "Login method",
+                  <AccountProviderLinkerModule key="ACCOUNT_PROVIDER_LINKER" />,
+                ],
               ].map((val, i) => (
                 <tr key={i}>
                   <td className="text-right">{val[0]}</td>
@@ -78,6 +107,10 @@ export default function AccountSettingsUI(params: any) {
               ))}
             </table>
           </div>
+          <UpdateDisplaynameModule
+            open={openedDisplaynameEditor}
+            onClose={() => setOpenedDisplaynameEditor(false)}
+          />
         </>
       )}
       {!userManager.currentUser && (

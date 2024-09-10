@@ -26,10 +26,12 @@ import ProductRecommendModule from "./ProductRecommendModule";
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 
 const TestimonialModule = dynamic(
-  () => import("@/components/custom/HomePage/TestimonialModule")
+  () => import("@/components/custom/HomePage/TestimonialModule"),
+  { ssr: true }
 );
 const FancySeperator = dynamic(
-  () => import("@/components/custom/HomePage/FancySeperator")
+  () => import("@/components/custom/HomePage/FancySeperator"),
+  { ssr: true }
 );
 
 export default function Home() {

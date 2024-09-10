@@ -22,10 +22,7 @@ const PlayArrowIcon = dynamic(() => import("@mui/icons-material/PlayArrow"), {
   ssr: false,
 });
 const ItemImageCarousel = dynamic(
-  () => import("@/components/custom/HomePage/ItemImageCarousel"),
-  {
-    ssr: false,
-  }
+  () => import("@/components/custom/HomePage/ItemImageCarousel")
 );
 
 export function CarouselModule() {
@@ -117,6 +114,7 @@ export function CarouselModule() {
         onClick={() => setAutoPlay(!autoPlay)}
         onMouseEnter={() => setIsHoveringMouse(true)}
         onMouseLeave={() => setIsHoveringMouse(false)}
+        aria-label="Pause/Play Image auto slide"
       >
         {autoPlay && <PauseIcon />}
         {!autoPlay && <PlayArrowIcon />}

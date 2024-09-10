@@ -45,6 +45,7 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  experimental: { optimizeCss: true, cssChunking: "loose", mdxRs: true },
 };
 
 /** @type {(phase: string, defaultConfig: import("next").NextConfig) => Promise<import("next").NextConfig>} */

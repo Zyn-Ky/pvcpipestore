@@ -82,6 +82,7 @@ const TestimonialModule = memo(function TestimonialModule(
         onClick={() => setAutoPlay(!autoPlay)}
         onMouseEnter={() => setIsHoveringMouse(true)}
         onMouseLeave={() => setIsHoveringMouse(false)}
+        aria-label="Pause/Play Image auto slide"
       >
         {autoPlay && <PauseIcon />}
         {!autoPlay && <PlayArrowIcon />}

@@ -30,6 +30,7 @@ import { StoredUserClaimsFB } from "@/libs/axios";
 import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
 import { SnackbarProvider } from "notistack";
+import { InstantSearchNext } from "react-instantsearch-nextjs";
 
 export type AvailableLoginMethod = "google";
 
@@ -117,12 +118,10 @@ export const useGeneralFunction = () => {
 
   return context;
 };
-
 const searchClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? "",
   process.env.NEXT_PUBLIC_ALGOLA_APP_KEY ?? ""
 );
-
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
 ) {
@@ -241,14 +240,11 @@ export default function GeneralFunctionWrapper(
         preventDuplicate
         dense
       >
-        <InstantSearch
-          searchClient={searchClient}
-          // indexName={ALGOLIA_INDICES.PRODUCTS}
-        >
-          <NotificationManager>
+        <NotificationManager>
+          <InstantSearchNext searchClient={searchClient}>
             {props.children && props.children}
-          </NotificationManager>
-        </InstantSearch>
+          </InstantSearchNext>
+        </NotificationManager>
       </SnackbarProvider>
     </GeneralFunctionContext.Provider>
   );

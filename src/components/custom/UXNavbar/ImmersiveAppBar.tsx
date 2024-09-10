@@ -166,6 +166,7 @@ export default function ImmersiveAppBar({
                     : theme.palette.common.white,
               }}
               className="ml-2 mr-2 sm:ml-8"
+              aria-label="Theme Mode"
               onClick={() => {
                 if (ThemeMode === "system") SetThemeMode("light");
                 if (ThemeMode === "light") SetThemeMode("dark");
