@@ -8,7 +8,9 @@ import { MoreVert, Notifications } from "@mui/icons-material";
 import dynamic from "next/dynamic";
 import { ALGOLIA_INDICES } from "@/libs/config";
 import { useFCMNotification } from "@/components/base/NotificationManager";
-const SearchButton = dynamic(() => import("@/components/SearchButton"));
+const SearchButton = dynamic(() => import("@/components/SearchButton"), {
+  ssr: false,
+});
 
 export default function RegularAppBar({
   isSmallScreen,

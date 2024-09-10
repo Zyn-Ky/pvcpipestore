@@ -29,6 +29,7 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import {
   Index,
+  InstantSearch,
   SearchBox,
   useHits,
   useInstantSearch,
@@ -42,6 +43,7 @@ import { ALGOLIA_INDICES } from "@/libs/config";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLogger } from "./hooks/logger";
+import publicSearchClient from "@/libs/algolia";
 
 interface SearchButtonProps {
   searchProps?: UseSearchBoxProps;
@@ -138,7 +140,7 @@ function AutocompleteResultBox({
   keyword: string;
   indiceName: string;
 }) {
-  const { status, refresh } = useInstantSearch();
+  const { status, refresh } = useInstantSearch({});
   const { indices, refine } = useAutocomplete({
     escapeHTML: true,
   });
@@ -148,7 +150,6 @@ function AutocompleteResultBox({
   }, [keyword]);
   return (
     <>
-      <ProtectedHiddenDevelopmentComponent></ProtectedHiddenDevelopmentComponent>
       {status === "loading" ? (
         <GroupItem loading>
           <ItemResult loading />
@@ -207,7 +208,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
   const [searchVal, setSearchVal] = useState("");
   const [prevOpenedState, setPrevOpenedState] = useState(false);
   const [isInputEmpty, setIsInputEmpty] = useState(true);
-  const [typeOnFocus, setTypeOnFocus] = useState(true);
+  const [typeOnFocus, setTypeOnFocus] = useState(false);
   const { status, refresh } = useInstantSearch();
   const searchTextInputRef = useRef<HTMLInputElement>(null);
   const { searchButtonRef, triggerSearchButton, opened, finishedAnimating } =
@@ -233,10 +234,12 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
     },
     (e) => {
       Console("log", e);
-      setSearchVal((prev) => prev + e.key);
+      if (!opened) setSearchVal((prev) => prev + e.key);
       if (document.activeElement === searchButtonRef?.current)
-        triggerSearchButton(true);
-      if (opened) setTypeOnFocus(false);
+        triggerSearchButton(() => {
+          setTypeOnFocus(false);
+          return true;
+        });
       // const timeout = setTimeout(() => {
       //   console.log("disable");
       // }, ANIM_DURATION_IN_MS);
@@ -366,8 +369,10 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
 
 export default function SearchButtonWrapper(props: SearchButtonProps) {
   return (
-    <SearchButtonProvider borderRadiusBtn="24px" duration={ANIM_DURATION}>
-      <SearchButton {...props} />
-    </SearchButtonProvider>
+    <InstantSearch searchClient={publicSearchClient}>
+      <SearchButtonProvider borderRadiusBtn="24px" duration={ANIM_DURATION}>
+        <SearchButton {...props} />
+      </SearchButtonProvider>
+    </InstantSearch>
   );
 }

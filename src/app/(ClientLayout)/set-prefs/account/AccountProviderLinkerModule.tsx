@@ -6,6 +6,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  TextField,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -47,7 +48,21 @@ export default function AccountProviderLinkerModule() {
           onClose={() => setEmailProviderLinkerModal(false)}
         >
           <DialogTitle>Link account to Email & Password</DialogTitle>
-          <DialogContent className="min-w-80"></DialogContent>
+          <DialogContent className="min-w-80">
+            <TextField fullWidth label="Email" type="email" className="my-2" />
+            <TextField
+              fullWidth
+              label="New Password"
+              type="password"
+              className="my-2"
+            />
+            <TextField
+              fullWidth
+              label="New Password Again"
+              type="password"
+              className="my-2"
+            />
+          </DialogContent>
           <DialogActions>
             <Button onClick={() => setEmailProviderLinkerModal(false)}>
               {t("EDITOR_CANCEL")}

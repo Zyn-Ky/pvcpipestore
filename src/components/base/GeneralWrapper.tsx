@@ -31,6 +31,7 @@ import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
 import { SnackbarProvider } from "notistack";
 import { InstantSearchNext } from "react-instantsearch-nextjs";
+import publicSearchClient from "@/libs/algolia";
 
 export type AvailableLoginMethod = "google";
 
@@ -118,10 +119,7 @@ export const useGeneralFunction = () => {
 
   return context;
 };
-const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? "",
-  process.env.NEXT_PUBLIC_ALGOLA_APP_KEY ?? ""
-);
+
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
 ) {
@@ -241,9 +239,7 @@ export default function GeneralFunctionWrapper(
         dense
       >
         <NotificationManager>
-          <InstantSearchNext searchClient={searchClient}>
-            {props.children && props.children}
-          </InstantSearchNext>
+          {props.children && props.children}
         </NotificationManager>
       </SnackbarProvider>
     </GeneralFunctionContext.Provider>

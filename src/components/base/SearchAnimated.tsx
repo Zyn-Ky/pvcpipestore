@@ -22,7 +22,7 @@ type contextProp = {
   searchButtonRef: MutableRefObject<HTMLButtonElement | null> | null;
   searchModalRef: MutableRefObject<HTMLDivElement | null> | null;
   opened: boolean;
-  triggerSearchButton: (open?: boolean) => void;
+  triggerSearchButton: (open?: boolean | (() => boolean)) => void;
   finishedAnimating: boolean;
 };
 export const srchBtnContext = createContext<contextProp>({
@@ -234,8 +234,9 @@ export function SearchButtonProvider(
     }
   }
   const triggerSearchButton = useCallback(
-    function (open?: boolean) {
-      setSearchBoxOpened(open ?? !searchBoxOpened);
+    function (open?: boolean | (() => boolean)) {
+      const isOpened = typeof open === "function" ? open() : open;
+      setSearchBoxOpened(isOpened ?? !searchBoxOpened);
       if (!searchButtonRef.current || !searchModalRef.current) return;
       if (!searchBoxOpened)
         toggleSearchBox(searchButtonRef.current, searchModalRef.current, false);
