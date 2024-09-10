@@ -87,25 +87,25 @@ export default async function RootLayout(
   const messages = await getMessages();
   const locale = await getLocale();
   return (
-    // <ColorModeProvider>
-    <html lang={locale}>
-      <CssBaseline enableColorScheme />
-      <body className={inter.className} data-smooth-color-transition>
-        <AppRouterCacheProvider>
-          <SpeedInsights />
-          <Analytics />
-          <ResizeToContinue />
-          <NextIntlClientProvider messages={messages}>
-            <GeneralFunctionWrapper apiXsrf={csrfToken}>
-              <WordpressMigration />
-              <XAppBar />
-              <div id="root-content-ui">{props.children}</div>
-              <NProgressWrapper />
-            </GeneralFunctionWrapper>
-          </NextIntlClientProvider>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
-    // </ColorModeProvider>
+    <ColorModeProvider>
+      <html lang={locale}>
+        <CssBaseline enableColorScheme />
+        <body className={inter.className} data-smooth-color-transition>
+          <AppRouterCacheProvider>
+            <SpeedInsights />
+            <Analytics />
+            <ResizeToContinue />
+            <NextIntlClientProvider messages={messages}>
+              <GeneralFunctionWrapper apiXsrf={csrfToken}>
+                <WordpressMigration />
+                <XAppBar />
+                <div id="root-content-ui">{props.children}</div>
+                <NProgressWrapper />
+              </GeneralFunctionWrapper>
+            </NextIntlClientProvider>
+          </AppRouterCacheProvider>
+        </body>
+      </html>
+    </ColorModeProvider>
   );
 }
