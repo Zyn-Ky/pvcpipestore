@@ -31,28 +31,27 @@ export default async function SellerRootLayout({
   });
 
   return (
-    <NextIntlClientProvider messages={messages}>
-      <GeneralFunctionWrapper apiXsrf={csrfToken}>
-        <ClientThemeWrapper>
-          <html lang="en">
-            <body className={inter.className} data-smooth-color-transition>
-              <CssBaseline enableColorScheme />
-              <NProgressWrapper>
-                <ProtectedSellerOnlyRoute>
-                  <Box className="flex">
-                    <SellerAppBar>
-                      <Toolbar />
-                      <Box component="main" className="p-6">
-                        {children}
-                      </Box>
-                    </SellerAppBar>
-                  </Box>
-                </ProtectedSellerOnlyRoute>
-              </NProgressWrapper>
-            </body>
-          </html>
-        </ClientThemeWrapper>
-      </GeneralFunctionWrapper>
-    </NextIntlClientProvider>
+    <html lang="en">
+      <ClientThemeWrapper>
+        <body className={inter.className} data-smooth-color-transition>
+          <CssBaseline enableColorScheme />
+          <NextIntlClientProvider messages={messages}>
+            <GeneralFunctionWrapper apiXsrf={csrfToken}>
+              <NProgressWrapper />
+              <ProtectedSellerOnlyRoute>
+                <Box className="flex">
+                  <SellerAppBar>
+                    <Toolbar />
+                    <Box component="main" className="p-6">
+                      {children}
+                    </Box>
+                  </SellerAppBar>
+                </Box>
+              </ProtectedSellerOnlyRoute>
+            </GeneralFunctionWrapper>
+          </NextIntlClientProvider>
+        </body>
+      </ClientThemeWrapper>
+    </html>
   );
 }

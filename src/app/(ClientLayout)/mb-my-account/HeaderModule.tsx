@@ -92,9 +92,9 @@ export function AvailableUserAction() {
     <>
       {userManager.currentUser && !userManager.loading && (
         <>
-          <IconButton>
+          {/* <IconButton>
             <SettingsIcon />
-          </IconButton>
+          </IconButton> */}
         </>
       )}
       {!userManager.currentUser && !userManager.loading && (

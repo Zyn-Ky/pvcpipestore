@@ -21,6 +21,7 @@ import UpdateDisplaynameModule from "./UpdateDisplaynameModule";
 import { Edit } from "@mui/icons-material";
 import AccountProviderLinkerModule from "./AccountProviderLinkerModule";
 import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
+import PromptEmailVerification from "@/components/base/PromptEmailVerification";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
@@ -37,6 +38,7 @@ export default function AccountSettingsUI(params: any) {
   ) : (
     <>
       <h1>{t("TITLE_TEXT")}</h1>
+      <PromptEmailVerification />
       {userManager.currentUser && (
         <>
           <div className="flex p-4 gap-4 items-center">

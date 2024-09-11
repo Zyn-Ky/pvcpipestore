@@ -20,8 +20,15 @@ export async function getPost(postid: string): Promise<{
   };
 }> {
   let decidedFilepath = "";
-  const assumedMDXFilepath = path.join(postsDirectory, `${postid}.mdx`);
-  const assumedMDFilepath = path.join(postsDirectory, `${postid}.md`);
+
+  const assumedMDXFilepath = path.join(
+    postsDirectory,
+    `${decodeURIComponent(postid)}.mdx`
+  );
+  const assumedMDFilepath = path.join(
+    postsDirectory,
+    `${decodeURIComponent(postid)}.md`
+  );
   const MDXFileExists = existsSync(assumedMDXFilepath);
   const MDFileExists = existsSync(assumedMDFilepath);
   if (MDXFileExists) decidedFilepath = assumedMDXFilepath;

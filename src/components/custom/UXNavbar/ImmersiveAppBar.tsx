@@ -69,6 +69,7 @@ export default function ImmersiveAppBar({
   onToggleNotiBtn: () => void;
 }) {
   const theme = useTheme();
+
   const { y } = useWindowScroll();
   const text = useTranslations("BASE");
   const mainNavbarText = useTranslations("NAVBAR");

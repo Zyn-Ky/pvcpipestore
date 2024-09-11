@@ -32,7 +32,6 @@ import { firebaseApp } from "@/libs/firebase/config";
 import SITE_BACKEND_CONFIG from "@/libs/config";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { enqueueSnackbar } from "notistack";
-import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 import { useTranslations } from "next-intl";
 interface UpdatePhotoModuleProps {
   onClose: () => void;
@@ -283,20 +282,19 @@ export default function UpdatePhotoModule({
       <Dialog open={open} onClose={() => onCloseHandler()}>
         <DialogTitle>{t("EDIT_PHOTO_URL_TEXT")}</DialogTitle>
         <DialogContent className="min-w-80">
-            {!Boolean(blobUrl) && Page1}
-            {Boolean(blobUrl) && Page2}
-            {uploadStatus?.state === "running" && (
-              <>
-                <div className="my-4 px-4">
-                  <Typography gutterBottom>
-                    {t("EDITOR_UPLOADING")} |{" "}
-                    {uploadStatus?.totalSize &&
-                      uploadStatus.totalSize + " Bytes"}
-                  </Typography>
-                  <LinearProgress variant="determinate" value={100} />
-                </div>
-              </>
-            )}
+          {!Boolean(blobUrl) && Page1}
+          {Boolean(blobUrl) && Page2}
+          {uploadStatus?.state === "running" && (
+            <>
+              <div className="my-4 px-4">
+                <Typography gutterBottom>
+                  {t("EDITOR_UPLOADING")} |{" "}
+                  {uploadStatus?.totalSize && uploadStatus.totalSize + " Bytes"}
+                </Typography>
+                <LinearProgress variant="determinate" value={100} />
+              </div>
+            </>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={onCloseHandler}>{t("EDITOR_CANCEL")}</Button>

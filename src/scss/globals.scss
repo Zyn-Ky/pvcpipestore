@@ -54,6 +54,11 @@ body[data-smooth-color-transition] {
   }
 }
 
+[data-force-smooth-transition] {
+  transition-property: all;
+  transition-duration: 115ms;
+}
+
 #nprogress .bar {
   z-index: 9999999999999 !important;
 }

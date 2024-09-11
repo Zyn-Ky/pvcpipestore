@@ -13,6 +13,7 @@ const SITE_CONFIG = {
     Author: "K. Yabes (@Zyn-Ky)",
   },
   CLIENT_THEME_KEY_NAME: "x_conf_theme",
+  CLIENT_LANGUAGE_KEY_NAME: "x_conf_lang",
   CLIENT_LOCAL_FCM_TOKEN_KEY_NAME: "x_conf_firebase_fcm",
 };
 

@@ -1,16 +1,19 @@
 "use client";
 
-import { Alert, Button } from "@mui/material";
+import { Alert } from "@mui/material";
 import { useGeneralFunction } from "./GeneralWrapper";
 import { Warning } from "@mui/icons-material";
 import { useState } from "react";
+import { LoadingButton } from "@mui/lab";
 
 export default function PromptEmailVerification() {
   const { userManager } = useGeneralFunction();
   const [codeSent, setCodeSent] = useState(false);
+  const [loading, setLoading] = useState(false);
   async function SendVerification() {
     const sent = await userManager.method.SendVerificationEmail();
     setCodeSent(sent);
+    setLoading(false);
   }
   return (
     <>
@@ -21,18 +24,23 @@ export default function PromptEmailVerification() {
           icon={<Warning />}
           className="my-4"
           action={
-            <Button
+            <LoadingButton
               variant="contained"
               size="small"
               onClick={() => {
-                SendVerification();
+                setLoading(true);
+                setTimeout(() => {
+                  SendVerification();
+                }, 1250);
               }}
+              loading={loading}
             >
-              Kirim Kode Verifikasi
-            </Button>
+              {codeSent && "Kirim ulang"}
+              {!codeSent && "Kirim Kode Verifikasi"}
+            </LoadingButton>
           }
         >
-          {codeSent && "Cek inbox e-mail anda"}
+          {codeSent && "Cek inbox email anda"}
           {!codeSent && "Akun anda belum terverifikasi!"}
         </Alert>
       )}

@@ -13,12 +13,11 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next-nprogress-bar";
 import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import {
   AvailableLoginMethod,
   useGeneralFunction,
 } from "@/components/base/GeneralWrapper";
-import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 const GoogleIcon = dynamic(() => import("@mui/icons-material/Google"));
 const EmailIcon = dynamic(() => import("@mui/icons-material/Email"));
 export default function LoginClient() {
@@ -38,6 +37,18 @@ export default function LoginClient() {
     const LoggedIn = await userManager.method.Login(provider);
     if (LoggedIn) RedirectUser();
   }
+  async function OnSubmitEmailPassword(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const emailAddress = data.get("email_address") as string | null;
+    const password = data.get("pwd") as string | null;
+    if (!emailAddress || !password) return;
+    const LoggedInUser = await userManager.method.Login("email", {
+      emailAddress,
+      password,
+    });
+    if (LoggedInUser) RedirectUser();
+  }
   useEffect(() => {
     if (userManager.currentUser) RedirectUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,33 +62,51 @@ export default function LoginClient() {
       )}
       {userManager.authError && (
         <Alert severity="error" className="mb-2 mt-1">
-          Terjadi kesalahan! {userManager.authError.message as string}
+          {(userManager.authError as any).code === "auth/invalid-credential" ? (
+            <>Email / password anda salah</>
+          ) : (
+            <>
+              Terjadi kesalahan!
+              {userManager.authError.message as string}
+            </>
+          )}
         </Alert>
       )}
-      <ProtectedHiddenDevelopmentComponent>
-        <FormControl component="form">
-          <FormGroup className="mb-3">
-            <TextField type="email" name="email" label="Email" />
-          </FormGroup>
-          <FormGroup className="mb-3">
-            <TextField type="password" name="pwd" label="Password" />
-          </FormGroup>
-          <LoadingButton
-            onClick={async () => {}}
-            loading={userManager.loading}
-            disabled={Boolean(userManager.currentUser)}
-            variant="outlined"
-            type="submit"
-          >
-            Masuk
-          </LoadingButton>
-          <Divider
-            orientation="horizontal"
-            flexItem
-            className="w-full mt-4 self-center"
+      <FormControl component="form" onSubmit={OnSubmitEmailPassword}>
+        <FormGroup className="mb-3">
+          <TextField
+            type="email"
+            autoComplete="on"
+            name="email_address"
+            required
+            aria-required="true"
+            label="Email"
           />
-        </FormControl>
-      </ProtectedHiddenDevelopmentComponent>
+        </FormGroup>
+        <FormGroup className="mb-3">
+          <TextField
+            type="password"
+            name="pwd"
+            autoComplete="on"
+            required
+            aria-required="true"
+            label="Password"
+          />
+        </FormGroup>
+        <LoadingButton
+          loading={userManager.loading}
+          disabled={Boolean(userManager.currentUser)}
+          variant="contained"
+          type="submit"
+        >
+          Masuk
+        </LoadingButton>
+      </FormControl>
+      <Divider
+        orientation="horizontal"
+        flexItem
+        className="w-full mt-4 self-center"
+      />
       <LoadingButton
         onClick={async () => {
           SignIn("google");

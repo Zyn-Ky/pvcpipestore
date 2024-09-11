@@ -18,6 +18,7 @@ import {
 } from "react";
 import {
   useAuthState,
+  useSignInWithEmailAndPassword,
   useSignInWithGoogle,
   useSignOut,
 } from "react-firebase-hooks/auth";
@@ -35,15 +36,22 @@ import publicSearchClient from "@/libs/algolia";
 import { useMediaQuery, useTheme } from "@mui/material";
 import DismissSnackbarButton from "../custom/Snackbar/DismissSnackbarButton";
 
-export type AvailableLoginMethod = "google";
-
+export type AvailableLoginMethod = "google" | "email";
+// document.querySelector("a");
+interface LoginOptions {
+  google: {
+    [key: string]: any;
+  };
+  email: { emailAddress: string; password: string };
+}
 interface UserManager {
   loading: boolean;
   currentUser: User | null | undefined;
   emailVerified: boolean;
   method: {
-    Login: (
-      method: AvailableLoginMethod
+    Login: <K extends AvailableLoginMethod>(
+      method: K,
+      options?: LoginOptions[K]
     ) => Promise<void | UserCredential | undefined>;
     SignOut: () => Promise<boolean>;
     SendVerificationEmail: () => Promise<boolean>;
@@ -127,15 +135,20 @@ export default function GeneralFunctionWrapper(
 ) {
   const muiTheme = useTheme();
   const isSmallScreen = useMediaQuery(muiTheme.breakpoints.down("sm"));
-  const [CurrentUser, AuthLoading, AuthError] = useAuthState(
-    getAuth(firebaseApp)
-  );
+  const auth = getAuth(firebaseApp);
+  const [CurrentUser, AuthLoading, AuthError] = useAuthState(auth);
   const [
     SignInWithGoogle,
     GoogleUserValue,
     GoogleUserLoading,
     GoogleUserSignInError,
-  ] = useSignInWithGoogle(getAuth(firebaseApp));
+  ] = useSignInWithGoogle(auth);
+  const [
+    SignInWithEmailAndPassword,
+    EmailUserValue,
+    EmailUserLoading,
+    EmailUserError,
+  ] = useSignInWithEmailAndPassword(auth);
   const [SignOut, AuthOutLoading, AuthOutError] = useSignOut(
     getAuth(firebaseApp)
   );
@@ -146,27 +159,41 @@ export default function GeneralFunctionWrapper(
   const [loggingCache, setLoggingCache] = useState<
     { type: string; message: any[] }[]
   >([]);
-  async function Login(method: AvailableLoginMethod) {
+  const Login: UserManager["method"]["Login"] = async (method, options) => {
     setForceHaltAuth(false);
     switch (method) {
       case "google":
         return await SignInWithGoogle();
         break;
+      case "email":
+        if (!options?.emailAddress || !options?.password) return;
+        return await SignInWithEmailAndPassword(
+          options.emailAddress,
+          options.password
+        );
       default:
         throw new Error("Invalid Login Method!");
     }
-  }
+  };
   function ClearLocalData() {
     // Clear All Notification
     indexedDB.deleteDatabase(IDB_NotiCache_DBName);
     deleteApp(firebaseApp);
   }
   async function SignOutCall() {
-    setForceHaltAuth(false);
-    ClearLocalData();
-    const signout = await SignOut();
-    window.location.href = paths.HOME_PAGE;
-    return signout;
+    try {
+      setForceHaltAuth(false);
+      const signout = await SignOut();
+      ClearLocalData();
+      return signout;
+    } catch {
+      SignOut();
+      window.location.reload();
+      return false;
+    } finally {
+      window.location.href = paths.HOME_PAGE;
+      return false;
+    }
   }
   async function SendVerificationEmail() {
     if (!CurrentUser) return false;
@@ -212,8 +239,11 @@ export default function GeneralFunctionWrapper(
       value={{
         ambatakam_value: firebaseApp,
         userManager: {
-          loading: forceHaltAuth ? false : AuthLoading || GoogleUserLoading,
-          currentUser: GoogleUserValue?.user || CurrentUser,
+          loading: forceHaltAuth
+            ? false
+            : AuthLoading || GoogleUserLoading || EmailUserLoading,
+          currentUser:
+            EmailUserValue?.user || GoogleUserValue?.user || CurrentUser,
           emailVerified: (CurrentUser && CurrentUser.emailVerified) || false,
           method: {
             Login,
@@ -221,7 +251,7 @@ export default function GeneralFunctionWrapper(
             SendVerificationEmail,
             UpdateInfo,
           },
-          authError: GoogleUserSignInError || AuthError,
+          authError: EmailUserError || GoogleUserSignInError || AuthError,
           isFirstSetup: true,
         },
         apiManager: { xsrfToken: props.apiXsrf || "MISSING" },

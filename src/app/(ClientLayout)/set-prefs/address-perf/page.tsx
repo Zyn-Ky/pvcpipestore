@@ -6,10 +6,35 @@ import { TextField } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import paths from "@/components/paths";
 import { useTranslations } from "next-intl";
+import {
+  useDocument,
+  useDocumentData,
+  useDocumentOnce,
+} from "react-firebase-hooks/firestore";
+import {
+  doc,
+  DocumentData,
+  DocumentReference,
+  getDoc,
+  getFirestore,
+} from "firebase/firestore";
+import { firebaseApp } from "@/libs/firebase/config";
+import SITE_BACKEND_CONFIG, { StoredUserConfig } from "@/libs/config";
+import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 export default function SetDefaultAddressSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const t_authui = useTranslations("PROMPT_AUTH_UI");
   const { userManager } = useGeneralFunction();
+
+  const userConfigRef = doc(
+    getFirestore(firebaseApp),
+    `${SITE_BACKEND_CONFIG.FIRESTORE_USER_CONFIG_ROOT_PATH}${
+      userManager.currentUser?.uid ?? ""
+    }`
+  ) as DocumentReference<StoredUserConfig, StoredUserConfig>;
+  const [userConfig, userConfigLoading, userConfigError, userConfigReload] =
+    useDocumentOnce<StoredUserConfig>(userConfigRef);
+  if (userConfigLoading) return <InfiniteCircularProgress />;
   if (!userManager.currentUser)
     return (
       <PromptAuth

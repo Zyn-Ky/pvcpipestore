@@ -1,8 +1,6 @@
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Akun",
-};
+export const metadata: Metadata = { title: "Kelola Akun" };
 
 export default async function AccountsPageLayout({
   children,

@@ -91,7 +91,10 @@ export default async function MDPage({ params }: { params: { id: string } }) {
           Ditulis oleh {postData.content.authorDisplayName}
         </Typography>
       )}
-      <ShareButton />
+      <ShareButton
+        title={postData.content?.title ?? ""}
+        description={postData.content?.description ?? ""}
+      />
       <main>
         {postData.content?.contentReact && postData.content.contentReact}
       </main>
