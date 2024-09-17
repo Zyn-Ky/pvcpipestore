@@ -29,6 +29,7 @@ body {
 
 #root-content-ui {
   height: 100%;
+  overflow: auto;
 }
 
 body[data-smooth-color-transition] {

@@ -37,29 +37,34 @@ export default function CheckoutPage() {
   return (
     <>
       {dataLoading && <CircularProgress />}
-      {dataError && productID
-        ? "An error occurred! Please check your internet connection!"
-        : "Missing Product ID"}
+      {dataError && "An error occurred! Please check your internet connection!"}
       {productRawData && (
         <>
-          <div className="p-8">
-            <Card className="flex min-h-[151px]" elevation={5}>
-              {productRawData?.data()?.Images && (
-                <Image
-                  src={productRawData?.data()?.Images?.[0] ?? ""}
-                  alt="Product"
-                  width={151}
-                  height={151}
-                />
-              )}
-              <div className="flex-1 p-12">
-                <Typography variant="h5">Pipa PVC</Typography>
-                <Typography variant="caption">Rp 45.999</Typography>
-                <br />
-              </div>
-            </Card>
-            {JSON.stringify(productRawData?.data()?.Images)}
-            <CheckoutUI />
+          <div className="p-4 flex flex-col muiSm:flex-row gap-12 items-start h-full">
+            <div className="h-full">
+              <Card
+                className="flex flex-col min-h-[151px] max-w-96 w-full"
+                elevation={5}
+              >
+                {productRawData?.data()?.Images && (
+                  <Image
+                    src={productRawData?.data()?.Images?.[0] ?? ""}
+                    alt="Product"
+                    width={384}
+                    height={151}
+                  />
+                )}
+                <div className="flex-1 p-12">
+                  <Typography variant="h5">Pipa PVC</Typography>
+                  <Typography variant="caption">Rp 45.999</Typography>
+                  <br />
+                  {JSON.stringify(productRawData?.data()?.Images)}
+                </div>
+              </Card>
+            </div>
+            <div className="flex-1 w-full">
+              <CheckoutUI productID={productID} />
+            </div>
           </div>
         </>
       )}
