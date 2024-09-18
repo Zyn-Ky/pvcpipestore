@@ -57,11 +57,6 @@ export function CarouselModule() {
             {
               href: paths.ARTICLE_PAGE,
               text: baseText("KNOW_MORE"),
-              outlined: false,
-            },
-            {
-              href: paths.CONTACT_PAGE,
-              text: baseText("CONTACT_US"),
               outlined: true,
             },
           ]}
