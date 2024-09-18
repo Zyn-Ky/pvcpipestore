@@ -25,7 +25,8 @@ const useFcmToken = () => {
     });
     (window as any)["_i_hate_notifications"] = true;
   }
-  const retrieveToken = useCallback(async () => {
+  const retrieveToken = async () => {
+    if (!userManager.currentUser) return;
     try {
       if (typeof window !== "undefined" && "serviceWorker" in navigator) {
         if (hasSubscribed) return;
@@ -58,14 +59,13 @@ const useFcmToken = () => {
                   ? "REQUEST_USER_AND_GLOBAL_NOTIFICATION_CHANNEL"
                   : "REQUEST_GLOBAL_NOTIFCATION_CHANNEL",
               }
-            )
-              .then(() => setHasSubscribed(true))
-              .catch(() =>
-                Console(
-                  "error",
-                  "NotiManager: No registration token available. Request permission to generate one."
-                )
-              );
+            ).catch(() =>
+              Console(
+                "error",
+                "NotiManager: No registration token available. Request permission to generate one."
+              )
+            );
+            setHasSubscribed(true);
           } else {
             promptToEnableNotification();
             Console(
@@ -78,13 +78,7 @@ const useFcmToken = () => {
     } catch (error) {
       Console("error", "An error occurred while retrieving token:", error);
     }
-  }, [
-    userManager.currentUser,
-    hasSubscribed,
-    notificationState,
-    swManager,
-    apiManager.xsrfToken,
-  ]);
+  };
 
   useEffect(() => {
     if (notificationState === "denied" || notificationState === "prompt") {
@@ -96,6 +90,7 @@ const useFcmToken = () => {
   }, [
     apiManager.xsrfToken,
     userManager.currentUser,
+    userManager.loading,
     swManager,
     notificationState,
   ]);

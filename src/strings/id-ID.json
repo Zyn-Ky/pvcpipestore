@@ -71,7 +71,8 @@
     "LOGOUT_TEXT": "Logout",
     "SYSTEM_THEME_TEXT": "Gunakan tema perangkat",
     "DARK_THEME_TEXT": "Tema gelap",
-    "LIGHT_THEME_TEXT": "Tema terang"
+    "LIGHT_THEME_TEXT": "Tema terang",
+    "SUPPORT_TEXT": "Dukungan"
   },
   "THEME_MANAGER_PAGE": {
     "SYSTEM_THEME_TEXT": "Gunakan tema perangkat",
