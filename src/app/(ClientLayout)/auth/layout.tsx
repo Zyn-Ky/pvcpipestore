@@ -13,7 +13,10 @@ export default async function AuthUISharedLayout({
   return (
     <>
       <div className={CSS.AuthContainer}>
-        <Paper className={CSS.BannerIntro} elevation={12}>
+        <Paper
+          className={CSS.BannerIntro + " hidden muiSm:block"}
+          elevation={12}
+        >
           <Image
             src={AuthUISharedLayout_Benefit_id_ID}
             sizes="100vw"

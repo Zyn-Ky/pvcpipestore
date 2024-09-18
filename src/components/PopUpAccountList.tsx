@@ -61,6 +61,7 @@ const ChevronRightIcon = dynamic(
 const ChevronLeftIcon = dynamic(
   () => import("@mui/icons-material/ChevronLeft")
 );
+const HelpIcon = dynamic(() => import("@mui/icons-material/Help"));
 
 const Menu = dynamic(() => import("@mui/material/Menu"));
 
@@ -109,7 +110,7 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         slotProps={{
-          paper: { className: "min-w-[300px] max-h-[5v5h]" },
+          paper: { className: "w-[300px] max-h-[5v5h]" },
         }}
       >
         <Menus
@@ -175,15 +176,20 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 disableClosePopupOnClick: true,
               },
             ],
-            !isInAccountMenu
-              ? [
-                  {
-                    startIcon: <SettingsIcon />,
-                    href: paths.SETTINGS_PAGE,
-                    text: text("SETTINGS_TEXT"),
-                  },
-                ]
-              : [],
+            [
+              {
+                startIcon: <SettingsIcon />,
+                href: paths.SETTINGS_PAGE,
+                text: text("SETTINGS_TEXT"),
+              },
+            ],
+            [
+              {
+                startIcon: <HelpIcon />,
+                href: paths.CONTACT_PAGE,
+                text: text("SUPPORT_TEXT"),
+              },
+            ],
             enableDebug
               ? [
                   {

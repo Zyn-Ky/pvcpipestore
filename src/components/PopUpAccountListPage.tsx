@@ -44,11 +44,23 @@ export const Menus = memo(function Menus(props: menus) {
                     disableTouchRipple={item.disableTouchRipple ?? false}
                     disableGutters={item.disableGutters ?? false}
                     autoFocus={parentIndex === 0 && i === 0}
+                    title={(item.text ?? "").toString()}
                   >
                     {item.startIcon && (
                       <ListItemIcon>{item.startIcon}</ListItemIcon>
                     )}
-                    <ListItemText>{item.text && item.text}</ListItemText>
+                    <ListItemText
+                      inset={item.inset ?? false}
+                      primaryTypographyProps={{
+                        className: "overflow-hidden text-ellipsis",
+                      }}
+                      secondaryTypographyProps={{
+                        className: "overflow-hidden text-ellipsis",
+                      }}
+                      className="overflow-hidden text-ellipsis"
+                    >
+                      {item.text && item.text}
+                    </ListItemText>
                     {item.endIcon && item.endIcon}
                   </MenuItem>
                 ) : (
@@ -64,11 +76,21 @@ export const Menus = memo(function Menus(props: menus) {
                     disableTouchRipple={item.disableTouchRipple ?? false}
                     disableGutters={item.disableGutters ?? false}
                     autoFocus={parentIndex === 0 && i === 0}
+                    title={(item.text ?? "").toString()}
                   >
                     {item.startIcon && (
                       <ListItemIcon>{item.startIcon}</ListItemIcon>
                     )}
-                    <ListItemText inset={item.inset ?? false}>
+                    <ListItemText
+                      inset={item.inset ?? false}
+                      primaryTypographyProps={{
+                        className: "overflow-hidden text-ellipsis",
+                      }}
+                      secondaryTypographyProps={{
+                        className: "overflow-hidden text-ellipsis",
+                      }}
+                      className="overflow-hidden text-ellipsis"
+                    >
                       {item.text && item.text}
                     </ListItemText>
                     {item.endIcon && item.endIcon}
