@@ -69,13 +69,15 @@ export interface StoredUserConfig {
   PhoneNumberContact?: string;
   CountryCodePhoneNumberContact?: string;
   ShippingAddress?: {
+    ReceiverFullName: string;
     Address: string;
     OptionalAddress: string;
     City: string;
     Province: string;
+    Country: string;
     ZipCode: string;
   };
-  FeedbackIDs: string[];
+  FeedbackIDs?: string[];
 }
 export interface StoredSearchRecordItem {
   type: "ARTICLE TIPS" | "PRODUCT" | "PAGES";

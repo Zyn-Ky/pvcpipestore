@@ -49,7 +49,7 @@ export default function CartProductListsClient() {
           </Card>
         </div>
         <Paper className="w-full sm:w-96 p-2" elevation={5}>
-          <CheckoutUI productID="" />
+          <CheckoutUI productID="" summaryUIOnly />
         </Paper>
       </div>
     </>

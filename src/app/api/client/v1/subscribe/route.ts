@@ -27,17 +27,18 @@ export async function POST(request: NextRequest) {
           { code: 401, message: "INVALID_TOKEN" },
           { status: 401 }
         );
-      const topicName = GenerateFcmTopicName(uid, requestJSON.deviceFCMKey);
-      const { successCount } = await AdminFirebaseMessaging.subscribeToTopic(
-        requestJSON.deviceFCMKey,
-        "yesking"
-      );
+      const fcmKey = requestJSON.deviceFCMKey;
+      const topicName = GenerateFcmTopicName(uid, fcmKey);
+      const { successCount, errors } =
+        await AdminFirebaseMessaging.subscribeToTopic(fcmKey, "yesking");
 
       return NextResponse.json<ApiResponse>({
         code: 200,
         message: "OK",
         response: {
           successCount,
+          errors,
+          fcmKey,
         },
       });
     } else {

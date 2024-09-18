@@ -8,11 +8,12 @@ import {
   Popover,
   styled,
 } from "@mui/material";
-import { ComponentProps, useCallback } from "react";
+import { ComponentProps, useCallback, useEffect } from "react";
 import NotificationList from "./base/NotificationList";
 import { useWindowSize } from "react-use";
 import { useFCMNotification } from "./base/NotificationManager";
 import ClearAllOutlinedIcon from "@mui/icons-material/ClearAllOutlined";
+import { usePathname } from "next/navigation";
 const OuterBox = styled(Box)(({ theme }) => ({
   position: "relative",
   display: "flex",
@@ -43,6 +44,10 @@ export default function PopUpNotifcationList(props: {
     return Math.min(heightNoMarginHeader, 400);
   }, [props.open, height]);
   const { clearAll, Notifications } = useFCMNotification();
+  const pathname = usePathname();
+  useEffect(() => {
+    props.onClose && props.onClose({}, "backdropClick");
+  }, [pathname]);
   return (
     <>
       <Popover

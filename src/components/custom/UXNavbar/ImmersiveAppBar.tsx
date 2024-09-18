@@ -16,7 +16,7 @@ import {
 import LogoColorful from "../../assets/logo-colorful.webp";
 import LogoMonochrome from "../../assets/logo-monochrome.webp";
 import Image from "next/image";
-import { useWindowScroll } from "react-use";
+import { useScroll, useWindowScroll } from "react-use";
 import Link from "next/link";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import paths from "@/components/paths";
@@ -25,7 +25,10 @@ import { useTranslations } from "next-intl";
 import BrightnessAutoIcon from "@mui/icons-material/BrightnessAuto";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import { useGeneralFunction } from "@/components/base/GeneralWrapper";
+import {
+  useGeneralFunction,
+  useRootContentUIRef,
+} from "@/components/base/GeneralWrapper";
 import { useGlobalThemeSettings } from "@/components/base/ClientThemeWrapper";
 import { Notifications } from "@mui/icons-material";
 import { useFCMNotification } from "@/components/base/NotificationManager";
@@ -69,11 +72,10 @@ export default function ImmersiveAppBar({
   onToggleNotiBtn: () => void;
 }) {
   const theme = useTheme();
-
-  const { y } = useWindowScroll();
+  const contentUIRef = useRootContentUIRef();
+  const { y } = useScroll(contentUIRef);
   const text = useTranslations("BASE");
   const mainNavbarText = useTranslations("NAVBAR");
-
   const isUpperMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
   const NORMAL_PADDING_REM = isUpperMediumScreen ? 6.5 : 5;
   const MIN_PADDING_REM = 2;
@@ -174,9 +176,11 @@ export default function ImmersiveAppBar({
                 if (ThemeMode === "dark") SetThemeMode("system");
               }}
             >
-              {ThemeMode === "system" && <BrightnessAutoIcon />}
-              {ThemeMode === "dark" && <DarkModeIcon />}
-              {ThemeMode === "light" && <LightModeIcon />}
+              <>
+                {ThemeMode === "system" && <BrightnessAutoIcon />}
+                {ThemeMode === "dark" && <DarkModeIcon />}
+                {ThemeMode === "light" && <LightModeIcon />}
+              </>
             </IconButton>
           </Tooltip>
           <Tooltip
@@ -185,8 +189,13 @@ export default function ImmersiveAppBar({
           >
             <IconButton
               size="large"
+              style={{
+                color:
+                  y >= AUTO_ICON_COLOR_SCROLL_THRESHOLD
+                    ? theme.palette.text.primary
+                    : theme.palette.common.white,
+              }}
               aria-label={`${unreadCounter} notifications available`}
-              color="inherit"
               ref={(el) => {
                 notiBtnRef.current = el;
               }}

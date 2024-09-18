@@ -32,6 +32,7 @@ import { useGeneralFunction } from "./base/GeneralWrapper";
 import { useTranslations } from "next-intl";
 import { useLogger } from "./hooks/logger";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const ReceiptIcon = dynamic(() => import("@mui/icons-material/Receipt"));
 const CheckIcon = dynamic(() => import("@mui/icons-material/Check"));
@@ -74,6 +75,9 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
   const [CurrentPage, setCurrentPage] = useState("home");
   const { userManager } = useGeneralFunction();
   const { Console } = useLogger();
+  const pathname = usePathname();
+  const isInAccountMenu = pathname === paths.MOBILE_MY_ACCOUNT;
+  const isInThemeModeMenu = pathname === paths.SETTINGS_THEME_PAGE;
   const handleClosePopup = useCallback(() => {
     setCurrentPage("home");
     props.onClose?.({}, "backdropClick");
@@ -83,13 +87,15 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
     const rc = getRemoteConfig(firebaseApp);
     await fetchAndActivate(rc);
     const EnableDebugUI = getBoolean(rc, "ENABLE_DEBUG_UI");
-
     Console("log", EnableDebugUI);
     setEnableDebug(EnableDebugUI);
   }
   useEffect(() => {
     if (!props.open) setCurrentPage("home");
   }, [props.open]);
+  useEffect(() => {
+    handleClosePopup();
+  }, [pathname]);
   useEffectOnce(() => {
     DebugMode();
   });
@@ -108,36 +114,45 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
       >
         <Menus
           items={[
-            [
-              {
-                disableClosePopupOnClick: true,
-                disableRipple: true,
-                text: (
-                  <>
-                    <Avatar className="mb-2" sx={{ width: 48, height: 48 }}>
-                      {userManager.currentUser?.photoURL && (
-                        <Image
-                          src={userManager.currentUser?.photoURL}
-                          width={48}
-                          height={48}
-                          alt={`Photo of ${userManager.currentUser.displayName}`}
-                        />
-                      )}
-                    </Avatar>
-                    <Typography>
-                      {userManager.currentUser?.displayName &&
-                        userManager.currentUser.displayName}
-                    </Typography>
-                  </>
-                ),
-                hidden: !Boolean(userManager.currentUser),
-              },
-              {
-                text: text("MY_ACCOUNT"),
-                href: paths.MOBILE_MY_ACCOUNT,
-                startIcon: <AccountBoxIcon />,
-              },
-            ],
+            !isInAccountMenu
+              ? [
+                  {
+                    disableClosePopupOnClick: true,
+                    disableRipple: true,
+                    text: (
+                      <>
+                        <Avatar className="mb-2" sx={{ width: 48, height: 48 }}>
+                          {userManager.currentUser?.photoURL && (
+                            <Image
+                              src={userManager.currentUser?.photoURL}
+                              width={48}
+                              height={48}
+                              alt={`Photo of ${userManager.currentUser.displayName}`}
+                            />
+                          )}
+                        </Avatar>
+                        <Typography>
+                          {userManager.currentUser?.displayName &&
+                            userManager.currentUser.displayName}
+                        </Typography>
+                      </>
+                    ),
+                    hidden: !Boolean(userManager.currentUser),
+                  },
+                  {
+                    text: text("MY_ACCOUNT"),
+                    href: paths.MOBILE_MY_ACCOUNT,
+                    startIcon: <AccountBoxIcon />,
+                  },
+                  {
+                    startIcon: <LogoutIcon />,
+                    text: text("LOGOUT_TEXT"),
+                    hidden: userManager.currentUser === null,
+                    disabled: userManager.loading,
+                    onClick: userManager.method.SignOut,
+                  },
+                ]
+              : [],
             [
               {
                 startIcon: <ShoppingCartIcon />,
@@ -156,50 +171,44 @@ const PopUpAccountList = memo(function PopUpAccountList(props: {
                 onClick: () => {
                   setCurrentPage("theme_mode");
                 },
+                hidden: isInThemeModeMenu,
                 disableClosePopupOnClick: true,
               },
-              {
-                startIcon: <SettingsIcon />,
-                href: paths.SETTINGS_PAGE,
-                text: text("SETTINGS_TEXT"),
-              },
             ],
-            [
-              {
-                startIcon: <LogoutIcon />,
-                text: text("LOGOUT_TEXT"),
-                hidden: userManager.currentUser === null,
-                disabled: userManager.loading,
-                onClick: userManager.method.SignOut,
-              },
-            ],
+            !isInAccountMenu
+              ? [
+                  {
+                    startIcon: <SettingsIcon />,
+                    href: paths.SETTINGS_PAGE,
+                    text: text("SETTINGS_TEXT"),
+                  },
+                ]
+              : [],
+            enableDebug
+              ? [
+                  {
+                    startIcon: <InfoOutlinedIcon />,
+                    text: "SHOW_DEBUG_BTN",
+                    onClick() {
+                      setCurrentPage("MODE_DEBUG_X");
+                    },
+                    disableClosePopupOnClick: true,
+                  },
+                ]
+              : [],
           ]}
           handleClosePopup={handleClosePopup}
         />
-        {enableDebug && (
-          <div>
-            <MenuItem
-              onClick={() => {
-                setCurrentPage("MODE_DEBUG_X");
-              }}
-            >
-              <ListItemIcon>
-                <InfoOutlinedIcon />
-              </ListItemIcon>
-              <ListItemText>SHOW_DEBUG_BTN</ListItemText>
-            </MenuItem>
-          </div>
-        )}
       </Menu>
       <Menu
         anchorEl={props.anchorElement}
         id="account-list-popup-theme-mode"
-        open={props.open && CurrentPage === "theme_mode"}
+        open={props.open && CurrentPage === "theme_mode" && !isInThemeModeMenu}
         onClose={handleClosePopup}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         slotProps={{
-          paper: { className: "min-w-[275px]" },
+          paper: { className: "min-w-[300px]" },
         }}
       >
         <Menus

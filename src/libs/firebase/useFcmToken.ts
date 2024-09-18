@@ -59,7 +59,7 @@ const useFcmToken = () => {
                   : "REQUEST_GLOBAL_NOTIFCATION_CHANNEL",
               }
             )
-              .finally(() => setHasSubscribed(true))
+              .then(() => setHasSubscribed(true))
               .catch(() =>
                 Console(
                   "error",
@@ -87,15 +87,17 @@ const useFcmToken = () => {
   ]);
 
   useEffect(() => {
-    if (notificationState === "denied" || notificationState === "prompt")
+    if (notificationState === "denied" || notificationState === "prompt") {
       promptToEnableNotification();
-    retrieveToken();
+    } else {
+      retrieveToken();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     apiManager.xsrfToken,
     userManager.currentUser,
     swManager,
     notificationState,
-    retrieveToken,
   ]);
 
   return { fcmToken: token, notificationState };

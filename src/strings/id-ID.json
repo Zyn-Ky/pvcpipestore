@@ -68,10 +68,15 @@
     "TRANSACTION_TEXT": "Transaksi",
     "THEME_TEXT": "Tema",
     "SETTINGS_TEXT": "Setelan",
-    "LOGOUT_TEXT": "Keluar",
-    "SYSTEM_THEME_TEXT": "Sistem",
-    "DARK_THEME_TEXT": "Gelap",
-    "LIGHT_THEME_TEXT": "Terang"
+    "LOGOUT_TEXT": "Logout",
+    "SYSTEM_THEME_TEXT": "Gunakan tema perangkat",
+    "DARK_THEME_TEXT": "Tema gelap",
+    "LIGHT_THEME_TEXT": "Tema terang"
+  },
+  "THEME_MANAGER_PAGE": {
+    "SYSTEM_THEME_TEXT": "Gunakan tema perangkat",
+    "DARK_THEME_TEXT": "Tema gelap",
+    "LIGHT_THEME_TEXT": "Tema terang"
   },
   "HOME_UI": {
     "SHOP_NOW": "Belanja Sekarang",

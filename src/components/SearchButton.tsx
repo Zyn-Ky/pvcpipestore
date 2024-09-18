@@ -1,6 +1,7 @@
 "use client";
 import {
   Button,
+  IconButton,
   InputAdornment,
   Portal,
   Skeleton,
@@ -43,13 +44,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLogger } from "./hooks/logger";
 import publicSearchClient from "@/libs/algolia";
+import CloseIcon from "@mui/icons-material/Close";
 
 interface SearchButtonProps {
   searchProps?: UseSearchBoxProps;
   indexes: string[];
 }
 
-const ANIM_DURATION = 0.45;
+const ANIM_DURATION = 0.455;
 const ANIM_DURATION_IN_MS = ANIM_DURATION * 1000;
 interface ItemResultProps {
   thumbnailURL?: string;
@@ -256,12 +258,14 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
     background-color: ${theme.palette.background.paper};
     color: ${theme.palette.text.primary};
   `;
-  const buttonClassnames = `px-8 py-2 flex items-center text-base justify-center gap-3 border-0 cursor-pointer rounded-3xl  ${buttonStyles}`;
+  const buttonClassnames = `px-8 py-2 flex items-center text-base justify-center gap-3 border-0 cursor-pointer ${buttonStyles}`;
   const generateSearchButton = (gimmick?: boolean) => (
     <button
       ref={!gimmick ? searchButtonRef : undefined}
       className={`${buttonClassnames} ${
         gimmick && "mx-0 absolute inset-0 h-full"
+      } ${
+        !gimmick && "rounded-3xl"
       } overflow-hidden will-change-[transform,top,left,width,height,border-radius] z-muiModal`}
       onClick={() => {
         if (!gimmick) triggerSearchButton(true);
@@ -312,9 +316,12 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
             <div className="overflow-auto flex flex-col h-full">
               <div>
                 <div className="flex justify-end">
-                  <Button onClick={() => triggerSearchButton(false)}>
-                    Tutup
-                  </Button>
+                  <IconButton
+                    size="large"
+                    onClick={() => triggerSearchButton(false)}
+                  >
+                    <CloseIcon />
+                  </IconButton>
                 </div>
                 <h1 className="text-3xl font-bold">
                   Cari produk dan lain-lainnya

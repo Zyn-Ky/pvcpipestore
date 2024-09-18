@@ -14,6 +14,7 @@ import {
   PropsWithChildren,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
@@ -130,6 +131,16 @@ export const useGeneralFunction = () => {
   return context;
 };
 
+export const useRootContentUIRef = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffectOnce(() => {
+    const element = document.querySelector<HTMLDivElement>(
+      "div#root-content-ui"
+    );
+    if (element) ref.current = element;
+  });
+  return ref;
+};
 export default function GeneralFunctionWrapper(
   props: PropsWithChildren<{ apiXsrf: string }>
 ) {

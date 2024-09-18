@@ -35,7 +35,9 @@ export default function CheckoutUI({
   const [contactEmail, setContactEmail] = useState("");
   const [contactFirstName, setContactFirstName] = useState("");
   const [contactLastName, setContactLastName] = useState("");
-  const [currentCheckoutPage, setCurrentCheckoutPage] = useState(1);
+  const [currentCheckoutPage, setCurrentCheckoutPage] = useState(
+    summaryUIOnly ? 0 : 1
+  );
   const [currentPageHeight, setCurrentPageHeight] = useState(0);
   const [pageHeightAnimating, setPageHeightAnimating] = useState(false);
   const pageElements = useRef<{ id: number; element: HTMLDivElement | null }[]>(
@@ -190,10 +192,11 @@ export default function CheckoutUI({
       <div className="p-0 muiSm:p-8 mx-auto">
         <Stepper
           orientation={isSmallScreen ? "vertical" : "horizontal"}
+          className="overflow-x-auto"
           activeStep={currentCheckoutPage}
         >
-          <Step completed>
-            <StepLabel>Memilih Produk</StepLabel>
+          <Step completed={!summaryUIOnly}>
+            <StepLabel>Ulasan</StepLabel>
           </Step>
           <Step>
             <StepLabel>Alamat pengiriman</StepLabel>
@@ -202,14 +205,14 @@ export default function CheckoutUI({
             <StepLabel>Pembayaran</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Ulasan</StepLabel>
+            <StepLabel>Selesai</StepLabel>
           </Step>
         </Stepper>
         <div className="mt-5 flex items-center">
           <Button
             onClick={() => {
               setCurrentCheckoutPage((prev) =>
-                Math.max(Math.min(prev - 1, 3), 1)
+                Math.max(Math.min(prev - 1, 3), summaryUIOnly ? 0 : 1)
               );
             }}
           >
@@ -251,12 +254,12 @@ export default function CheckoutUI({
               }}
               onAnimationStart={() => {
                 setPageHeightAnimating(true);
-                console.log("start");
+                Console("log", "start");
               }}
-              onAnimationComplete={() => console.log("complete")}
+              onAnimationComplete={() => Console("log", "complete")}
               onAnimationEnd={() => {
                 setPageHeightAnimating(false);
-                console.log("end");
+                Console("log", "end");
               }}
               initial={
                 currentCheckoutPage !== el[1]

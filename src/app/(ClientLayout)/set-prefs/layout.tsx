@@ -17,6 +17,7 @@ import SettingsSidebarResponsive from "./SettingsSidebarResponsive";
 import FirstTimeSetupButton from "./FirstTimeSetupButton";
 import paths from "@/components/paths";
 import { useTranslations } from "next-intl";
+import ActiveSidebarButton from "./ActiveSidebarButton";
 
 export default function SettingsUISharedLayout({
   children,
@@ -52,13 +53,12 @@ export default function SettingsUISharedLayout({
                   t("SIDEBAR_PAYMENT_MANAGER_TEXT"),
                 ],
               ].map((btn) => (
-                <ListItemButton
-                  LinkComponent={Link}
+                <ActiveSidebarButton
                   href={btn[0]}
                   key={`SETTINGS_BTN_${btn[1]}`}
                 >
                   <ListItemText primary={btn[1]} />
-                </ListItemButton>
+                </ActiveSidebarButton>
               ))}
               <ListItem>
                 BUILD_VERSION :{" "}
