@@ -245,23 +245,28 @@ export default function Home() {
         <table className="border-spacing-4">
           {[
             [
-              <BusinessIcon />,
+              <BusinessIcon key="BUSINESS_ICON" />,
               <>
                 Perumahan The Quality Residence No. A16-17 Jatikalang Krian
                 Sidoarjo
               </>,
             ],
             [
-              <CallIcon />,
-              <a href="tel:+623199894287" className="text-blue-500 underline">
+              <CallIcon key="CALL_ICON" />,
+              <a
+                href="tel:+623199894287"
+                key="CALL_TEXT"
+                className="text-blue-500 underline"
+              >
                 (031) 9989 4287
               </a>,
             ],
             [
-              <AlternateEmailIcon />,
+              <AlternateEmailIcon key="EMAIL_ICON" />,
               <a
                 href="mailto:market3@solusiintibersama.com"
                 className="text-blue-500 underline"
+                key="EMAIL_TEXT"
               >
                 market3@solusiintibersama.com
               </a>,
