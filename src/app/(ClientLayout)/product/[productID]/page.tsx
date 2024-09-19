@@ -73,7 +73,7 @@ const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   revalidate:
     process.env.NODE_ENV === "development"
       ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
-      : 60 * 10,
+      : 60 * 5,
   // revalidate: 1,
 });
 
@@ -81,7 +81,7 @@ export async function generateMetadata({
   params,
   searchParams,
 }: Props): Promise<Metadata> {
-  const { productItem } = await FetchItemImpl(
+  const { productItem } = await FetchProducts(
     params.productID,
     searchParams.force_view_product_for_approved_users === "1"
       ? searchParams._token
@@ -89,16 +89,16 @@ export async function generateMetadata({
   );
   if (!productItem || typeof productItem === "string")
     return {
-      title: "Produk tidak ditemukan",
+      title: "Product not found",
       description: "",
       twitter: {
         card: "summary",
-        title: "Produk tidak ditemukan",
+        title: "Product not found",
         description: "",
       },
       openGraph: {
         type: "website",
-        title: "Produk tidak ditemukan",
+        title: "Product not found",
         description: "",
       },
     };
@@ -127,7 +127,7 @@ export async function generateMetadata({
   };
 }
 export default async function ProductPage({ params, searchParams }: Props) {
-  const { productItem, ...codeResponse } = await FetchItemImpl(
+  const { productItem, ...codeResponse } = await FetchProducts(
     params.productID,
     searchParams.force_view_product_for_approved_users === "1"
       ? searchParams._token
