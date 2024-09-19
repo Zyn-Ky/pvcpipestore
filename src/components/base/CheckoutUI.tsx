@@ -21,6 +21,7 @@ import { PromptAuth } from "@/components";
 import paths from "@/components/paths";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLogger } from "../hooks/logger";
+import { useUserShippingAddress } from "../hooks/userConfig";
 
 export default function CheckoutUI({
   productID,
@@ -45,6 +46,7 @@ export default function CheckoutUI({
   );
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const shippingAddressInfo = useUserShippingAddress();
   useEffect(() => {
     const selectedPage = pageElements.current.filter(
       ({ id }) => id === currentCheckoutPage
@@ -101,8 +103,9 @@ export default function CheckoutUI({
             className="flex-1"
             value={
               useDifferentInfo === "same"
-                ? userManager.currentUser.displayName &&
-                  userManager.currentUser.displayName.split(" ")[0]
+                ? shippingAddressInfo.data?.ReceiverFullName ??
+                  (userManager.currentUser.displayName &&
+                    userManager.currentUser.displayName.split(" ")[0])
                 : contactFirstName
             }
             InputProps={{ readOnly: useDifferentInfo === "same" }}
