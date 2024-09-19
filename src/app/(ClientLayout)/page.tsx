@@ -224,6 +224,38 @@ export default function Home() {
           textAlign="center"
           gutterBottom
         >
+          Hubungi Kami
+        </Typography>
+        <Typography variant="body1" textAlign="center" gutterBottom>
+          Untuk informasi lebih lanjut mengenai produk Pipa PVC kami, jangan
+          ragu untuk menghubungi kami melalui formulir kontak atau nomor telepon
+          yang tersedia. Kami siap membantu Anda dengan solusi perpipaan
+          terbaik.
+        </Typography>
+        <Typography variant="body1" fontWeight="bold" textAlign="center">
+          [Perumahan The Quality Residence No A16-17 Jatikalang Krian Sidoarjo]
+        </Typography>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          textAlign="center"
+          gutterBottom
+        >
+          [market3@solusiintibersama.com]
+        </Typography>
+        <Typography variant="body1" textAlign="center">
+          Terima kasih telah mengunjungi website kami. Jika ada pertanyaan atau
+          butuh informasi lebih lanjut Kami siap membantu memberikan solusi
+          terbaik untuk Anda.
+        </Typography>
+      </div>
+      <div className="p-2">
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          gutterBottom
+        >
           {text("ABOUT_US")}
         </Typography>
         <Typography variant="body2" textAlign="center">
