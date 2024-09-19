@@ -11,7 +11,6 @@ import { Metadata } from "next";
 import { unstable_cache as cache } from "next/cache";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import CSS from "@/scss/ProductItem.module.scss";
 import { PhotoProvider } from "react-photo-view";
 import { Breadcrumbs, Button, Link, Paper, Typography } from "@mui/material";
 import ImageModule from "./ImageModule";
@@ -24,7 +23,17 @@ import ProtectedHiddenDevelopmentComponent, {
   IsDisabledOnProduction,
 } from "@/components/base/ProtectedHiddenDevComponent";
 import PopupFatalError from "@/components/PopupFatalError";
-const FetchItemImpl = async (productID: string) => {
+import ForceViewProductButton from "./ForceViewProductButton";
+import ProductRenderer from "./ProductRenderer";
+type Props = {
+  params: { productID: string };
+  searchParams: {
+    ref: string;
+    force_view_product_for_approved_users: string;
+    _token: string;
+  };
+};
+const FetchItemImpl = async (productID: string, authToken?: string | null) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
     const firestore = getFirestore(AdminFirebaseApp);
@@ -32,7 +41,8 @@ const FetchItemImpl = async (productID: string) => {
     const { productItem, productState, userState } = await FetchProduct(
       firestore,
       auth,
-      productID
+      productID,
+      authToken
     );
     if (productState === "OK" && userState === "USER_OK") {
       return {
@@ -69,10 +79,14 @@ const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
 
 export async function generateMetadata({
   params,
-}: {
-  params: { productID: string };
-}): Promise<Metadata> {
-  const { productItem } = await FetchProducts(params.productID);
+  searchParams,
+}: Props): Promise<Metadata> {
+  const { productItem } = await FetchItemImpl(
+    params.productID,
+    searchParams.force_view_product_for_approved_users === "1"
+      ? searchParams._token
+      : null
+  );
   if (!productItem || typeof productItem === "string")
     return {
       title: "Produk tidak ditemukan",
@@ -101,7 +115,7 @@ export async function generateMetadata({
       description: productItem.Description,
     },
     category: "PipaPVC",
-    creator: "Placeholder",
+    creator: productItem.ResolvedPublisherInfo?.displayName,
     robots: {
       index: true,
       follow: true,
@@ -112,140 +126,54 @@ export async function generateMetadata({
     },
   };
 }
-export default async function ProductPage({
-  params,
-}: {
-  params: { productID: string };
-}) {
-  const { productItem, ...codeResponse } = await FetchProducts(
-    params.productID
+export default async function ProductPage({ params, searchParams }: Props) {
+  const { productItem, ...codeResponse } = await FetchItemImpl(
+    params.productID,
+    searchParams.force_view_product_for_approved_users === "1"
+      ? searchParams._token
+      : null
   );
   // return JSON.stringify();
-  if (productItem === "VIEW_VIA_CLIENT")
+
+  if (
+    codeResponse.message === "OK_USER_MODERATED" ||
+    productItem === "VIEW_VIA_CLIENT"
+  )
     return (
       <PopupFatalError
-        hiddenMessage={JSON.stringify({ productItem, codeResponse })}
+        title={`Pesan sistem`}
+        description="Akun penjual produk ini masih dalam tahap verifikasi. Coba lagi nanti"
+        hiddenMessage={JSON.stringify(
+          {
+            codeResponse,
+            productID: params.productID,
+          },
+          null,
+          2
+        )}
+        action={productItem === "VIEW_VIA_CLIENT" && <ForceViewProductButton />}
       />
     );
-  if (codeResponse.e)
+  if (!codeResponse.ok)
     return (
       <PopupFatalError
-        hiddenMessage={JSON.stringify({ error: codeResponse.e })}
+        hiddenMessage={JSON.stringify(
+          {
+            productItem,
+            codeResponse,
+            productID: params.productID,
+          },
+          null,
+          2
+        )}
+        action={<></>}
+        reportButton
       />
     );
   if (!productItem) return notFound();
   return (
     <>
-      <main className={CSS.ProductContainer}>
-        {/* {JSON.stringify({ productItem, ...data })} */}
-        {productItem && (
-          <>
-            <div className={CSS.ImgProduct}>
-              <ImageModule
-                productItem={{
-                  ...productItem,
-                  ProductID: params.productID ?? "",
-                }}
-              />
-            </div>
-            <div className={CSS.ProductInfo}>
-              {productItem.ResolvedCatalogID && (
-                <Breadcrumbs className="mb-4">
-                  <Link
-                    underline="hover"
-                    color="inherit"
-                    href={paths.ACTUAL_SHOP}
-                    component={NextLink}
-                  >
-                    Shop
-                  </Link>
-                  {productItem.ResolvedCatalogID.map(
-                    (id, i) =>
-                      id && (
-                        <Link
-                          underline="hover"
-                          color="inherit"
-                          href={GenerateShopFilterUrl({
-                            filterID: [id.SelfID],
-                          })}
-                          component={NextLink}
-                          key={i}
-                        >
-                          {id.Title}
-                        </Link>
-                      )
-                  )}
-                  <Link
-                    underline="hover"
-                    color="text.primary"
-                    aria-current="page"
-                  >
-                    {productItem.Name && productItem.Name}
-                  </Link>
-                </Breadcrumbs>
-              )}
-              <Typography variant="h4" fontWeight="bold">
-                {productItem.Name && productItem.Name}
-              </Typography>
-              <Typography variant="h5" fontWeight="bold">
-                {new Intl.NumberFormat("id-ID", {
-                  currency: productItem.SuggestedCurrency ?? "",
-                  style: "currency",
-                }).format(productItem.Price ?? 0)}
-              </Typography>
-              <HorizontalActionModule />
-              <Typography
-                variant="body1"
-                paragraph
-                dangerouslySetInnerHTML={{
-                  __html: productItem.Description ?? "",
-                }}
-              />
-              <br />
-
-              <Button
-                variant="contained"
-                className="mr-4"
-                LinkComponent={NextLink}
-                href={`${paths.CHECKOUT_PAGE}?direct_buy_id=${productItem.ProductID}`}
-              >
-                Beli
-              </Button>
-              <Button variant="outlined" disabled={IsDisabledOnProduction()}>
-                Tambahkan ke Keranjang
-              </Button>
-              <br />
-            </div>
-            <UserSummaryModule userInfo={productItem.ResolvedPublisherInfo} />
-          </>
-        )}
-      </main>
-      <ProtectedHiddenDevelopmentComponent>
-        <details
-          style={{
-            paddingBottom: "3rem",
-          }}
-        >
-          <summary
-            style={{
-              marginBottom: "1rem",
-            }}
-          >
-            DEBUG INFORMATION
-          </summary>
-          <pre
-            style={{
-              whiteSpace: "break-spaces",
-              overflow: "auto",
-              maxWidth: "100vw",
-              userSelect: "text",
-              marginBottom: "1rem",
-            }}
-          >
-            {JSON.stringify(productItem, null, 2)}
-          </pre>
-        </details>
-      </ProtectedHiddenDevelopmentComponent>
+      <ProductRenderer productID={params.productID} productItem={productItem} />
     </>
   );
 }

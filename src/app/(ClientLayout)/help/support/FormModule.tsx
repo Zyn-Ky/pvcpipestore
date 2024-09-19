@@ -4,6 +4,7 @@ import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { useLogger } from "@/components/hooks/logger";
 import { AxiosFetchV1Api } from "@/libs/axios";
 import { StoredFeedbackInfo } from "@/libs/config";
+import { FormControl } from "@mui/material";
 import { FormEvent, PropsWithChildren, useState } from "react";
 
 export default function HelpFormModule(props: PropsWithChildren) {
@@ -94,10 +95,10 @@ export default function HelpFormModule(props: PropsWithChildren) {
   }
   return (
     <>
-      <form onSubmit={SubmitData} className="text-center">
+      <FormControl onSubmit={SubmitData} component="form" className="w-full">
         {submited && <p>Terkirim!</p>}
         {!submited && props.children && props.children}
-      </form>
+      </FormControl>
     </>
   );
 }

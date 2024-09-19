@@ -24,7 +24,9 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import ProductRecommendModule from "./ProductRecommendModule";
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
-
+import BusinessIcon from "@mui/icons-material/Business";
+import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
+import CallIcon from "@mui/icons-material/Call";
 const TestimonialModule = dynamic(
   () => import("@/components/custom/HomePage/TestimonialModule"),
   { ssr: true }
@@ -187,7 +189,7 @@ export default function Home() {
           <OurPartners nextImage={PartnerYutaImg} alt="Yuta© Logo" />
         </div>
       </div>
-      <div className={CSS.OurMissionContainer}>
+      <div className="flex p-20 text-start whitespace-break-spaces gap-12 select-text max-w-[1080px] mx-auto muiMd:gap-20 flex-col muiMd:flex-row">
         {[
           [
             `Visi Kami`,
@@ -202,7 +204,7 @@ export default function Home() {
 - Kualitas dan Keamanan: Mematuhi standar dan regulasi internasional serta melakukan pengujian ketat untuk memastikan setiap produk memenuhi spesifikasi dan persyaratan keamanan.`,
           ],
         ].map((t) => (
-          <div key={t[0]} className={CSS.Item}>
+          <div key={t[0]} className="flex-[50%]">
             <Typography
               variant="h4"
               fontWeight="bold"
@@ -211,45 +213,13 @@ export default function Home() {
             >
               {t[0]}
             </Typography>
-            <Typography variant="body2" textAlign="left" paragraph>
+            <Typography variant="body2" textAlign="left" component="p">
               {t[1]}
             </Typography>
           </div>
         ))}
       </div>
-      <div className="p-2">
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          textAlign="center"
-          gutterBottom
-        >
-          Hubungi Kami
-        </Typography>
-        <Typography variant="body1" textAlign="center" gutterBottom>
-          Untuk informasi lebih lanjut mengenai produk Pipa PVC kami, jangan
-          ragu untuk menghubungi kami melalui formulir kontak atau nomor telepon
-          yang tersedia. Kami siap membantu Anda dengan solusi perpipaan
-          terbaik.
-        </Typography>
-        <Typography variant="body1" fontWeight="bold" textAlign="center">
-          [Perumahan The Quality Residence No A16-17 Jatikalang Krian Sidoarjo]
-        </Typography>
-        <Typography
-          variant="body1"
-          fontWeight="bold"
-          textAlign="center"
-          gutterBottom
-        >
-          [market3@solusiintibersama.com]
-        </Typography>
-        <Typography variant="body1" textAlign="center">
-          Terima kasih telah mengunjungi website kami. Jika ada pertanyaan atau
-          butuh informasi lebih lanjut Kami siap membantu memberikan solusi
-          terbaik untuk Anda.
-        </Typography>
-      </div>
-      <div className="p-2">
+      <div className="p-2 mb-4">
         <Typography
           variant="h4"
           fontWeight="bold"
@@ -263,6 +233,53 @@ export default function Home() {
           berkualitas tinggi dengan harga yang terjangkau.
         </Typography>
       </div>
+      <div className="p-2 max-w-[560px] mx-auto">
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          gutterBottom
+        >
+          Hubungi Kami
+        </Typography>
+        <table className="border-spacing-4">
+          {[
+            [
+              <BusinessIcon />,
+              <>
+                Perumahan The Quality Residence No. A16-17 Jatikalang Krian
+                Sidoarjo
+              </>,
+            ],
+            [
+              <CallIcon />,
+              <a href="tel:+623199894287" className="text-blue-500 underline">
+                (031) 9989 4287
+              </a>,
+            ],
+            [
+              <AlternateEmailIcon />,
+              <a
+                href="mailto:market3@solusiintibersama.com"
+                className="text-blue-500 underline"
+              >
+                market3@solusiintibersama.com
+              </a>,
+            ],
+          ].map((val, i) => (
+            <tr key={i}>
+              <td className="text-right">{val[0]}</td>
+              <td className="align-baseline">{val[1]}</td>
+            </tr>
+          ))}
+        </table>
+        <Typography component="p">
+          Terima kasih telah mengunjungi website kami. Jika ada pertanyaan atau
+          butuh informasi lebih lanjut Kami siap membantu memberikan solusi
+          terbaik untuk Anda.
+        </Typography>
+      </div>
+
       <div className={CSS.RecommendationsProd}></div>
     </div>
   );

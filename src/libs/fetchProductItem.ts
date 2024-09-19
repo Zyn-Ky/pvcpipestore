@@ -9,7 +9,8 @@ export type UserStateProduct =
 export default async function FetchProduct(
   firestore: FirebaseFirestore.Firestore,
   fbAuth: Auth,
-  productID: string
+  productID: string,
+  authToken?: string | null
 ): Promise<{
   userState: UserStateProduct;
   productState: "MISSING_OR_DELETED" | "BROKEN_DETAILS" | "OK";
@@ -33,13 +34,17 @@ export default async function FetchProduct(
       productItem: null,
     };
   const userInfo = await fbAuth.getUser(LinkedUser);
-  if (!userInfo)
+  const isAuthUsingTokenValid = authToken
+    ? (await fbAuth.verifyIdToken(authToken)).uid === userInfo.uid
+    : false;
+
+  if (!userInfo && !isAuthUsingTokenValid)
     return {
       productState: "BROKEN_DETAILS",
       userState: "USER_NOT_FOUND",
       productItem: null,
     };
-  if (userInfo.disabled)
+  if (userInfo.disabled && !isAuthUsingTokenValid)
     return {
       productState: "OK",
       userState: "USER_MODERATED",
@@ -55,7 +60,7 @@ export default async function FetchProduct(
     displayName,
     emailVerified,
   } = userInfo;
-  if (!emailVerified)
+  if (!emailVerified && !isAuthUsingTokenValid)
     return {
       productState: "OK",
       userState: "USER_MODERATED",
