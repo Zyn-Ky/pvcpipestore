@@ -1,19 +1,19 @@
 import { Auth } from "firebase-admin/auth";
 import { CategoryItem, ProductCardInfo, StoredProductCardInfo } from "./config";
-
+export type UserStateProduct =
+  | "USER_MAYBE_DISABLED"
+  | "USER_UNKNOWN_STATE"
+  | "USER_NOT_FOUND"
+  | "USER_MODERATED"
+  | "USER_OK";
 export default async function FetchProduct(
   firestore: FirebaseFirestore.Firestore,
   fbAuth: Auth,
   productID: string
 ): Promise<{
-  userState:
-    | "MAYBE_DISABLED"
-    | "UNKNOWN_STATE"
-    | "NOT_FOUND"
-    | "MODERATED"
-    | "OK";
+  userState: UserStateProduct;
   productState: "MISSING_OR_DELETED" | "BROKEN_DETAILS" | "OK";
-  productItem: ProductCardInfo | null;
+  productItem: ProductCardInfo | "VIEW_VIA_CLIENT" | null;
 }> {
   const productsRef = firestore.collection("Products/");
   const productDocument = productsRef.doc(productID);
@@ -21,7 +21,7 @@ export default async function FetchProduct(
   const productItem = productItemData.data() as StoredProductCardInfo;
   if (!productItemData.exists)
     return {
-      userState: "MAYBE_DISABLED",
+      userState: "USER_NOT_FOUND",
       productState: "MISSING_OR_DELETED",
       productItem: null,
     };
@@ -29,21 +29,21 @@ export default async function FetchProduct(
   if (!CatalogID || !LinkedUser)
     return {
       productState: "BROKEN_DETAILS",
-      userState: "UNKNOWN_STATE",
+      userState: "USER_UNKNOWN_STATE",
       productItem: null,
     };
   const userInfo = await fbAuth.getUser(LinkedUser);
   if (!userInfo)
     return {
       productState: "BROKEN_DETAILS",
-      userState: "NOT_FOUND",
+      userState: "USER_NOT_FOUND",
       productItem: null,
     };
   if (userInfo.disabled)
     return {
       productState: "OK",
-      userState: "MODERATED",
-      productItem: null,
+      userState: "USER_MODERATED",
+      productItem: "VIEW_VIA_CLIENT",
     };
 
   const {
@@ -58,8 +58,8 @@ export default async function FetchProduct(
   if (!emailVerified)
     return {
       productState: "OK",
-      userState: "MODERATED",
-      productItem: null,
+      userState: "USER_MODERATED",
+      productItem: "VIEW_VIA_CLIENT",
     };
   //   CatalogID.map(async (idFromProduct, i) => {
   //     const catRef = categoryRef.doc(idFromProduct.toString());
@@ -102,7 +102,7 @@ export default async function FetchProduct(
 
   return {
     productState: "OK",
-    userState: "OK",
+    userState: "USER_OK",
     productItem: {
       ...product,
       ResolvedCatalogID,

@@ -23,6 +23,7 @@ import FetchProduct from "@/libs/fetchProductItem";
 import ProtectedHiddenDevelopmentComponent, {
   IsDisabledOnProduction,
 } from "@/components/base/ProtectedHiddenDevComponent";
+import PopupFatalError from "@/components/PopupFatalError";
 const FetchItemImpl = async (productID: string) => {
   if (!productID) throw new Error("Invalid Product ID Type");
   try {
@@ -33,7 +34,7 @@ const FetchItemImpl = async (productID: string) => {
       auth,
       productID
     );
-    if (productState === "OK" && userState === "OK") {
+    if (productState === "OK" && userState === "USER_OK") {
       return {
         ok: true,
         message: "OK",
@@ -72,7 +73,7 @@ export async function generateMetadata({
   params: { productID: string };
 }): Promise<Metadata> {
   const { productItem } = await FetchProducts(params.productID);
-  if (!productItem)
+  if (!productItem || typeof productItem === "string")
     return {
       title: "Produk tidak ditemukan",
       description: "",
@@ -119,6 +120,19 @@ export default async function ProductPage({
   const { productItem, ...codeResponse } = await FetchProducts(
     params.productID
   );
+  // return JSON.stringify();
+  if (productItem === "VIEW_VIA_CLIENT")
+    return (
+      <PopupFatalError
+        hiddenMessage={JSON.stringify({ productItem, codeResponse })}
+      />
+    );
+  if (codeResponse.e)
+    return (
+      <PopupFatalError
+        hiddenMessage={JSON.stringify({ error: codeResponse.e })}
+      />
+    );
   if (!productItem) return notFound();
   return (
     <>
