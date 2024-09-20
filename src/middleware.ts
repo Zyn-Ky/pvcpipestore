@@ -11,11 +11,21 @@ const csrfMiddleware = createCsrfMiddleware({
   },
 });
 
+const RedirectPaths = [
+  {
+    from: "/go-help-manage-my-account",
+    to: "/help/articles/panduan-akun",
+  },
+];
 // function VerifyCSRFToken(req: NextRequest) {}
 
 export const middleware = (req: NextRequest) => {
-  // if (req.nextUrl.pathname.startsWith("/api/")) {
-  // VerifyCSRFToken(req);
-  // }
+  const filteredPath = RedirectPaths.filter(
+    (val) => val.from === req.nextUrl.pathname
+  );
+  const isInRedirectMode = filteredPath.length > 0;
+  if (isInRedirectMode) {
+    return NextResponse.redirect(new URL(filteredPath[0].to, req.url));
+  }
   return csrfMiddleware(req);
 };

@@ -1,11 +1,19 @@
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 import { GeneratePostURL } from "@/components/paths";
 import { getDateSortedPostsData } from "@/libs/posts";
+import { Share } from "@mui/icons-material";
 import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  Grid2,
+  IconButton,
   List,
   ListItem,
   ListItemText,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { unstable_cache } from "next/cache";
@@ -24,7 +32,56 @@ export default async function HelpArticlesPage() {
       >
         Artikel
       </Typography>
-      <List className="list-decimal pl-8">
+      <Grid2
+        container
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 4, sm: 8, md: 12 }}
+        gap={2}
+        className="justify-center items-start mt-4"
+      >
+        {articles.map(({ id, date, title, description }, i) => (
+          <Grid2
+            component="div"
+            width={300}
+            key={id ?? i}
+            gap={2}
+            className="justify-center items-start"
+            // size={{ xs: 2, sm: 4, md: 4 }}
+          >
+            <Card sx={{ maxWidth: 345 }}>
+              <CardActionArea LinkComponent={Link} href={GeneratePostURL(id)}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    fontWeight="bold"
+                    component="h1"
+                  >
+                    {title && title}
+                  </Typography>
+                  {description && (
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "text.secondary" }}
+                      className="line-clamp-3"
+                    >
+                      {description}
+                    </Typography>
+                  )}
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Tooltip title="Share">
+                  <IconButton>
+                    <Share />
+                  </IconButton>
+                </Tooltip>
+              </CardActions>
+            </Card>
+          </Grid2>
+        ))}
+      </Grid2>
+      {/* <List className="list-decimal pl-8">
         {articles.map(({ id, date, title }) => (
           <ListItem
             className="list-item"
@@ -38,7 +95,7 @@ export default async function HelpArticlesPage() {
             />
           </ListItem>
         ))}
-      </List>
+      </List> */}
 
       <ProtectedHiddenDevelopmentComponent>
         <details>

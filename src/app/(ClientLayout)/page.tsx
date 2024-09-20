@@ -243,40 +243,42 @@ export default function Home() {
           Hubungi Kami
         </Typography>
         <table className="border-spacing-4">
-          {[
-            [
-              <BusinessIcon key="BUSINESS_ICON" />,
-              <>
-                Perumahan The Quality Residence No. A16-17 Jatikalang Krian
-                Sidoarjo
-              </>,
-            ],
-            [
-              <CallIcon key="CALL_ICON" />,
-              <a
-                href="tel:+623199894287"
-                key="CALL_TEXT"
-                className="text-blue-500 underline"
-              >
-                (031) 9989 4287
-              </a>,
-            ],
-            [
-              <AlternateEmailIcon key="EMAIL_ICON" />,
-              <a
-                href="mailto:market3@solusiintibersama.com"
-                className="text-blue-500 underline"
-                key="EMAIL_TEXT"
-              >
-                market3@solusiintibersama.com
-              </a>,
-            ],
-          ].map((val, i) => (
-            <tr key={i}>
-              <td className="text-right">{val[0]}</td>
-              <td className="align-baseline">{val[1]}</td>
-            </tr>
-          ))}
+          <tbody>
+            {[
+              [
+                <BusinessIcon key="BUSINESS_ICON" />,
+                <>
+                  Perumahan The Quality Residence No. A16-17 Jatikalang Krian
+                  Sidoarjo
+                </>,
+              ],
+              [
+                <CallIcon key="CALL_ICON" />,
+                <a
+                  href="tel:+6283199894287"
+                  key="CALL_TEXT"
+                  className="text-blue-500 underline"
+                >
+                  (031) 9989 4287
+                </a>,
+              ],
+              [
+                <AlternateEmailIcon key="EMAIL_ICON" />,
+                <a
+                  href="mailto:market3@solusiintibersama.com"
+                  className="text-blue-500 underline"
+                  key="EMAIL_TEXT"
+                >
+                  market3@solusiintibersama.com
+                </a>,
+              ],
+            ].map((val, i) => (
+              <tr key={i}>
+                <td className="text-right">{val[0]}</td>
+                <td className="align-baseline">{val[1]}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
         <Typography component="p">
           Terima kasih telah mengunjungi website kami. Jika ada pertanyaan atau

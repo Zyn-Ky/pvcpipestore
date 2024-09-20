@@ -1,31 +1,49 @@
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 import { getPost } from "@/libs/posts";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { parseISO, format, toDate } from "date-fns";
 import { notFound } from "next/navigation";
 import { WhatsappShare } from "react-share-kit";
 import ShareButton from "./ShareButton";
 import { Metadata } from "next";
 import { unstable_cache } from "next/cache";
+import PopupFatalError from "@/components/PopupFatalError";
+import ForceViewPostButton from "./ForceViewPost";
+import Link from "next/link";
 export const dynamic = "force-dynamic";
 const getCachedPost = unstable_cache(getPost, ["FETCH_POST_ITEM"], {
   tags: ["FETCH_POST_ITEM"],
   revalidate:
     process.env.NODE_ENV === "development"
-      ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
+      ? parseInt(
+          "1" || process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300"
+        )
       : 60 * 120,
   // revalidate: 1,
 });
 
+type PagePostProps = {
+  params: { id: string };
+  searchParams: {
+    force_view_article_for_approved_users?: string;
+    force_view_article_error?: string;
+    _token?: string;
+  };
+};
+
 export async function generateMetadata({
   params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const postData = await getCachedPost(params.id);
-  if (!postData.exists)
+  searchParams,
+}: PagePostProps): Promise<Metadata> {
+  const postData = await getPost(
+    params.id,
+    searchParams.force_view_article_for_approved_users === "1"
+      ? searchParams._token
+      : ""
+  );
+  if (!postData.exists || postData.content?.hidden === "true")
     return {
-      title: "Post tidak tersedia",
+      title: "Post not found",
       robots: {
         index: false,
         follow: false,
@@ -37,6 +55,9 @@ export async function generateMetadata({
           "max-video-preview": -1,
           "max-snippet": -1,
         },
+      },
+      alternates: {
+        canonical: postData.content?.alternateURL ?? null,
       },
     };
 
@@ -65,12 +86,50 @@ export async function generateMetadata({
       title: postData.content && postData.content.title,
       description: postData.content && postData.content.description,
     },
+    alternates: {
+      canonical: postData.content?.alternateURL ?? null,
+    },
   };
 }
-export default async function MDPage({ params }: { params: { id: string } }) {
-  const postData = await getPost(params.id);
-  console.log(params);
+export default async function MDPage({ params, searchParams }: PagePostProps) {
+  const postData = await getPost(
+    params.id,
+    searchParams.force_view_article_for_approved_users === "1"
+      ? searchParams._token
+      : ""
+  );
+  if (
+    postData.error &&
+    postData.error?.code !== "auth/argument-error" &&
+    searchParams.force_view_article_error !== "1"
+  )
+    return (
+      <PopupFatalError
+        hiddenMessage={JSON.stringify({ params, postData })}
+        showLog
+        action={
+          <>
+            {postData.content?.contentReact && (
+              <Button LinkComponent={Link} href="?force_view_article_error=1">
+                Buka paksa
+              </Button>
+            )}
+          </>
+        }
+        reportButton
+      />
+    );
   if (!postData.exists) return notFound();
+  if (postData.isPrivate && postData.isPrivateButAccessible === false)
+    return (
+      <PopupFatalError
+        hiddenMessage={JSON.stringify({ params, postData })}
+        title="Pesan sistem"
+        description="Artikel ini privat. Hubungi penulis jika diperlukan"
+        action={<ForceViewPostButton uid={postData.content?.authorID ?? ""} />}
+      />
+    );
+
   const dateString = postData.content?.date ?? "";
   const date = parseISO(dateString);
 

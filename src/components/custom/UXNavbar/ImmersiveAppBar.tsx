@@ -20,7 +20,7 @@ import { useScroll, useWindowScroll } from "react-use";
 import Link from "next/link";
 import AccessibilityJumpKey from "@/components/base/AccessibilityJumpKey";
 import paths from "@/components/paths";
-import { ElementType } from "react";
+import { ElementType, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import BrightnessAutoIcon from "@mui/icons-material/BrightnessAuto";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -77,6 +77,7 @@ export default function ImmersiveAppBar({
   const text = useTranslations("BASE");
   const mainNavbarText = useTranslations("NAVBAR");
   const isUpperMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const [isClient, setIsClient] = useState(false);
   const NORMAL_PADDING_REM = isUpperMediumScreen ? 6.5 : 5;
   const MIN_PADDING_REM = 2;
   const NORMAL_AVATAR_SCALE = isUpperMediumScreen ? 1.75 : 1;
@@ -102,27 +103,38 @@ export default function ImmersiveAppBar({
   );
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const padding = isSmallScreen
-    ? MIN_PADDING_REM
-    : Math.max(
-        NORMAL_PADDING_REM - (NORMAL_PADDING_REM * scrollPercentage) / 100,
-        MIN_PADDING_REM
-      );
-  const userAvatarScale = isSmallScreen
-    ? MIN_AVATAR_SCALE
-    : Math.max(
-        NORMAL_AVATAR_SCALE - (NORMAL_AVATAR_SCALE * scrollPercentage) / 100,
-        MIN_AVATAR_SCALE
-      );
-  const blur = Math.min(
-    -(NORMAL_BLUR_PX - (MIN_BLUR_PX * scrollPercentage) / 100),
-    MIN_BLUR_PX
-  );
-  const opacity = Math.min(
-    -(NORMAL_OPACITY - (SCROLLED_OPACITY * secondScrollPercentage) / 100),
-    SCROLLED_OPACITY
-  );
-  const showShopBtn = y >= SHOW_SHOP_BTN_SCROLL_THRESHOLD;
+  const padding = isClient
+    ? isSmallScreen
+      ? MIN_PADDING_REM
+      : Math.max(
+          NORMAL_PADDING_REM - (NORMAL_PADDING_REM * scrollPercentage) / 100,
+          MIN_PADDING_REM
+        )
+    : MIN_PADDING_REM;
+  const userAvatarScale = isClient
+    ? isSmallScreen
+      ? MIN_AVATAR_SCALE
+      : Math.max(
+          NORMAL_AVATAR_SCALE - (NORMAL_AVATAR_SCALE * scrollPercentage) / 100,
+          MIN_AVATAR_SCALE
+        )
+    : MIN_AVATAR_SCALE;
+  const blur = isClient
+    ? Math.min(
+        -(NORMAL_BLUR_PX - (MIN_BLUR_PX * scrollPercentage) / 100),
+        MIN_BLUR_PX
+      )
+    : MIN_BLUR_PX;
+  const opacity = isClient
+    ? Math.min(
+        -(NORMAL_OPACITY - (SCROLLED_OPACITY * secondScrollPercentage) / 100),
+        SCROLLED_OPACITY
+      )
+    : SCROLLED_OPACITY;
+  const showShopBtn = isClient ? y >= SHOW_SHOP_BTN_SCROLL_THRESHOLD : true;
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <>
       <Box
@@ -130,15 +142,16 @@ export default function ImmersiveAppBar({
         style={{
           padding: `${padding}rem`,
           backdropFilter: `blur(${blur}px)`,
-          backgroundColor:
-            opacity < 0.2
+          backgroundColor: isClient
+            ? opacity < 0.2
               ? "transparent"
               : theme.palette.mode === "light"
               ? theme.palette.background.paper +
                 "fff" +
                 Math.floor(opacity * 255).toString(16)
               : theme.palette.background.paper +
-                Math.floor(opacity * 255).toString(16),
+                Math.floor(opacity * 255).toString(16)
+            : "rgba(255,255,255,0.85)",
           boxShadow: opacity > 0.4 ? theme.shadows[3] : "none",
         }}
       >
@@ -163,10 +176,11 @@ export default function ImmersiveAppBar({
           >
             <IconButton
               style={{
-                color:
-                  y >= AUTO_ICON_COLOR_SCROLL_THRESHOLD
+                color: isClient
+                  ? y >= AUTO_ICON_COLOR_SCROLL_THRESHOLD
                     ? theme.palette.text.primary
-                    : theme.palette.common.white,
+                    : theme.palette.common.white
+                  : "black",
               }}
               className="ml-2 mr-2 sm:ml-8"
               aria-label="Theme Mode"
@@ -226,6 +240,15 @@ export default function ImmersiveAppBar({
                   </Fade>
                 </div>
               </Slide>
+              {!isClient && (
+                <BigButton
+                  focusRipple
+                  component={Link}
+                  href={paths.ACTUAL_SHOP}
+                >
+                  {text("SHOP_NOW")}
+                </BigButton>
+              )}
             </>
           )}
           {userManager.currentUser?.photoURL && (

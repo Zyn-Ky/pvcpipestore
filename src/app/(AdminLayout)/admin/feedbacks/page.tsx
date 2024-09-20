@@ -12,6 +12,7 @@ import {
   CircularProgress,
   Collapse,
   Grid,
+  Grid2,
   IconButton,
   Tooltip,
   Typography,
@@ -179,7 +180,7 @@ export default function FeedbacksList() {
             mountOnEnter
             unmountOnExit
           >
-            <Grid
+            <Grid2
               container
               spacing={{ xs: 2, md: 3 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
@@ -187,7 +188,7 @@ export default function FeedbacksList() {
               className="justify-center items-center mt-4"
             >
               {parsedItem?.map((item) => (
-                <Grid
+                <Grid2
                   component="div"
                   width={300}
                   key={item.id}
@@ -227,9 +228,9 @@ export default function FeedbacksList() {
                       </Tooltip>
                     </CardActions>
                   </Card>
-                </Grid>
+                </Grid2>
               ))}
-            </Grid>
+            </Grid2>
           </Collapse>
         </>
       )}

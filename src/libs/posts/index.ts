@@ -7,18 +7,28 @@ import html from "remark-html";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { ReactElement } from "react";
 import components from "@/components/custom/MDRender/components";
+import AdminFirebaseApp from "../firebase/adminConfig";
+import { getAuth } from "firebase-admin/auth";
 
 const postsDirectory = path.join(process.cwd(), "src", "posts");
 
-export async function getPost(postid: string): Promise<{
+export async function getPost(
+  postid: string,
+  authToken?: string
+): Promise<{
   exists: boolean;
+  isPrivate: boolean;
+  isPrivateButAccessible: boolean;
+  error?: any;
   content: null | {
     id: string;
-    contentHtml: string;
-    contentReact: ReactElement;
+    contentHtml: string | null;
+    contentReact: ReactElement | null;
     [key: string]: any;
   };
 }> {
+  const auth = getAuth(AdminFirebaseApp);
+
   let decidedFilepath = "";
 
   const assumedMDXFilepath = path.join(
@@ -42,6 +52,8 @@ export async function getPost(postid: string): Promise<{
     return {
       exists: false,
       content: null,
+      isPrivate: false,
+      isPrivateButAccessible: false,
     };
   }
   const file = await readFile(decidedFilepath, "utf8");
@@ -57,15 +69,78 @@ export async function getPost(postid: string): Promise<{
     options: { parseFrontmatter: true },
     components,
   });
-  return {
-    exists: true,
-    content: {
-      id: postid,
-      contentHtml,
-      contentReact: content,
-      ...matterResult.data,
-    },
-  };
+  const postIsPrivate = matterResult.data.hidden === "true";
+  try {
+    const authUsingToken =
+      (await auth.verifyIdToken(authToken ?? "")).uid ===
+      matterResult.data.authorID;
+    if (postIsPrivate) {
+      if (authUsingToken) {
+        return {
+          exists: true,
+          isPrivate: true,
+          isPrivateButAccessible: true,
+          content: {
+            id: postid,
+            contentHtml,
+            contentReact: content,
+            ...matterResult.data,
+          },
+        };
+      } else {
+        return {
+          exists: true,
+          isPrivate: true,
+          isPrivateButAccessible: false,
+          content: {
+            id: postid,
+            contentHtml: null,
+            contentReact: null,
+            ...matterResult.data,
+          },
+        };
+      }
+    } else {
+      return {
+        exists: true,
+        isPrivate: false,
+        isPrivateButAccessible: false,
+        content: {
+          id: postid,
+          contentHtml,
+          contentReact: content,
+          ...matterResult.data,
+        },
+      };
+    }
+  } catch (e) {
+    if (postIsPrivate) {
+      return {
+        exists: true,
+        isPrivate: true,
+        isPrivateButAccessible: false,
+        content: {
+          id: postid,
+          contentHtml: null,
+          contentReact: null,
+          ...matterResult.data,
+        },
+      };
+    } else {
+      return {
+        exists: true,
+        isPrivate: false,
+        error: e,
+        isPrivateButAccessible: false,
+        content: {
+          id: postid,
+          contentHtml,
+          contentReact: content,
+          ...matterResult.data,
+        },
+      };
+    }
+  }
 }
 
 export async function getDateSortedPostsData() {
