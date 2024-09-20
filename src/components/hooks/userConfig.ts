@@ -19,11 +19,6 @@ export function useUserShippingAddress(): UseUserShippingAddressReturnProps {
     null
   );
 
-  if (!userManager.currentUser)
-    return {
-      state: "loggedout",
-      data: null,
-    };
   async function FetchData() {
     if (!userManager.loading) return;
     if (userManager.currentUser) {
