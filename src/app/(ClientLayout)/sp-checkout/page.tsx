@@ -4,7 +4,7 @@ import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import { useEffect, useState } from "react";
 import { PromptAuth } from "@/components";
 import paths from "@/components/paths";
-import CheckoutUI from "@/components/base/CheckoutUI";
+import CheckoutUI from "@/components/CheckoutUI";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { doc, getFirestore } from "firebase/firestore";
 import { firebaseApp } from "@/libs/firebase/config";

@@ -20,7 +20,8 @@ import { PromptAuth } from "@/components";
 import LoginIcon from "@mui/icons-material/Login";
 import { getAuth } from "firebase/auth";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
-import CheckoutUI from "@/components/base/CheckoutUI";
+import CheckoutUI from "@/components/CheckoutUI";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 
 export default function CartProductListsClient() {
   const { userManager } = useGeneralFunction();
@@ -35,18 +36,29 @@ export default function CartProductListsClient() {
     );
   return (
     <>
-      <div className="flex flex-col p-4 gap-8 sm:flex-row sm:gap-4 max-w-[1440px] mx-auto">
+      <div className="flex flex-col p-4 gap-8 sm:flex-row sm:gap-4 max-w-[1440px] mx-auto h-full">
         <div className="flex-1">
-          <Typography gutterBottom>No items</Typography>
-          <Card className="flex min-h-[151px]" elevation={5}>
-            <Image src={SampleImg} alt="1" width={151} height={151} />
-            <Box className="flex-1 p-12">
-              <Typography variant="h5">Pipa PVC</Typography>
-              <Typography variant="caption">Rp 45.999</Typography>
-              <br />
-              <CounterModule />
-            </Box>
-          </Card>
+          <ProtectedHiddenDevelopmentComponent
+            forceFallback
+            fallback={
+              <>
+                <p className="text-left font-bold text-3xl">
+                  Halaman ini sedang dalam rekonstruksi besar-besaran
+                </p>
+              </>
+            }
+          >
+            <Typography gutterBottom>No items</Typography>
+            <Card className="flex min-h-[151px]" elevation={5}>
+              <Image src={SampleImg} alt="1" width={151} height={151} />
+              <Box className="flex-1 p-12">
+                <Typography variant="h5">Pipa PVC</Typography>
+                <Typography variant="caption">Rp 45.999</Typography>
+                <br />
+                <CounterModule />
+              </Box>
+            </Card>
+          </ProtectedHiddenDevelopmentComponent>
         </div>
         <Paper className="w-full sm:w-96 p-2" elevation={5}>
           <CheckoutUI productID="" summaryUIOnly />

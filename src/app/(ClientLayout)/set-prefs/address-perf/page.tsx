@@ -73,8 +73,17 @@ export default function SetDefaultAddressSettingsUI(params: any) {
     );
   return (
     <>
-      <h1>Alamat pengiriman</h1>
-      <ProtectedHiddenDevelopmentComponent>
+      <ProtectedHiddenDevelopmentComponent
+        forceFallback
+        fallback={
+          <>
+            <p className="text-left font-bold text-3xl">
+              Halaman ini sedang dalam rekonstruksi besar-besaran
+            </p>
+          </>
+        }
+      >
+        <h1>Alamat pengiriman</h1>
         <TextField
           type="text"
           name="receiver_name"

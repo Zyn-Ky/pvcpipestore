@@ -20,7 +20,7 @@ export function useUserShippingAddress(): UseUserShippingAddressReturnProps {
   );
 
   async function FetchData() {
-    if (!userManager.loading) return;
+    if (userManager.loading) return;
     if (userManager.currentUser) {
       const document = await getDoc<StoredUserConfig, StoredUserConfig>(
         doc(
@@ -31,15 +31,15 @@ export function useUserShippingAddress(): UseUserShippingAddressReturnProps {
       const exists = document.exists();
       if (!exists) return;
       const fetched = document.data();
-      setData(fetched.ShippingAddress);
       setState("ready");
+      setData(fetched.ShippingAddress);
     } else {
-      setData(null);
       setState("loggedout");
+      setData(null);
     }
   }
   useEffect(() => {
     FetchData();
-  }, [userManager.currentUser]);
+  }, [userManager.currentUser, userManager.loading]);
   return { state, data };
 }
