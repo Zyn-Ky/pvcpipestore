@@ -112,7 +112,6 @@ export default function CheckoutUI({
   if (!userManager.currentUser) return <></>;
   const Page0 = summaryUIOnly ? (
     <ProtectedHiddenDevelopmentComponent
-      forceFallback
       fallback={
         <>
           <p className="text-lg text-center font-bold">
@@ -144,7 +143,6 @@ export default function CheckoutUI({
     </ProtectedHiddenDevelopmentComponent>
   ) : (
     <ProtectedHiddenDevelopmentComponent
-      forceFallback
       fallback={
         <>
           <p className="text-lg text-center font-bold">
@@ -158,7 +156,6 @@ export default function CheckoutUI({
   const Page1 = (
     <>
       <ProtectedHiddenDevelopmentComponent
-        forceFallback
         fallback={
           <>
             <p className="text-lg text-center font-bold">
@@ -174,7 +171,6 @@ export default function CheckoutUI({
   );
   const Page2 = (
     <ProtectedHiddenDevelopmentComponent
-      forceFallback
       fallback={
         <>
           <p className="text-lg text-center font-bold">
@@ -191,7 +187,6 @@ export default function CheckoutUI({
   );
   const Page3 = (
     <ProtectedHiddenDevelopmentComponent
-      forceFallback
       fallback={
         <>
           <p className="text-lg text-center font-bold">

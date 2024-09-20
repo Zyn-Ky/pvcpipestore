@@ -39,7 +39,6 @@ export default function CartProductListsClient() {
       <div className="flex flex-col p-4 gap-8 sm:flex-row sm:gap-4 max-w-[1440px] mx-auto h-full">
         <div className="flex-1">
           <ProtectedHiddenDevelopmentComponent
-            forceFallback
             fallback={
               <>
                 <p className="text-left font-bold text-3xl">

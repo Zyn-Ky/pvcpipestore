@@ -43,7 +43,7 @@
     "instantsearch.css": "^8.5.0",
     "instantsearch.js": "^4.74.0",
     "jsonwebtoken": "^9.0.2",
-    "next": "^14.2.8",
+    "next": "^14.2.13",
     "next-intl": "^3.17.2",
     "next-mdx-remote": "^5.0.0",
     "next-nprogress-bar": "^2.3.12",

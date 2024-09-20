@@ -22,6 +22,7 @@ import { Edit } from "@mui/icons-material";
 import AccountProviderLinkerModule from "./AccountProviderLinkerModule";
 import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 import PromptEmailVerification from "@/components/base/PromptEmailVerification";
+import OfflineWarningWrapper from "@/components/OfflineWarningWrapper";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
@@ -32,11 +33,11 @@ export default function AccountSettingsUI(params: any) {
   const [openedPhotoUploader, setOpenPhotoUploader] = useState(false);
   const [openedDisplaynameEditor, setOpenedDisplaynameEditor] = useState(false);
   return userManager.loading ? (
-    <>
+    <OfflineWarningWrapper>
       <InfiniteCircularProgress />
-    </>
+    </OfflineWarningWrapper>
   ) : (
-    <>
+    <OfflineWarningWrapper>
       <h1>{t("TITLE_TEXT")}</h1>
       <PromptEmailVerification />
       {userManager.currentUser && (
@@ -125,6 +126,6 @@ export default function AccountSettingsUI(params: any) {
           message={t_authui("REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT")}
         />
       )}
-    </>
+    </OfflineWarningWrapper>
   );
 }

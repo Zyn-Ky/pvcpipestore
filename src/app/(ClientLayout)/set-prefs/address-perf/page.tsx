@@ -74,7 +74,6 @@ export default function SetDefaultAddressSettingsUI(params: any) {
   return (
     <>
       <ProtectedHiddenDevelopmentComponent
-        forceFallback
         fallback={
           <>
             <p className="text-left font-bold text-3xl">

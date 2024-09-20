@@ -19,6 +19,7 @@ import GetFilterParams, {
   GetFilterSearchParams,
 } from "@/components/custom/ShopPage/GetFilterParams";
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
+import OfflineWarningWrapper from "@/components/OfflineWarningWrapper";
 export const metadata: Metadata = {
   title: `Belanja`,
 };
@@ -116,7 +117,7 @@ export default async function ShopPage({
     GetFilterSearchParams(searchParams, "fquery").array.length > 0;
 
   return (
-    <>
+    <OfflineWarningWrapper>
       <ProtectedHiddenDevelopmentComponent>
         <p>{JSON.stringify(isInFilterMode)}</p>
         <Link href="/shop">shop</Link>
@@ -161,6 +162,6 @@ export default async function ShopPage({
           <ProductList serverData={await FetchProducts()} />
         </>
       )}
-    </>
+    </OfflineWarningWrapper>
   );
 }

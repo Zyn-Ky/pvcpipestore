@@ -62,8 +62,9 @@ export default async (phase) => {
       swDest: "public/sw-prod.js",
       swUrl: "/sw-prod.js",
       register: false,
+      reloadOnOnline: false
     });
-    return withSerwist(withNextIntl(nextConfig));
+    return withSerwist(withNextIntl(withMDX(nextConfig)));
   }
   return withNextIntl(withMDX(nextConfig));
 };
