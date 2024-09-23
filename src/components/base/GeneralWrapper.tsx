@@ -27,7 +27,7 @@ import NotificationManager, {
   IDB_NotiCache_DBName,
 } from "./NotificationManager";
 import paths from "../paths";
-import { useEffectOnce } from "react-use";
+import { useEffectOnce, usePrevious, useTitle } from "react-use";
 import { StoredUserClaimsFB } from "@/libs/axios";
 import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
@@ -36,6 +36,13 @@ import { InstantSearchNext } from "react-instantsearch-nextjs";
 import publicSearchClient from "@/libs/algolia";
 import { useMediaQuery, useTheme } from "@mui/material";
 import DismissSnackbarButton from "../custom/Snackbar/DismissSnackbarButton";
+import { Firestore } from "firebase/firestore";
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from "firebase/firestore";
+import { usePathname } from "next/navigation";
 
 export type AvailableLoginMethod = "google" | "email";
 // document.querySelector("a");
@@ -74,6 +81,13 @@ interface SWManager {
 interface BaseManager {
   AddLog: (type: string, message: any[]) => void;
   ReadAllLog: () => { type: string; message: any[] }[] | null;
+  CurrentPathname: string;
+  CurrentPageTitle: string | undefined;
+  PreviousPathname: string | undefined;
+  PreviousPageTitle: string | undefined;
+}
+interface DatabaseManager {
+  firestoreInstance: Firestore | null;
 }
 interface GeneralFunctionContextProps {
   ambatakam_value: FirebaseApp | null;
@@ -81,6 +95,7 @@ interface GeneralFunctionContextProps {
   apiManager: APIManager;
   swManager: SWManager;
   baseManager: BaseManager;
+  dbManager: DatabaseManager;
   ClearLocalData: () => void;
 }
 
@@ -112,12 +127,17 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
       return undefined;
     },
   },
+  dbManager: { firestoreInstance: null },
   ClearLocalData() {},
   baseManager: {
     AddLog() {},
     ReadAllLog() {
       return null;
     },
+    CurrentPathname: "",
+    CurrentPageTitle: undefined,
+    PreviousPathname: undefined,
+    PreviousPageTitle: undefined,
   },
 });
 
@@ -166,10 +186,17 @@ export default function GeneralFunctionWrapper(
   const [SWRegistration, SetSWRegistration] = useState<
     ServiceWorkerRegistration | undefined
   >(undefined);
+  const [dbManager, setDbManager] = useState<Firestore | null>(null);
   const [forceHaltAuth, setForceHaltAuth] = useState(false);
   const [loggingCache, setLoggingCache] = useState<
     { type: string; message: any[] }[]
   >([]);
+  const [currentPageTitle, setCurrentPageTitle] = useState<undefined | string>(
+    undefined
+  );
+  const currentPathname = usePathname();
+  const prevPathname = usePrevious(currentPathname);
+  const prevPageTitle = usePrevious(currentPageTitle);
   const Login: UserManager["method"]["Login"] = async (method, options) => {
     setForceHaltAuth(false);
     switch (method) {
@@ -187,7 +214,6 @@ export default function GeneralFunctionWrapper(
     }
   };
   function ClearLocalData() {
-    // Clear All Notification
     indexedDB.deleteDatabase(IDB_NotiCache_DBName);
     deleteApp(firebaseApp);
   }
@@ -223,6 +249,15 @@ export default function GeneralFunctionWrapper(
     });
     SetSWRegistration(Registration);
   }
+  async function InitFBServices() {
+    setDbManager(
+      initializeFirestore(firebaseApp, {
+        localCache: persistentLocalCache({
+          tabManager: persistentMultipleTabManager(),
+        }),
+      })
+    );
+  }
   async function UpdateInfo(props: {
     displayName?: string | null;
     photoURL?: string | null;
@@ -243,7 +278,11 @@ export default function GeneralFunctionWrapper(
   }
   useEffectOnce(() => {
     InitServiceWorker();
+    InitFBServices();
   });
+  useEffect(() => {
+    setCurrentPageTitle(document.title);
+  }, [currentPathname]);
 
   return (
     <GeneralFunctionContext.Provider
@@ -273,6 +312,13 @@ export default function GeneralFunctionWrapper(
         baseManager: {
           AddLog,
           ReadAllLog,
+          CurrentPathname: currentPathname,
+          PreviousPathname: prevPathname,
+          PreviousPageTitle: prevPageTitle,
+          CurrentPageTitle: currentPageTitle,
+        },
+        dbManager: {
+          firestoreInstance: dbManager,
         },
         ClearLocalData,
       }}

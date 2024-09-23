@@ -26,6 +26,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { CheckoutUIPage1 } from "./base/CheckoutUIPages";
 import ProtectedHiddenDevelopmentComponent from "./base/ProtectedHiddenDevComponent";
 import { useDebounce } from "react-use";
+import CheckoutUIPage0 from "./base/CheckoutUIPages/Page0";
+
+// export function
 
 export default function CheckoutUI({
   productID,
@@ -49,6 +52,31 @@ export default function CheckoutUI({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const containerFormRef = useRef<HTMLDivElement | null>(null);
   const stepsTextRef = useRef<(HTMLDivElement | null)[]>([]);
+  function clearAllTimerID(timerId = "chck_checkout_sys_timer_id") {
+    const existsAsArray =
+      (window as any)[timerId] && Array.isArray((window as any)[timerId]);
+    if (!existsAsArray) return;
+    const array: number[] = (window as any)[timerId];
+    array.forEach((value) => window.clearTimeout(value));
+    (window as any)[timerId] = [];
+  }
+  function addNewTimerID(
+    timing: number,
+    cbAction: () => void,
+    timerId = "chck_checkout_sys_timer_id"
+  ) {
+    clearAllTimerID(timerId);
+    const id = setTimeout(() => {
+      cbAction();
+    }, timing);
+    const existsAsArray =
+      (window as any)[timerId] && Array.isArray((window as any)[timerId]);
+    if (!existsAsArray) {
+      (window as any)[timerId] = [];
+    }
+    const array = (window as any)[timerId];
+    (window as any)[timerId] = [...array, id];
+  }
   function updateHeightStepper({
     disableAnimation,
     disableOverflowHidden,
@@ -65,11 +93,12 @@ export default function CheckoutUI({
         behavior: disableAnimation ? "instant" : "smooth",
         block: "center",
       });
-      (window as any)["x_clock_anim_stepper_height_sys_timer_id"] = setTimeout(
+      addNewTimerID(
+        stepsTextRef.current[selectedPage[0].id]?.scrollTop ?? 50,
         () => {
           !disableOverflowHidden && setStepperHeightAnimating(false);
         },
-        stepsTextRef.current[selectedPage[0].id]?.scrollTop ?? 50
+        "x_clock_anim_stepper_height_sys_timer_id"
       );
       const clientBoundingRect =
         selectedPage[0].element.getBoundingClientRect();
@@ -92,12 +121,11 @@ export default function CheckoutUI({
       left: 0,
       behavior: "smooth",
     });
-
-    (window as any)["chck_checkout_sys_timer_id"] = setTimeout(() => {
+    addNewTimerID((containerFormRef.current?.scrollTop ?? 0) + 100, () => {
       setCurrentCheckoutPage(
         Math.max(Math.min(prev, 3), summaryUIOnly ? 0 : 1)
       );
-    }, (containerFormRef.current?.scrollTop ?? 0) + 100);
+    });
   }
   useDebounce(
     () => {
@@ -121,25 +149,7 @@ export default function CheckoutUI({
         </>
       }
     >
-      <h1>Summary</h1>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
-      <p>Test</p>
+      <CheckoutUIPage0 />
     </ProtectedHiddenDevelopmentComponent>
   ) : (
     <ProtectedHiddenDevelopmentComponent
@@ -151,7 +161,9 @@ export default function CheckoutUI({
           </p>
         </>
       }
-    ></ProtectedHiddenDevelopmentComponent>
+    >
+      <span>Invalid Request</span>
+    </ProtectedHiddenDevelopmentComponent>
   );
   const Page1 = (
     <>

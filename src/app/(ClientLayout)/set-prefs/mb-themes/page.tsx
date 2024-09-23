@@ -4,21 +4,34 @@ import {
   AvailableThemeMode,
   useGlobalThemeSettings,
 } from "@/components/base/ClientThemeWrapper";
+import GoBackButton from "@/components/GoBackButton";
 import CheckIcon from "@mui/icons-material/Check";
 import {
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 
 export default function ThemeSettingsClientLayout() {
   const { SetThemeMode, ThemeMode } = useGlobalThemeSettings();
   const t = useTranslations("THEME_MANAGER_PAGE");
+  const t_settingspage = useTranslations("SETTINGS_PAGE");
+
   return (
     <>
-      <h1>Tema</h1>
+      <GoBackButton
+        title={t_settingspage("SIDEBAR_TITLE")}
+        extendNode={
+          <>
+            <Typography variant="h4" component="h1" fontWeight="bold">
+              Tema
+            </Typography>
+          </>
+        }
+      />
       <List component="nav">
         {[
           ["system", t("SYSTEM_THEME_TEXT")],

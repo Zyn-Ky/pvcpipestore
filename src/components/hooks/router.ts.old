@@ -1,0 +1,130 @@
+import { useRouter as useNextRouter } from "next/router";
+import { useRouter as useNProgressRouter } from "next-nprogress-bar";
+import { useEffect } from "react";
+
+export default function useRouter() {
+  const nextRouter = useNextRouter();
+  const nprogressRouter = useNProgressRouter();
+  const {
+    back: nextBack,
+    forward: nextForward,
+    prefetch: nextPrefetch,
+    push: nextPush,
+    replace: nextReplace,
+    ...cleanedNextRouterProps
+  } = nextRouter;
+  const {
+    back: nprogressBack,
+    forward: nprogressForward,
+    prefetch: nprogressPrefetch,
+    push: nprogressPush,
+    refresh: nprogressRefresh,
+    replace: nprogressReplace,
+  } = nprogressRouter;
+  useEffect(() => {
+    const handleAnchorClick = (event: MouseEvent) => {
+      // Skip preventDefault
+      if (event.defaultPrevented) return;
+
+      const anchorElement = event.currentTarget as
+        | HTMLAnchorElement
+        | SVGAElement;
+      const target = event.target as HTMLElement | Element;
+      let preventProgress =
+        target?.getAttribute("data-prevent-nprogress") === "true" ||
+        anchorElement?.getAttribute("data-prevent-nprogress") === "true";
+
+      if (!preventProgress) {
+        let element: HTMLElement | Element | null = target;
+
+        while (element && element.tagName.toLowerCase() !== "a") {
+          if (
+            element.parentElement?.getAttribute("data-prevent-nprogress") ===
+            "true"
+          ) {
+            preventProgress = true;
+            break;
+          }
+          element = element.parentElement;
+        }
+      }
+
+      if (preventProgress) return;
+
+      const anchorTarget = getAnchorProperty(anchorElement, "target");
+      // Skip anchors with target="_blank"
+      if (anchorTarget === "_blank") return;
+
+      // Skip control/command/option/alt+click
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return;
+
+      const targetHref = getAnchorProperty(anchorElement, "href");
+      const targetUrl = targetPreprocessor
+        ? targetPreprocessor(new URL(targetHref))
+        : new URL(targetHref);
+      const currentUrl = new URL(location.href);
+
+      if (
+        shallowRouting &&
+        isSameURLWithoutSearch(targetUrl, currentUrl) &&
+        disableSameURL
+      )
+        return;
+      if (isSameURL(targetUrl, currentUrl) && disableSameURL) return;
+
+      startProgress();
+    };
+
+    const handleMutation: MutationCallback = () => {
+      const anchorElements = Array.from(document.querySelectorAll("a")) as (
+        | HTMLAnchorElement
+        | SVGAElement
+      )[];
+
+      const validAnchorElements = anchorElements.filter((anchor) => {
+        const href = getAnchorProperty(anchor, "href");
+        const isNProgressDisabled =
+          anchor.getAttribute("data-disable-nprogress") === "true";
+        const isNotTelOrMailto =
+          href &&
+          !href.startsWith("tel:") &&
+          !href.startsWith("mailto:") &&
+          !href.startsWith("blob:") &&
+          !href.startsWith("javascript:");
+
+        return (
+          !isNProgressDisabled &&
+          isNotTelOrMailto &&
+          getAnchorProperty(anchor, "target") !== "_blank"
+        );
+      });
+
+      validAnchorElements.forEach((anchor) => {
+        anchor.addEventListener("click", handleAnchorClick, true);
+      });
+      elementsWithAttachedHandlers.current = validAnchorElements;
+    };
+
+    const mutationObserver = new MutationObserver(handleMutation);
+    mutationObserver.observe(document, { childList: true, subtree: true });
+
+    const originalWindowHistoryPushState = window.history.pushState;
+    window.history.pushState = new Proxy(window.history.pushState, {
+      apply: (target, thisArg, argArray: PushStateInput) => {
+        stopProgress();
+        return target.apply(thisArg, argArray);
+      },
+    });
+
+    return () => {
+      mutationObserver.disconnect();
+      elementsWithAttachedHandlers.current.forEach((anchor) => {
+        anchor.removeEventListener("click", handleAnchorClick, true);
+      });
+      elementsWithAttachedHandlers.current = [];
+      window.history.pushState = originalWindowHistoryPushState;
+    };
+  }, []);
+  return { ...cleanedNextRouterProps };
+}

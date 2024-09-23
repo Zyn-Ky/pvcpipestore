@@ -34,17 +34,30 @@ export default function BottomNavigation() {
   const isMediumScreen = !isBigScreen && ScreenUp_md;
   const isSmallScreen =
     isBigScreen === false && isMediumScreen === false && ScreenDown_sm;
+  const ENABLED_PATHS = [
+    paths.ACTUAL_SHOP,
+    paths.MOBILE_NOTIFICATION,
+    paths.CARTS_ITEM_LIST,
+    paths.MOBILE_MY_ACCOUNT,
+  ];
   return (
     <>
-      {isSmallScreen && URLPathname !== paths.HOME_PAGE && (
-        <>
-          {/* BUG_DETECTED EXPECTED TO BE BROKEN ON THE FUTURE */}
-          <Portal container={() => document.getElementById("down")}>
-            <Toolbar />
-          </Portal>
-        </>
-      )}
-      <Fade unmountOnExit in={isSmallScreen && URLPathname !== paths.HOME_PAGE}>
+      {isSmallScreen &&
+        ENABLED_PATHS.filter((path) => path === URLPathname).length !== 0 && (
+          <>
+            {/* BUG_DETECTED EXPECTED TO BE BROKEN ON THE FUTURE */}
+            <Portal container={() => document.getElementById("down")}>
+              <Toolbar />
+            </Portal>
+          </>
+        )}
+      <Fade
+        unmountOnExit
+        in={
+          isSmallScreen &&
+          ENABLED_PATHS.filter((path) => path === URLPathname).length !== 0
+        }
+      >
         <BetterBottomNavigation
           className="fixed bottom-0 left-0 w-full justify-evenly"
           showLabels

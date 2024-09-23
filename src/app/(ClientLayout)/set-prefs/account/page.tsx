@@ -23,12 +23,14 @@ import AccountProviderLinkerModule from "./AccountProviderLinkerModule";
 import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 import PromptEmailVerification from "@/components/base/PromptEmailVerification";
 import OfflineWarningWrapper from "@/components/OfflineWarningWrapper";
+import GoBackButton from "@/components/GoBackButton";
 export default function AccountSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const { apiManager, userManager } = useGeneralFunction();
   const t_base = useTranslations("BASE");
   const t_authui = useTranslations("PROMPT_AUTH_UI");
   const t = useTranslations("ACCOUNT_MANAGER");
+  const t_settingspage = useTranslations("SETTINGS_PAGE");
   const [clipboardState, setClipboard] = useCopyToClipboard();
   const [openedPhotoUploader, setOpenPhotoUploader] = useState(false);
   const [openedDisplaynameEditor, setOpenedDisplaynameEditor] = useState(false);
@@ -38,7 +40,16 @@ export default function AccountSettingsUI(params: any) {
     </OfflineWarningWrapper>
   ) : (
     <OfflineWarningWrapper>
-      <h1>{t("TITLE_TEXT")}</h1>
+      <GoBackButton
+        title={t_settingspage("SIDEBAR_TITLE")}
+        extendNode={
+          <>
+            <Typography variant="h4" component="h1" fontWeight="bold">
+              {t("TITLE_TEXT")}
+            </Typography>
+          </>
+        }
+      />
       <PromptEmailVerification />
       {userManager.currentUser && (
         <>

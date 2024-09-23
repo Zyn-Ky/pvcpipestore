@@ -3,7 +3,6 @@ import { ParsedToken } from "firebase/auth";
 import { ADMIN_API_VERSION, API_PATH } from "./config";
 import { UploadedImageResult } from "./api/UploadToCloudinary";
 
-const API_VERSION = "v1";
 const DISABLED_BODY_DATA_METHODS = [
   "GET",
   "DELETE",
@@ -38,6 +37,8 @@ export interface ApiResponse<ExtendedResponse = { [key: string]: any }> {
   nextActionValue?: any;
 }
 
+const CLOUDINARY_ASSET_DIRECTORY = "moonsunstone-x/product_assets/";
+
 export async function AxiosFetchV1Api<
   CustomData = any,
   CustomResponse = any & ApiResponse
@@ -55,9 +56,21 @@ export async function AxiosFetchV1Api<
   const AuthHeader = {
     Authorization: `Bearer ${data?.authToken || ""}`,
   };
+  const dataKeys = Object.keys(data ?? []);
+  const dataToQueryParams = !DisabledBodyRequest
+    ? dataKeys
+        .map(
+          (key, i) =>
+            `${i === 0 ? "?" : ""}${key}=${data![key]}${
+              i !== 0 && i !== dataKeys.length - 1 ? "&" : ""
+            }`
+        )
+        .join("")
+    : "";
+  console.log(dataToQueryParams);
   const Result = await AxiosClient({
     method,
-    url: url,
+    url: url + dataToQueryParams,
     headers: {
       "X-CSRF-Token": xsrf,
       ...(!DisabledBodyRequest && AuthHeader),
@@ -76,6 +89,31 @@ export async function AxiosFetchV1Api<
   });
   return Result as AxiosResponse<CustomResponse>;
 }
+
+export function SWRFetcher<
+  CustomData = any,
+  CustomResponse = any & ApiResponse
+>(
+  xsrfToken: string,
+  props: {
+    method: string;
+    data?: CustomData & {
+      authToken?: string;
+      [key: string]: any;
+    };
+  }
+) {
+  return async function (url: string) {
+    console.log(xsrfToken, url);
+    return await AxiosFetchV1Api<CustomData, CustomResponse>(
+      props.method,
+      url,
+      xsrfToken,
+      props.data
+    );
+  };
+}
+
 export async function AxiosPostToImageUploadServer(
   xsrf: string,
   authToken: string,
@@ -87,7 +125,7 @@ export async function AxiosPostToImageUploadServer(
   formData.append("image_binary", binary);
   formData.append(
     "pathname",
-    `moonsunstone-x/product_assets/${
+    `${CLOUDINARY_ASSET_DIRECTORY}${
       productName ?? "product-unknown-" + Date.now()
     }`
   );

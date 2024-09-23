@@ -1,7 +1,7 @@
 // libs/firebase/config.ts
 
 import { getAuth } from "firebase/auth";
-import { initializeApp, getApps } from "firebase/app";
+import { initializeApp, getApps, FirebaseOptions } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getInstallations } from "firebase/installations";
@@ -16,7 +16,7 @@ export const isWindowEnv =
   typeof window !== "undefined" || typeof global.window !== "undefined";
 
 // Load .env variables
-const firebaseConfig = {
+const firebaseConfig: FirebaseOptions = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,

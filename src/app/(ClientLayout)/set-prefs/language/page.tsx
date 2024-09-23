@@ -1,4 +1,5 @@
 "use client";
+import GoBackButton from "@/components/GoBackButton";
 import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
 import CheckIcon from "@mui/icons-material/Check";
 import {
@@ -8,17 +9,27 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 
 export default function LanguageSelector() {
   const currentLocale = getClientLocale();
+  const t_settingspage = useTranslations("SETTINGS_PAGE");
 
   return (
     <>
-      <Typography variant="h4" component="h1" fontWeight="bold">
-        Bahasa
-      </Typography>
+      <GoBackButton
+        title={t_settingspage("SIDEBAR_TITLE")}
+        extendNode={
+          <>
+            <Typography variant="h4" component="h1" fontWeight="bold">
+              Bahasa
+            </Typography>
+          </>
+        }
+      />
+
       <List component="nav">
         {[["id-ID", "Bahasa Indonesia"]].map((btn) => (
           <ListItemButton

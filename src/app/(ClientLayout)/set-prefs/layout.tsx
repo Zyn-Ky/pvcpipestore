@@ -9,6 +9,7 @@ import {
   ListItemIcon,
   ListItemText,
   Paper,
+  Typography,
 } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +19,7 @@ import FirstTimeSetupButton from "./FirstTimeSetupButton";
 import paths from "@/components/paths";
 import { useTranslations } from "next-intl";
 import ActiveSidebarButton from "./ActiveSidebarButton";
+import GoBackButton from "../../../components/GoBackButton";
 
 export default function SettingsUISharedLayout({
   children,
@@ -32,7 +34,13 @@ export default function SettingsUISharedLayout({
       <div className={`${CSS.SettingsContainer} h-full`}>
         <SettingsSidebarResponsive>
           <div className={CSS.Sidebar}>
-            <h1>{t("SIDEBAR_TITLE")}</h1>
+            <GoBackButton
+              extendNode={
+                <Typography variant="h4" component="h1" fontWeight="bold">
+                  {t("SIDEBAR_TITLE")}
+                </Typography>
+              }
+            />
             <List component="nav" aria-label="Settings Section">
               {[
                 [

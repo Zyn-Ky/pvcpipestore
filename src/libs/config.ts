@@ -1,4 +1,5 @@
 import type { DocumentReference } from "firebase-admin/firestore";
+export const CURRENT_API_VERSION = "v1";
 
 const SITE_BACKEND_CONFIG = {
   AUTH_SESSION_COOKIE_NAME: "moonsunstone-x-auth-sid",
@@ -25,9 +26,10 @@ export const API_PATH = {
   HIDDEN_APPLY_SELLER_ROLE: `admin/${ADMIN_API_VERSION}/applysellerrole`,
   SELLER_ADD_NEW_PRODUCT: `admin/${ADMIN_API_VERSION}/addproduct`,
   PUBLIC_SERVER_TIME: `public/servertime`,
+  CALCULATE_TOTAL_PRODUCTS: `client/${CURRENT_API_VERSION}/producttotallookup`,
 };
 
-type AcceptedCurrency = "IDR" | string;
+export type AcceptedCurrency = "IDR" | string;
 type AcceptedPriceMode = "FIXED_PRICE" | "ARRAY_BID";
 export type CategoryItem = {
   Title: string;

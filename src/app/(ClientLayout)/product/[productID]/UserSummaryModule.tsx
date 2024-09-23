@@ -39,7 +39,7 @@ export default function UserSummaryModule({
       >
         {userInfo && (
           <Paper
-            className="mt-2 max-w-[500px] mx-auto"
+            className="mt-4 max-w-[500px] mx-auto"
             data-force-smooth-transition
           >
             <Typography variant="body1" p={2}>
