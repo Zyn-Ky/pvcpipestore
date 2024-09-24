@@ -1,3 +1,4 @@
+import { useCheckOutUIContext } from "@/components/CheckoutUI";
 import { useUserShippingAddress } from "@/components/hooks/userConfig";
 import {
   FormControl,
@@ -9,7 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SubmitHandler,
   useController,
@@ -40,6 +41,10 @@ export default function CheckoutUIPage1() {
   const { register, handleSubmit } = useForm<CheckoutForm>({
     defaultValues: {},
   });
+  const { setLockNextStepBtnState, currentPage } = useCheckOutUIContext();
+  useEffect(() => {
+    if (currentPage === 1) setLockNextStepBtnState(false);
+  }, [currentPage]);
   return (
     <>
       <Typography variant="h4" component="h1" fontWeight="bold">

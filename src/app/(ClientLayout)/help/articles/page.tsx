@@ -1,4 +1,5 @@
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
+import GoBackButton from "@/components/GoBackButton";
 import { GeneratePostURL } from "@/components/paths";
 import { getDateSortedPostsData } from "@/libs/posts";
 import { Share } from "@mui/icons-material";
@@ -24,6 +25,7 @@ export default async function HelpArticlesPage() {
   const articles = await getDateSortedPostsData();
   return (
     <div className="p-4 max-w-[1080px] mx-auto">
+      <GoBackButton />
       <Typography
         textAlign="center"
         variant="h3"

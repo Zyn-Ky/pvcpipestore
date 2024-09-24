@@ -14,4 +14,5 @@ export async function getUserLocale() {
 
 export async function setUserLocale(locale: string) {
   cookies().set(COOKIE_NAME, locale);
+  alert("Refresh required!");
 }

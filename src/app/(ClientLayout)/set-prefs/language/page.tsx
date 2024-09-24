@@ -1,8 +1,12 @@
 "use client";
+import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import GoBackButton from "@/components/GoBackButton";
 import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
 import CheckIcon from "@mui/icons-material/Check";
 import {
+  Alert,
+  Button,
+  Collapse,
   List,
   ListItemButton,
   ListItemIcon,
@@ -11,14 +15,45 @@ import {
 } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useEffectOnce } from "react-use";
+import { useEffectOnce, useUpdateEffect } from "react-use";
 
 export default function LanguageSelector() {
-  const currentLocale = getClientLocale();
   const t_settingspage = useTranslations("SETTINGS_PAGE");
+  const { languageManager } = useGeneralFunction();
+  const [showRefreshRequiredPopup, setShowRefreshRequiredPopup] =
+    useState(false);
 
   return (
     <>
+      <Collapse in={showRefreshRequiredPopup} orientation="vertical">
+        <Alert
+          variant="outlined"
+          color="warning"
+          className="mb-4"
+          action={
+            <>
+              <Button
+                size="small"
+                variant="contained"
+                color="warning"
+                onClick={() => window.location.reload()}
+              >
+                Refresh
+              </Button>
+              <Button
+                size="small"
+                variant="outlined"
+                color="warning"
+                onClick={() => setShowRefreshRequiredPopup(false)}
+              >
+                Ignore
+              </Button>
+            </>
+          }
+        >
+          Page refresh required!
+        </Alert>
+      </Collapse>
       <GoBackButton
         title={t_settingspage("SIDEBAR_TITLE")}
         extendNode={
@@ -31,17 +66,27 @@ export default function LanguageSelector() {
       />
 
       <List component="nav">
-        {[["id-ID", "Bahasa Indonesia"]].map((btn) => (
+        {[
+          ["id-ID", "Bahasa Indonesia"],
+          ["en-US", "English"],
+        ].map((btn) => (
           <ListItemButton
             key={`SETTINGS_BTN_${btn[1]}`}
-            onClick={() => setClientLocale(btn[0])}
+            onClick={() => {
+              languageManager.setUserLocale(btn[0]);
+              setShowRefreshRequiredPopup(true);
+            }}
+            disabled={showRefreshRequiredPopup}
           >
-            {currentLocale === btn[0] && (
+            {languageManager.currentUserLocale === btn[0] && (
               <ListItemIcon>
                 <CheckIcon />
               </ListItemIcon>
             )}
-            <ListItemText inset={currentLocale !== btn[0]} primary={btn[1]} />
+            <ListItemText
+              inset={languageManager.currentUserLocale !== btn[0]}
+              primary={btn[1]}
+            />
           </ListItemButton>
         ))}
       </List>

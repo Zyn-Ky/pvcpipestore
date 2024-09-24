@@ -1,0 +1,110 @@
+{
+  "BASE": {
+    "DISCOVER": "Discover!",
+    "SHOP_NOW": "Shop Now!",
+    "SCROLL_TO_KNOW": "Scroll ke bawah untuk lebih lanjut",
+    "KNOW_MORE": "Ketahui lebih lanjut",
+    "PAUSE_AUTOPLAY": "Pause Autoplay",
+    "PLAY_AUTOPLAY": "Continue Autoplay",
+    "CONTACT_US": "Contact Us",
+    "JUMP_TO_CONTENT": "To the main content",
+    "SEARCH_TEXT": "Search...",
+    "SYSTEM_THEME_TEXT": "System",
+    "DARK_THEME_TEXT": "Dark",
+    "LIGHT_THEME_TEXT": "Light",
+    "SETTINGS_TEXT": "Setelan",
+    "LOGIN_TEXT": "Login",
+    "MY_ACCOUNT": "My account",
+    "COPIED_TO_CLIPBOARD_TEXT": "Copied to clipboard"
+  },
+  "PROMPT_AUTH_UI": {
+    "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",
+    "REQUEST_NOTI_PERMISSION": "Izinkan pemberitahuan untuk menerima pemberitahuan baru",
+    "REQUEST_NOTI_BTN_TEXT": "Allow",
+    "REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT": "Masuk untuk merubah preferensi akun anda",
+    "REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT": "Masuk untuk merubah alamat default anda"
+  },
+  "ACCOUNT_MANAGER": {
+    "EDIT_PHOTO_URL_TEXT": "Change profile photo",
+    "EDIT_DISPLAY_NAME_TEXT": "Change display nama",
+    "COPY_UID_TO_CLIPBOARD_TEXT": "Copy User ID",
+    "EDITOR_ROTATION_TEXT": "Rotation",
+    "EDITOR_ZOOM_TEXT": "Zoom",
+    "EDITOR_SAVE": "Save",
+    "EDITOR_CANCEL": "Cancel",
+    "EDITOR_UPLOADING": "Uploading...",
+    "TITLE_TEXT": "Manage my account"
+  },
+  "SETTINGS_PAGE": {
+    "SIDEBAR_TITLE": "Settings",
+    "SIDEBAR_ACCOUNT_MANAGER_TEXT": "Account",
+    "SIDEBAR_THEME_MANAGER_TEXT": "Theme",
+    "SIDEBAR_LANGUAGE_MANAGER_TEXT": "Language & Region",
+    "SIDEBAR_ADDRESS_MANAGER_TEXT": "Shipping address",
+    "SIDEBAR_PAYMENT_MANAGER_TEXT": "Payment methods"
+  },
+  "SEARCH_INDICE_SETTINGS_PAGE": "Settings",
+  "SEARCH_INDICE_ACCOUNT_PAGE": "My Account",
+  "SEARCH_INDICE_CART_PAGE": "Carts",
+  "SEARCH_INDICES": {
+    "Articles": "Article",
+    "Products": "Products",
+    "Pages": "Pages"
+  },
+  "NAVBAR": {
+    "NOTIFICATION_TEXT": "Notifications",
+    "ACCCOUNT_MENU_POPUP": "Options"
+  },
+  "BTM_NAVBAR": {
+    "HOME_PAGE": "Home",
+    "SHOP_PAGE": "Shop",
+    "MOBILE_NOTIFICATION_PAGE": "Notifications",
+    "CARTS_PAGE": "Carts",
+    "MB_MY_ACCOUNT_PAGE": "Me"
+  },
+  "POPUP_ACCOUNT_MENU": {
+    "MY_ACCOUNT": "Manage my accounts",
+    "CARTS_TEXT": "Carts",
+    "TRANSACTION_TEXT": "Transcations",
+    "THEME_TEXT": "Themes",
+    "SETTINGS_TEXT": "Settings",
+    "LOGOUT_TEXT": "Log out",
+    "SYSTEM_THEME_TEXT": "Use device theme",
+    "DARK_THEME_TEXT": "Dark theme",
+    "LIGHT_THEME_TEXT": "Light theme",
+    "SUPPORT_TEXT": "Support"
+  },
+  "THEME_MANAGER_PAGE": {
+    "SYSTEM_THEME_TEXT": "Use device theme",
+    "DARK_THEME_TEXT": "Dark theme",
+    "LIGHT_THEME_TEXT": "Light theme"
+  },
+  "HOME_UI": {
+    "SHOP_NOW": "Shop now",
+    "WHY_CHOOSE_US": "Kenapa harus memilih kami?",
+    "REASON_TO_CHOOSE_US_1": "Pengiriman Aman dan Cepat",
+    "REASON_TO_CHOOSE_US_1_BODY": "Kami selalu mengutamakan pengiriman tepat waktu ke seluruh Indonesia.",
+    "REASON_TO_CHOOSE_US_2": "Solusi Terbaik",
+    "REASON_TO_CHOOSE_US_2_BODY": "Kami memberikan barang yang berekualitas dan memberikan solusi terbaik untuk kebutuhan anda",
+    "REASON_TO_CHOOSE_US_3": "Tim Professional",
+    "REASON_TO_CHOOSE_US_3_BODY": "Kami melayani dengan tim yang sudah berpengalaman dan professional.",
+    "WHAT_IS_PVC": "Pipa PVC",
+    "PIPA_PVC_DEFINITION": "Pipa PVC juga tahan terhadap korosi dan bahan kimia, memiliki masa pakai yang panjang, dan sering digunakan dalam aplikasi saluran air, sistem pembuangan, dan berbagai proyek konstruksi.",
+    "PIPA_PVC_DEFINITION_ALT_TEXT": "Pemasangannya relatif mudah dengan metode penyambungan yang menggunakan lem khusus untuk menggabungkan ujung pipa dan fitting, sehingga memastikan sambungan yang kuat dan tahan lama tanpa memerlukan alat pemanas tambahan.",
+    "KEUNGGULAN_KAMI": "Keunggulan Kami",
+    "KEUNGGULAN_KAMI_TEXT": "Fitting pipa PVC kami menawarkan kualitas tinggi dan daya tahan yang luar biasa. Terbuat dari bahan berkualitas yang tahan terhadap berbagai bahan kimia dan korosi, fitting ini ideal untuk sistem saluran air dan pembuangan. Fitting kami juga dirancang untuk tahan terhadap perubahan suhu, cocok untuk berbagai aplikasi dalam instalasi air bersih dan sistem pembuangan.",
+    "TESTI_TITLE": "Berikut ulasan customer kami",
+    "TESTI_DESC": "Mereka adalah sebagian yang memberikan ulasan dan menjalin kerjasama dengan kami",
+    "OUR_PARTNER": "Kami telah bekerja sama dengan",
+    "ABOUT_US": "Tentang Kami",
+    "BANNER_TITLE_1": "DISTRIBUTOR PIPA uPVC TERPERCAYA",
+    "BANNER_DESCRIPTION_1": "Solusi Tahan Lama dan Terpercaya untuk Distribusi Air Bersih yang Aman, Efisien, dan Berkualitas Tinggi, Meningkatkan Kualitas Hidup dan Mendukung Kebutuhan Infrastruktur Masa Depan",
+    "BANNER_TITLE_2": "Pipa uPVC SNI",
+    "BANNER_DESCRIPTION_2": "Pipa uPVC SNI Untuk Instalasi air bersih atau air minum yang biasa di gunakan untuk PDAM",
+    "BANNER_TITLE_3": "Pipa uPVC SDR-41",
+    "BANNER_DESCRIPTION_3": "Pipa uPVC SDR-41 berkualitas tinggi",
+    "BANNER_TITLE_4": "Fitting uPVC Standard & SNI",
+    "BANNER_DESCRIPTION_4": "Mulai dari Rp 1.200",
+    "PRODUCT_RECOMMENDATION_TITLE": "Rekomendasi produk dari kami"
+  }
+}

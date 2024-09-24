@@ -30,23 +30,25 @@ export default function GoBackButton({
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const { baseManager } = useGeneralFunction();
-
+  const showButton =
+    isSmallScreen && baseManager.PreviousPathname !== undefined;
   return (
     <>
-      <div
-        className={`w-full mb-1 flex items-center ${
-          className && ` ${className}`
-        }`}
+      <Collapse
+        in={showButton}
+        orientation={extendNode ? "horizontal" : "vertical"}
+        mountOnEnter
+        unmountOnExit
+        className={` ${className && ` ${className}`}`}
       >
-        <Collapse
-          in={isSmallScreen && baseManager.PreviousPathname !== undefined}
-          orientation={extendNode ? "horizontal" : "vertical"}
-          mountOnEnter
-          unmountOnExit
+        <div
+          className={`w-full mb-1 flex items-center ${
+            className && ` ${className}`
+          }`}
         >
           <div className={`${btnClassName && ` ${btnClassName}`}`}>
             <CustBtn
-              className={`rounded-3xl ${extendNode && "mr-4"}`}
+              className={`rounded-3xl min-h-9 ${extendNode && "mr-4"}`}
               draggable={false}
               focusRipple
               onClick={(e) => {
@@ -61,9 +63,10 @@ export default function GoBackButton({
               {title && <span className="mr-2">{title}</span>}
             </CustBtn>
           </div>
-        </Collapse>
-        {extendNode && extendNode}
-      </div>
+          {extendNode && extendNode}
+        </div>
+      </Collapse>
+      {!showButton && extendNode && <div className="">{extendNode}</div>}
     </>
   );
 }

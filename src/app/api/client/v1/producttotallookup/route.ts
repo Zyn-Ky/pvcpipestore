@@ -9,6 +9,14 @@ export interface ProductTotalLookupRequest {
 
 export interface ProductTotalLookupResponse {
   currency: AcceptedCurrency;
+  serviceTax: number;
+  productPriceTotalCost: number;
+  products: { id: string; price: number }[];
+  shipping: {
+    type: string;
+    cost: number;
+  };
+  totalPrice: number;
 }
 
 export type ProductTotalLookupAPIResponse =
@@ -21,8 +29,17 @@ export async function POST(request: NextRequest) {
       code: 200,
       message: "OK",
       response: {
+        productPriceTotalCost: 0,
+        products: [{ id: "", price: 0 }],
+        serviceTax: 2000,
         currency: "IDR",
+        shipping: {
+          cost: 0,
+          type: "unknown",
+        },
+        totalPrice: 2000,
       },
+      nextAction: "CAN_CONTINUE_TO_NEXT_STEP",
     });
   } catch {
     return NextResponse.json<ProductTotalLookupAPIResponse>({

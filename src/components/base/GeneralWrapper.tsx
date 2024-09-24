@@ -43,6 +43,7 @@ import {
   persistentMultipleTabManager,
 } from "firebase/firestore";
 import { usePathname } from "next/navigation";
+import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
 
 export type AvailableLoginMethod = "google" | "email";
 // document.querySelector("a");
@@ -89,6 +90,10 @@ interface BaseManager {
 interface DatabaseManager {
   firestoreInstance: Firestore | null;
 }
+interface LanguageManager {
+  setUserLocale: (locale: string) => void;
+  currentUserLocale: string | undefined | null;
+}
 interface GeneralFunctionContextProps {
   ambatakam_value: FirebaseApp | null;
   userManager: UserManager;
@@ -96,6 +101,7 @@ interface GeneralFunctionContextProps {
   swManager: SWManager;
   baseManager: BaseManager;
   dbManager: DatabaseManager;
+  languageManager: LanguageManager;
   ClearLocalData: () => void;
 }
 
@@ -129,6 +135,7 @@ const GeneralFunctionContext = createContext<GeneralFunctionContextProps>({
   },
   dbManager: { firestoreInstance: null },
   ClearLocalData() {},
+  languageManager: { currentUserLocale: undefined, setUserLocale: () => {} },
   baseManager: {
     AddLog() {},
     ReadAllLog() {
@@ -188,6 +195,9 @@ export default function GeneralFunctionWrapper(
   >(undefined);
   const [dbManager, setDbManager] = useState<Firestore | null>(null);
   const [forceHaltAuth, setForceHaltAuth] = useState(false);
+  const [currentUILocale, setCurrentUILocale] = useState<
+    string | null | undefined
+  >(null);
   const [loggingCache, setLoggingCache] = useState<
     { type: string; message: any[] }[]
   >([]);
@@ -270,6 +280,17 @@ export default function GeneralFunctionWrapper(
       return false;
     }
   }
+  function UpdateLanguageCookie() {
+    currentUILocale && setClientLocale(currentUILocale);
+  }
+  function UpdateCurrentLanguage(locale: string) {
+    setCurrentUILocale(locale);
+    setClientLocale(locale);
+  }
+  function InitCurrentLanguage() {
+    const locale = getClientLocale();
+    setCurrentUILocale(locale);
+  }
   function AddLog(type: string, ...message: any[]) {
     setLoggingCache((prev) => [...prev, { type, message }]);
   }
@@ -279,6 +300,7 @@ export default function GeneralFunctionWrapper(
   useEffectOnce(() => {
     InitServiceWorker();
     InitFBServices();
+    InitCurrentLanguage();
   });
   useEffect(() => {
     setCurrentPageTitle(document.title);
@@ -305,7 +327,10 @@ export default function GeneralFunctionWrapper(
           isFirstSetup: true,
         },
         apiManager: { xsrfToken: props.apiXsrf || "MISSING" },
-
+        languageManager: {
+          setUserLocale: UpdateCurrentLanguage,
+          currentUserLocale: currentUILocale,
+        },
         swManager: {
           getSWRegistration: () => SWRegistration,
         },

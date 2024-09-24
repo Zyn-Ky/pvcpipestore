@@ -37,7 +37,7 @@ export default function CartProductListsClient() {
   return (
     <>
       <div className="flex flex-col p-4 gap-8 sm:flex-row sm:gap-4 max-w-[1440px] mx-auto h-full">
-        <div className="flex-1">
+        <div className="muiSm:flex-1">
           <ProtectedHiddenDevelopmentComponent
             fallback={
               <>

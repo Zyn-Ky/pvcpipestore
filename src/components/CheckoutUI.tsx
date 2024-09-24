@@ -16,7 +16,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { PromptAuth } from "@/components";
 import paths from "@/components/paths";
 import { AnimatePresence, motion } from "framer-motion";
@@ -29,6 +29,22 @@ import { useDebounce } from "react-use";
 import CheckoutUIPage0 from "./base/CheckoutUIPages/Page0";
 
 // export function
+
+interface CheckoutUIContextProps {
+  lockNextStepButton: boolean;
+  currentPage: number;
+  isFirstPage: boolean;
+  setLockNextStepBtnState: (state: boolean) => void;
+  forceSetPageHeight: (height?: number) => void;
+}
+
+const CheckoutUIContext = createContext<CheckoutUIContextProps | null>(null);
+
+export const useCheckOutUIContext = () => {
+  const ctx = useContext(CheckoutUIContext);
+  if (ctx === null) throw new Error("Not in 'CheckoutUIContext'");
+  return ctx;
+};
 
 export default function CheckoutUI({
   productID,
@@ -48,10 +64,15 @@ export default function CheckoutUI({
   const pageElements = useRef<{ id: number; element: HTMLDivElement | null }[]>(
     []
   );
+  const [lockNextStepButton, setLockNextStepBtnState] = useState(true);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const containerFormRef = useRef<HTMLDivElement | null>(null);
   const stepsTextRef = useRef<(HTMLDivElement | null)[]>([]);
+  const isOnFirstPage = summaryUIOnly
+    ? currentCheckoutPage === 0
+    : currentCheckoutPage === 1;
+  const isOnLastPage = currentCheckoutPage >= 3;
   function clearAllTimerID(timerId = "chck_checkout_sys_timer_id") {
     const existsAsArray =
       (window as any)[timerId] && Array.isArray((window as any)[timerId]);
@@ -77,6 +98,21 @@ export default function CheckoutUI({
     const array = (window as any)[timerId];
     (window as any)[timerId] = [...array, id];
   }
+  function updatePageHeight() {
+    const selectedPage = pageElements.current.filter(
+      ({ id }) => id === currentCheckoutPage
+    );
+    if (!selectedPage || selectedPage?.length === 0 || !selectedPage[0].element)
+      return;
+    const clientBoundingRect = selectedPage[0].element.getBoundingClientRect();
+    Console(
+      "log",
+      currentCheckoutPage,
+      selectedPage[0].element,
+      clientBoundingRect
+    );
+    setCurrentPageHeight(clientBoundingRect.height);
+  }
   function updateHeightStepper({
     disableAnimation,
     disableOverflowHidden,
@@ -100,18 +136,9 @@ export default function CheckoutUI({
         },
         "x_clock_anim_stepper_height_sys_timer_id"
       );
-      const clientBoundingRect =
-        selectedPage[0].element.getBoundingClientRect();
-      Console(
-        "log",
-        currentCheckoutPage,
-        selectedPage[0].element,
-        clientBoundingRect
-      );
-      setCurrentPageHeight(clientBoundingRect.height);
+      updatePageHeight();
     }
   }
-
   function toggleCheckoutSubPage(cb: (prev: number) => number) {
     updateHeightStepper({ disableAnimation: true });
     const prev = cb(currentCheckoutPage);
@@ -138,6 +165,7 @@ export default function CheckoutUI({
     [currentCheckoutPage, pageElements]
   );
   if (!userManager.currentUser) return <></>;
+
   const Page0 = summaryUIOnly ? (
     <ProtectedHiddenDevelopmentComponent
       fallback={
@@ -211,126 +239,177 @@ export default function CheckoutUI({
     </ProtectedHiddenDevelopmentComponent>
   );
   return (
-    <div className="w-full h-full flex flex-col">
-      <div className="p-0 muiSm:p-8 mx-auto w-full">
-        <Stepper
-          orientation={isSmallScreen ? "vertical" : "horizontal"}
-          className={`overflow-x-auto w-full ${isSmallScreen && "h-[64px]"} ${
-            stepperHeightAnimating ? "overflow-y-auto" : "overflow-y-hidden"
-          }`}
-          activeStep={currentCheckoutPage}
-          data-invisible-scrollbar={isSmallScreen ? "true" : "false"}
+    <CheckoutUIContext.Provider
+      value={{
+        lockNextStepButton,
+        setLockNextStepBtnState(state) {
+          setLockNextStepBtnState(state);
+        },
+        forceSetPageHeight(height) {
+          if (height) setCurrentPageHeight(height);
+          if (!height) {
+            updatePageHeight();
+          }
+        },
+        currentPage: currentCheckoutPage,
+        isFirstPage: isOnFirstPage,
+      }}
+    >
+      <div
+        className="w-full flex flex-col"
+        onClick={() => updatePageHeight()}
+        onMouseEnter={() => updatePageHeight()}
+        onMouseMove={() => updatePageHeight()}
+        onMouseLeave={() => updatePageHeight()}
+        onTouchStart={() => updatePageHeight()}
+        onTouchMove={() => updatePageHeight()}
+        onTouchEnd={() => updatePageHeight()}
+        onMouseDown={() => updatePageHeight()}
+        onMouseUp={() => updatePageHeight()}
+      >
+        <div className="p-0 muiSm:p-8 mx-auto w-full">
+          <Stepper
+            orientation={isSmallScreen ? "vertical" : "horizontal"}
+            className={`overflow-x-auto w-full ${isSmallScreen && "h-[64px]"} ${
+              stepperHeightAnimating ? "overflow-y-auto" : "overflow-y-hidden"
+            }`}
+            activeStep={currentCheckoutPage - (summaryUIOnly ? 0 : 1)}
+            data-invisible-scrollbar={isSmallScreen ? "true" : "false"}
+          >
+            {summaryUIOnly && (
+              <Step
+                ref={(e) => {
+                  stepsTextRef.current[0] = e;
+                }}
+                completed={!summaryUIOnly}
+              >
+                <StepLabel>Ulasan</StepLabel>
+              </Step>
+            )}
+            <Step
+              ref={(e) => {
+                stepsTextRef.current[1] = e;
+              }}
+              active
+            >
+              <StepLabel>Alamat pengiriman</StepLabel>
+            </Step>
+            <Step
+              ref={(e) => {
+                stepsTextRef.current[2] = e;
+              }}
+            >
+              <StepLabel>Pembayaran</StepLabel>
+            </Step>
+            <Step
+              ref={(e) => {
+                stepsTextRef.current[3] = e;
+              }}
+            >
+              <StepLabel>Selesai</StepLabel>
+            </Step>
+          </Stepper>
+          <div className="mt-5 flex items-center">
+            {!isOnFirstPage && (
+              <Button
+                onClick={() => {
+                  toggleCheckoutSubPage((prev) => prev - 1);
+                }}
+              >
+                Kembali
+              </Button>
+            )}
+            <div className="flex-1"></div>
+            {!isOnLastPage && (
+              <Button
+                disabled={lockNextStepButton}
+                onClick={() => {
+                  if (!lockNextStepButton) {
+                    toggleCheckoutSubPage((prev) => prev + 1);
+                    setLockNextStepBtnState(true);
+                  }
+                }}
+              >
+                Lanjut
+              </Button>
+            )}
+          </div>
+        </div>
+        <div
+          className="w-full h-full overflow-x-hidden relative transition-[height]"
+          style={{
+            height: currentPageHeight,
+            overflowY: pageHeightAnimating ? "hidden" : "auto",
+          }}
+          ref={containerFormRef}
         >
-          <Step
-            ref={(e) => {
-              stepsTextRef.current[0] = e;
-            }}
-            completed={!summaryUIOnly}
-          >
-            <StepLabel>Ulasan</StepLabel>
-          </Step>
-          <Step
-            ref={(e) => {
-              stepsTextRef.current[1] = e;
-            }}
-          >
-            <StepLabel>Alamat pengiriman</StepLabel>
-          </Step>
-          <Step
-            ref={(e) => {
-              stepsTextRef.current[2] = e;
-            }}
-          >
-            <StepLabel>Pembayaran</StepLabel>
-          </Step>
-          <Step
-            ref={(e) => {
-              stepsTextRef.current[3] = e;
-            }}
-          >
-            <StepLabel>Selesai</StepLabel>
-          </Step>
-        </Stepper>
-        <div className="mt-5 flex items-center">
-          <Button
-            onClick={() => {
-              toggleCheckoutSubPage((prev) => prev - 1);
-            }}
-          >
-            Kembali
-          </Button>
-          <div className="flex-1"></div>
-          <Button
-            onClick={() => {
-              toggleCheckoutSubPage((prev) => prev + 1);
-            }}
-          >
-            Lanjut
-          </Button>
+          <AnimatePresence>
+            {(
+              [
+                [Page0, 0],
+                [Page1, 1],
+                [Page2, 2],
+                [Page3, 3],
+              ] as [JSX.Element, number][]
+            ).map((el) => (
+              <motion.div
+                key={el[1]}
+                className="w-full h-max absolute"
+                ref={(element) => {
+                  const current = pageElements.current;
+                  pageElements.current = [...current, { element, id: el[1] }];
+                }}
+                onAnimationStart={() => {
+                  setPageHeightAnimating(true);
+                  Console("log", "start");
+                }}
+                onAnimationComplete={() => {
+                  setPageHeightAnimating(false);
+                  Console("log", "complete");
+                }}
+                onAnimationEnd={() => {
+                  setPageHeightAnimating(false);
+                  Console("log", "end");
+                }}
+                initial={
+                  currentCheckoutPage !== el[1]
+                    ? {
+                        x: "0%",
+                        visibility: "visible",
+                        opacity: 1,
+                        display: "block",
+                      }
+                    : {
+                        x: currentCheckoutPage > el[1] ? "100%" : "-100%",
+                        visibility: "hidden",
+                        display: "none",
+                        opacity: 0,
+                      }
+                }
+                animate={
+                  currentCheckoutPage !== el[1]
+                    ? {
+                        x: currentCheckoutPage > el[1] ? "-100%" : "100%",
+                        visibility: "hidden",
+                        opacity: 0,
+                        display: "none",
+                      }
+                    : {
+                        x: "0%",
+                        visibility: "visible",
+                        opacity: 1,
+                        display: "block",
+                      }
+                }
+                transition={{ type: "tween", duration: 0.35 }}
+                exit={{ x: "100%" }}
+              >
+                {el[0]}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
-      <div
-        className="w-full h-full overflow-x-hidden relative transition-[height]"
-        style={{
-          height: currentPageHeight,
-          overflowY: pageHeightAnimating ? "hidden" : "auto",
-        }}
-        ref={containerFormRef}
-      >
-        <AnimatePresence>
-          {(
-            [
-              [Page0, 0],
-              [Page1, 1],
-              [Page2, 2],
-              [Page3, 3],
-            ] as [JSX.Element, number][]
-          ).map((el) => (
-            <motion.div
-              key={el[1]}
-              className="w-full h-max absolute"
-              ref={(element) => {
-                const current = pageElements.current;
-                pageElements.current = [...current, { element, id: el[1] }];
-              }}
-              onAnimationStart={() => {
-                setPageHeightAnimating(true);
-                Console("log", "start");
-              }}
-              onAnimationComplete={() => {
-                setPageHeightAnimating(false);
-                Console("log", "complete");
-              }}
-              onAnimationEnd={() => {
-                setPageHeightAnimating(false);
-                Console("log", "end");
-              }}
-              initial={
-                currentCheckoutPage !== el[1]
-                  ? { x: "0%", visibility: "visible", opacity: 1 }
-                  : {
-                      x: currentCheckoutPage > el[1] ? "100%" : "-100%",
-                      visibility: "hidden",
-                      opacity: 0,
-                    }
-              }
-              animate={
-                currentCheckoutPage !== el[1]
-                  ? {
-                      x: currentCheckoutPage > el[1] ? "-100%" : "100%",
-                      visibility: "hidden",
-                      opacity: 0,
-                    }
-                  : { x: "0%", visibility: "visible", opacity: 1 }
-              }
-              transition={{ type: "tween", duration: 0.35 }}
-              exit={{ x: "100%" }}
-            >
-              {el[0]}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-    </div>
+    </CheckoutUIContext.Provider>
   );
 }

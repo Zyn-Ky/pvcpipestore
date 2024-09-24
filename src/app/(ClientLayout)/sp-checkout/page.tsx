@@ -14,6 +14,7 @@ import { Card, CardMedia, CircularProgress, Typography } from "@mui/material";
 import Image from "next/image";
 import { useProductInfo } from "@/components/hooks/productManager";
 import BrokenImage from "@mui/icons-material/BrokenImage";
+import GoBackButton from "@/components/GoBackButton";
 
 export default function CheckoutPage() {
   const { userManager } = useGeneralFunction();
@@ -35,8 +36,11 @@ export default function CheckoutPage() {
     <>
       {loading && <CircularProgress />}
       {error && "An error occurred! Please check your internet connection!"}
-      <div className="p-4 flex flex-col muiSm:flex-row gap-12 items-start h-full">
-        <div className="h-full max-w-96 w-full">
+      <div className="p-4 flex flex-col muiSm:flex-row items-start h-full">
+        <div>
+          <GoBackButton className="mb-2" />
+        </div>
+        <div className="flex-1 max-w-96 w-full mb-2">
           <Card className="flex min-h-[151px] max-w-96 w-full" elevation={5}>
             {IsValidImages && (
               <CardMedia
@@ -73,7 +77,7 @@ export default function CheckoutPage() {
             </div>
           </Card>
         </div>
-        <div className="flex-1 w-full">
+        <div className="w-full">
           <CheckoutUI productID={productID} />
         </div>
       </div>

@@ -16,6 +16,7 @@ import dynamic from "next/dynamic";
 import { PhotoProvider } from "react-photo-view";
 import Link from "next/link";
 import { GetProductUrl } from "../paths";
+import { getClientLocale } from "@/libs/clientLocale";
 const PhotoView = dynamic(
   async () => (await import("react-photo-view")).PhotoView,
   { ssr: false }
@@ -31,6 +32,7 @@ const QueenCard = styled(Card)(({ theme }) => ({
 }));
 
 export default function ItemProductCard(props: { data: ProductCardInfo }) {
+  const locale = getClientLocale();
   const IMAGE_SIZE = 200;
   return (
     <Link
@@ -56,7 +58,7 @@ export default function ItemProductCard(props: { data: ProductCardInfo }) {
             {props.data.Name ?? ""}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {new Intl.NumberFormat("id-ID", {
+            {new Intl.NumberFormat(locale, {
               currency: props.data.SuggestedCurrency ?? "",
               style: "currency",
             }).format(props.data.Price ?? 0)}
