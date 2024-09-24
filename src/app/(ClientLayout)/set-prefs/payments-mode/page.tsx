@@ -21,7 +21,7 @@ export default function PaymentProcessorSelector() {
         extendNode={
           <>
             <Typography variant="h4" component="h1" fontWeight="bold">
-              Pilih Metode Pembayaran
+              {t_settingspage("SIDEBAR_PAYMENT_MANAGER_TEXT")}
             </Typography>
           </>
         }

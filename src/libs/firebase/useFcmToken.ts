@@ -8,6 +8,8 @@ import { useIdToken } from "react-firebase-hooks/auth";
 import { useLogger } from "@/components/hooks/logger";
 import { usePermission } from "react-use";
 import { enqueueSnackbar } from "notistack";
+import { useTranslations } from "next-intl";
+import EnableNotificationSnackbarButton from "@/components/custom/Snackbar/EnableNotificationButton";
 
 const useFcmToken = () => {
   const [token, setToken] = useState("");
@@ -16,17 +18,20 @@ const useFcmToken = () => {
   const [userHasNotified, setUserHasNotified] = useState(false);
   const { userManager, apiManager, swManager } = useGeneralFunction();
   const { Console } = useLogger();
+  const t = useTranslations("BASE");
+  const t_manager = useTranslations("NOTIFICATION_MANAGER");
   const notificationState = usePermission({ name: "notifications" });
   function promptToEnableNotification() {
     if ((window as any)["_i_hate_notifications"]) return;
-    enqueueSnackbar("Nyalakan notifikasi untuk pengalaman yang lebih baik", {
-      variant: "info",
+    enqueueSnackbar(t("ENABLE_NOTIFICATION"), {
+      variant: "default",
       persist: true,
+      action: (key) => EnableNotificationSnackbarButton(key),
     });
     (window as any)["_i_hate_notifications"] = true;
   }
   const retrieveToken = async () => {
-    if (!userManager.currentUser) return;
+    if (userManager.loading) return;
     try {
       if (typeof window !== "undefined" && "serviceWorker" in navigator) {
         if (hasSubscribed) return;
@@ -56,8 +61,8 @@ const useFcmToken = () => {
                   : "MISSING",
                 deviceFCMKey: currentToken,
                 specialParams: userManager.currentUser
-                  ? "REQUEST_USER_AND_GLOBAL_NOTIFICATION_CHANNEL"
-                  : "REQUEST_GLOBAL_NOTIFCATION_CHANNEL",
+                  ? "REQUEST_USER_AND_GLOBAL_SYSTEM_NOTIFICATION_CHANNEL"
+                  : "REQUEST_GLOBAL_SYSTEM_NOTIFCATION_CHANNEL",
               }
             ).catch(() =>
               Console(
@@ -65,6 +70,10 @@ const useFcmToken = () => {
                 "NotiManager: No registration token available. Request permission to generate one."
               )
             );
+            enqueueSnackbar(t_manager("ABLE_TO_RECEIVE_NOTIFICATIONS"), {
+              persist: false,
+              variant: "default",
+            });
             setHasSubscribed(true);
           } else {
             promptToEnableNotification();

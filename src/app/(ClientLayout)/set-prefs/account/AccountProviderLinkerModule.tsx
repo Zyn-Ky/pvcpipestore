@@ -85,7 +85,7 @@ export default function AccountProviderLinkerModule() {
           setGoogleProviderLinkerModal(true);
         }}
       >
-        Google
+        {t("GOOGLE_PROVIDER")}
       </Button>
       &nbsp; &nbsp;
       <Button
@@ -94,7 +94,7 @@ export default function AccountProviderLinkerModule() {
           setEmailProviderLinkerModal(true);
         }}
       >
-        Email & Password
+        {t("EMAIL_PROVIDER")}
       </Button>
       <Dialog
         open={emailProviderLinkerModal}
@@ -102,21 +102,24 @@ export default function AccountProviderLinkerModule() {
       >
         {isLinkedToPassword && (
           <>
-            <DialogTitle>Unlink account from Email & Password</DialogTitle>
-
+            <DialogTitle>
+              {t("UNLINK_FROM_TITLE_TEXT", { provider: t("EMAIL_PROVIDER") })}
+            </DialogTitle>
             <DialogContent className="min-w-80">
               <DialogContentText>
-                Apakah anda yakin untuk memutus email (
-                {
-                  userManager.currentUser!.providerData.filter(
-                    (data) => data.providerId === "password"
-                  )![0].email
-                }
-                ) dari akun anda?
+                {t("UNLINK_FROM_BODY_TEXT", {
+                  provider: `${t("EMAIL_PROVIDER")} (${
+                    userManager.currentUser!.providerData.filter(
+                      (data) => data.providerId === "password"
+                    )![0].email
+                  })`,
+                })}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={UnlinkAccountFromEmailProvider}>Yakin</Button>
+              <Button onClick={UnlinkAccountFromEmailProvider}>
+                {t("EDITOR_SURE")}
+              </Button>
               <Button
                 type="reset"
                 onClick={() => {
@@ -155,14 +158,16 @@ export default function AccountProviderLinkerModule() {
               );
             }}
           >
-            <DialogTitle>Link account to Email & Password</DialogTitle>
+            <DialogTitle>
+              {t("LINK_TO_TITLE_TEXT", { provider: t("EMAIL_PROVIDER") })}
+            </DialogTitle>
             <DialogContent className="min-w-80">
               <DialogContentText className="mb-4">
-                Anda akan diminta verifikasi email setelah menyimpan email baru
+                {t("EMAIL_VERIFICATION_REQUIRED")}
               </DialogContentText>
               <TextField
                 fullWidth
-                label="Email"
+                label={t("NEW_EMAIL")}
                 type="email"
                 value={emailProviderInput.email}
                 name="email_address"
@@ -176,7 +181,7 @@ export default function AccountProviderLinkerModule() {
               />
               <TextField
                 fullWidth
-                label="New Password"
+                label={t("NEW_PASSWORD")}
                 type="password"
                 name="pwd_primary"
                 value={emailProviderInput.password}
@@ -190,7 +195,7 @@ export default function AccountProviderLinkerModule() {
               />
               <TextField
                 fullWidth
-                label="New Password Again"
+                label={t("NEW_SECOND_PASSWORD")}
                 type="password"
                 name="pwd_secondary"
                 className="my-2"
@@ -198,15 +203,15 @@ export default function AccountProviderLinkerModule() {
               {!isEmailAndPasswordInputEmpty && (
                 <FormHelperText>
                   {isEmailProviderInputValid.state === "mismatched_pwd" &&
-                    "Password mismatched!"}
+                    t("MISMATCHED_PASSWORD")}
                   {isEmailProviderInputValid.state ===
-                    "invalid_email_address" && "Invalid Email Address!"}
+                    "invalid_email_address" && t("INVALID_EMAIL")}
                 </FormHelperText>
               )}
             </DialogContent>
             <DialogActions>
               {!isEmailAndPasswordInputEmpty && (
-                <Button type="submit">Simpan</Button>
+                <Button type="submit">{t("EDITOR_SAVE")}</Button>
               )}
               <Button
                 type="reset"
@@ -227,14 +232,18 @@ export default function AccountProviderLinkerModule() {
       >
         {isLinkedToGoogle && (
           <>
-            <DialogTitle>Unlink account from Google</DialogTitle>
+            <DialogTitle>
+              {t("UNLINK_FROM_TITLE_TEXT", { provider: t("GOOGLE_PROVIDER") })}
+            </DialogTitle>
             <DialogContent className="min-w-80">
               <DialogContentText>
-                Apakah anda yakin untuk memutus google dari akun anda?
+                {t("UNLINK_FROM_BODY_TEXT", { provider: t("GOOGLE_PROVIDER") })}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={UnlinkAccountFromGoogle}>Yakin</Button>
+              <Button onClick={UnlinkAccountFromGoogle}>
+                {t("EDITOR_SURE")}
+              </Button>
               <Button
                 type="reset"
                 onClick={() => {
@@ -248,10 +257,12 @@ export default function AccountProviderLinkerModule() {
         )}
         {!isLinkedToGoogle && (
           <>
-            <DialogTitle>Link account to Google</DialogTitle>
+            <DialogTitle>
+              {t("LINK_TO_TITLE_TEXT", { provider: t("GOOGLE_PROVIDER") })}
+            </DialogTitle>
             <DialogContent className="min-w-80 text-center">
               <Button variant="contained" onClick={LinkToGoogle}>
-                Login dengan google
+                {t("LOGIN_WITH_TEXT", { provider: t("GOOGLE_PROVIDER") })}
               </Button>
             </DialogContent>
             <DialogActions>

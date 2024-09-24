@@ -40,6 +40,7 @@ import { useLogger } from "../hooks/logger";
 import { enqueueSnackbar } from "notistack";
 import { useLocalStorage } from "react-use";
 import { IState } from "react-use/lib/usePermission";
+import { useTranslations } from "next-intl";
 
 interface NotificationItem {
   collapse_key: string;
@@ -118,6 +119,7 @@ export default function NotificationManager(props: PropsWithChildren) {
   const { userManager } = useGeneralFunction();
   const { Console } = useLogger();
   const defaultWindowTitle = useRef("");
+  const t = useTranslations("NOTIFICATION_MANAGER");
   const [unreadCounter, setUnreadCounter] = useState(0);
   useEffect(() => {
     setupIndexedDB(IDB_NotiCache_Config)
@@ -199,7 +201,7 @@ export default function NotificationManager(props: PropsWithChildren) {
       if (!idbCache) return;
       idbCache.add(data);
       setUnreadCounter((prev) => prev + 1);
-      enqueueSnackbar("You have a new notification!");
+      enqueueSnackbar(t("NEW_NOTIFICATION"));
       await UpdateNotificationList();
     },
     [idbCache, UpdateNotificationList]
@@ -209,13 +211,15 @@ export default function NotificationManager(props: PropsWithChildren) {
   }
   function clearAll() {
     clearUnread();
-    idbCache.deleteAll().then(() => enqueueSnackbar("Notification cleared!"));
+    idbCache.deleteAll().then(() => enqueueSnackbar(t("HAS_BEEN_ALL_CLEARED")));
     UpdateNotificationList();
   }
   async function requestPermission() {
+    if (notificationState === "granted") return;
     const result = await Notification.requestPermission();
     if (result === "denied")
       window.open(HOW_TO_ENABLE_NOTI_MANUAL_URL, "_blank");
+    if (result === "granted") window.location.reload();
   }
   const updateWindowTitle = useCallback(() => {
     if (!defaultWindowTitle.current)
@@ -233,8 +237,7 @@ export default function NotificationManager(props: PropsWithChildren) {
     if (
       typeof window !== "undefined" &&
       "serviceWorker" in navigator &&
-      idbCacheStarted &&
-      userManager.currentUser
+      idbCacheStarted
     ) {
       UpdateNotificationList();
       const messaging = getMessaging(firebaseApp);

@@ -348,27 +348,27 @@ export default function GeneralFunctionWrapper(
         ClearLocalData,
       }}
     >
-      <SnackbarProvider
-        anchorOrigin={
-          isSmallScreen
-            ? { horizontal: "left", vertical: "bottom" }
-            : { horizontal: "right", vertical: "top" }
-        }
-        classes={
-          isSmallScreen
-            ? { containerAnchorOriginBottomLeft: "pb-16" }
-            : { containerAnchorOriginTopRight: "pt-16" }
-        }
-        preventDuplicate
-        action={(elementKey) => (
-          <DismissSnackbarButton snackbarKey={elementKey} />
-        )}
-        dense
-      >
-        <NotificationManager>
+      <NotificationManager>
+        <SnackbarProvider
+          anchorOrigin={
+            isSmallScreen
+              ? { horizontal: "left", vertical: "bottom" }
+              : { horizontal: "right", vertical: "top" }
+          }
+          classes={
+            isSmallScreen
+              ? { containerAnchorOriginBottomLeft: "pb-16" }
+              : { containerAnchorOriginTopRight: "pt-16" }
+          }
+          preventDuplicate
+          action={(elementKey) => (
+            <DismissSnackbarButton snackbarKey={elementKey} />
+          )}
+          dense
+        >
           {props.children && props.children}
-        </NotificationManager>
-      </SnackbarProvider>
+        </SnackbarProvider>
+      </NotificationManager>
     </GeneralFunctionContext.Provider>
   );
 }

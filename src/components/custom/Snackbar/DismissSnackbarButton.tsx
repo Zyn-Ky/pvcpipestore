@@ -10,7 +10,7 @@ export default function DismissSnackbarButton({
   const { closeSnackbar } = useSnackbar();
 
   return (
-    <IconButton onClick={() => closeSnackbar(snackbarKey)} autoFocus>
+    <IconButton onClick={() => closeSnackbar(snackbarKey)}>
       <CloseIcon />
     </IconButton>
   );

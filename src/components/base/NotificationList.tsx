@@ -43,7 +43,7 @@ export default function NotificationList() {
     requestPermission,
   } = useFCMNotification();
   const t_authui = useTranslations("PROMPT_AUTH_UI");
-
+  const t_base = useTranslations("BASE");
   const { Console } = useLogger();
   async function DebugMode() {
     const rc = getRemoteConfig(firebaseApp);
@@ -57,14 +57,14 @@ export default function NotificationList() {
     clearUnread();
   });
 
-  if (!userManager.currentUser)
-    return (
-      <PromptAuth
-        message={t_authui("ENABLE_NOTIFICATION")}
-        icon={<LoginIcon className="text-8xl" />}
-        redirectPath={paths.MOBILE_NOTIFICATION}
-      />
-    );
+  // if (!userManager.currentUser)
+  //   return (
+  //     <PromptAuth
+  //       message={t_authui("ENABLE_NOTIFICATION")}
+  //       icon={<LoginIcon className="text-8xl" />}
+  //       redirectPath={paths.MOBILE_NOTIFICATION}
+  //     />
+  //   );
 
   if (PermissionStatus !== "granted")
     return (
@@ -137,7 +137,7 @@ export default function NotificationList() {
         {Notifications && Notifications.length === 0 && (
           <>
             <Typography textAlign="center" p={2}>
-              Notifikasi anda bersih
+              {t_base("EMPTY_NOTIFICATIONS")}
             </Typography>
           </>
         )}

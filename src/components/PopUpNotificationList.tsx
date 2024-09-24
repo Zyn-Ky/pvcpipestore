@@ -14,6 +14,7 @@ import { useWindowSize } from "react-use";
 import { useFCMNotification } from "./base/NotificationManager";
 import ClearAllOutlinedIcon from "@mui/icons-material/ClearAllOutlined";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 const OuterBox = styled(Box)(({ theme }) => ({
   position: "relative",
   display: "flex",
@@ -38,6 +39,7 @@ export default function PopUpNotifcationList(props: {
   onClose: ComponentProps<typeof Menu>["onClose"];
 }) {
   const { height } = useWindowSize();
+  const t = useTranslations("BASE");
   const currentHeight = useCallback(() => {
     if (!props.open) return;
     const heightNoMarginHeader = height - 16 - 64 - 32;
@@ -60,7 +62,7 @@ export default function PopUpNotifcationList(props: {
       >
         <OuterBox>
           <Header
-            title="Notifikasi"
+            title={t("NOTIFICATIONS")}
             action={
               <div className="flex items-center mr-4">
                 {Notifications && Notifications.length > 0 && (

@@ -98,7 +98,7 @@ export default function AccountSettingsUI(params: any) {
             <table className="border-spacing-4">
               {[
                 [
-                  "Display Name",
+                  t("DISPLAY_NAME_TEXT"),
                   <>
                     {userManager.currentUser.displayName}{" "}
                     <IconButton
@@ -109,9 +109,9 @@ export default function AccountSettingsUI(params: any) {
                     </IconButton>
                   </>,
                 ],
-                ["Email", userManager.currentUser.email],
+                [t("EMAIL_TEXT"), userManager.currentUser.email],
                 [
-                  "Login method",
+                  t("LOGIN_METHOD_TEXT"),
                   <AccountProviderLinkerModule key="ACCOUNT_PROVIDER_LINKER" />,
                 ],
               ].map((val, i) => (

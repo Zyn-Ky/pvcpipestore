@@ -15,7 +15,11 @@
     "SETTINGS_TEXT": "Setelan",
     "LOGIN_TEXT": "Masuk",
     "MY_ACCOUNT": "Akun saya",
-    "COPIED_TO_CLIPBOARD_TEXT": "Telah tersalin ke papan klip"
+    "COPIED_TO_CLIPBOARD_TEXT": "Telah tersalin ke papan klip",
+    "ENABLE_NOTIFICATION": "Nyalakan notifikasi untuk pengalaman yang lebih baik",
+    "NOTIFICATIONS": "Notifikasi",
+    "NOTIFICATION": "Notifikasi",
+    "EMPTY_NOTIFICATIONS": "Notifikasi anda bersih"
   },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",
@@ -33,15 +37,54 @@
     "EDITOR_SAVE": "Simpan",
     "EDITOR_CANCEL": "Batal",
     "EDITOR_UPLOADING": "Mengunggah...",
-    "TITLE_TEXT": "Kelola Akun"
+    "TITLE_TEXT": "Kelola Akun",
+    "DISPLAY_NAME_TEXT": "Nama Tampilan",
+    "EMAIL_TEXT": "Email",
+    "LOGIN_METHOD_TEXT": "Metode Masuk",
+    "REQUIRED_TO_REFRESH": "Segarkan halaman ini untuk melihat perubahan baru",
+    "UNLINK_FROM_TITLE_TEXT": "Putuskan sambungan akun Anda dari {provider}?",
+    "LINK_TO_TITLE_TEXT": "Hubungkan akun Anda ke {provider}?",
+    "UNLINK_FROM_BODY_TEXT": "Apakah Anda yakin ingin memutuskan sambungan {provider} dari akun Anda?",
+    "EMAIL_VERIFICATION_REQUIRED": "Anda akan diminta untuk memverifikasi email baru Anda setelah mengubahnya",
+    "EMAIL_PROVIDER": "Email dan Kata Sandi",
+    "GOOGLE_PROVIDER": "Google",
+    "LOGIN_WITH_TEXT": "Masuk dengan {provider}",
+    "MISMATCHED_PASSWORD": "Kata sandi tidak cocok",
+    "INVALID_EMAIL": "Format email tidak valid",
+    "NEW_PASSWORD": "Masukkan kata sandi baru",
+    "NEW_SECOND_PASSWORD": "Masukkan kata sandi baru lagi",
+    "NEW_EMAIL": "Alamat email baru"
+  },
+  "LANGUAGE_MANAGER": {
+    "REFRESH_REQUIRED_TEXT": "Muat ulang halaman ini untuk melihat perubahan",
+    "REFRESH_TEXT": "Muat ulang",
+    "REFRESH_IGNORE_TEXT": "Abaikan",
+    "NAME_ALIAS": {
+      "id-ID": "Bahasa Indonesia",
+      "en-US": "Bahasa Inggris"
+    }
   },
   "SETTINGS_PAGE": {
     "SIDEBAR_TITLE": "Setelan",
     "SIDEBAR_ACCOUNT_MANAGER_TEXT": "Akun",
     "SIDEBAR_THEME_MANAGER_TEXT": "Tema",
-    "SIDEBAR_LANGUAGE_MANAGER_TEXT": "Bahasa & Wilayah",
+    "SIDEBAR_LANGUAGE_MANAGER_TEXT": "Bahasa",
     "SIDEBAR_ADDRESS_MANAGER_TEXT": "Alamat Pengiriman",
     "SIDEBAR_PAYMENT_MANAGER_TEXT": "Metode Pembayaran"
+  },
+  "NOTIFICATION_MANAGER": {
+    "TITLE_TEXT": "Notifikasi",
+    "CLEAR_ALL": "Hapus semua",
+    "CLEAR": "Hapus",
+    "HAS_BEEN_ALL_CLEARED": "Semua notifikasi telah dihapus!",
+    "NEW_NOTIFICATION": "Anda memiliki pemberitahuan baru!",
+    "ABLE_TO_RECEIVE_NOTIFICATIONS": "[Sistem] Sekarang Anda dapat menerima notifikasi baru"
+  },
+  "ACCOUNT_VERIFICATION": {
+    "RESEND_CODE": "Kirim ulang",
+    "SEND_CODE": "Kirim link verifikasi",
+    "CHECK_INBOX": "Cek inbox email anda",
+    "NOT_VERIFIED": "Akun anda belum terverifikasi!"
   },
   "SEARCH_INDICE_SETTINGS_PAGE": "Setelan",
   "SEARCH_INDICE_ACCOUNT_PAGE": "Akun",

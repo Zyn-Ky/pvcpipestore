@@ -18,9 +18,9 @@ export const ALGOLIA_INDICES = {
 };
 export const ADMIN_APPROVED_SELLER_USER_ROLE = "ACTIVE_SELLER";
 export const ADMIN_API_VERSION = process.env.API_VERSION || "vBeta";
-export const FCM_PARTIAL_TOPIC_NAME = "FCM-TOPIC-SYSTEM-";
+export const FCM_PARTIAL_TOPIC_NAME = "FCM-TOPIC-";
 export const GenerateFcmTopicName = (...param: string[]) =>
-  `${FCM_PARTIAL_TOPIC_NAME}-${param.join("-")}`;
+  `${FCM_PARTIAL_TOPIC_NAME}${param.join("-")}`;
 export const API_PATH = {
   IMAGE_UPLOAD_SERVER: `admin/${ADMIN_API_VERSION}/upload`,
   HIDDEN_APPLY_SELLER_ROLE: `admin/${ADMIN_API_VERSION}/applysellerrole`,

@@ -20,33 +20,34 @@ export async function POST(request: NextRequest) {
     const { IsValid, UserExists, uid } = await UserVerifyID(
       requestJSON.authToken
     );
-    if (UserExists && IsValid) {
-      const auth = getAuth(AdminFirebaseApp);
-      if (!requestJSON.deviceFCMKey)
-        return NextResponse.json<ApiResponse>(
-          { code: 401, message: "INVALID_TOKEN" },
-          { status: 401 }
-        );
-      const fcmKey = requestJSON.deviceFCMKey;
-      const topicName = GenerateFcmTopicName(uid, fcmKey);
-      const { successCount, errors } =
-        await AdminFirebaseMessaging.subscribeToTopic(fcmKey, "yesking");
-
-      return NextResponse.json<ApiResponse>({
-        code: 200,
-        message: "OK",
-        response: {
-          successCount,
-          errors,
-          fcmKey,
-        },
-      });
-    } else {
+    if (!requestJSON.deviceFCMKey)
       return NextResponse.json<ApiResponse>(
         { code: 401, message: "INVALID_TOKEN" },
         { status: 401 }
       );
-    }
+    const fcmKey = requestJSON.deviceFCMKey;
+    const topicUser =
+      IsValid && UserExists ? GenerateFcmTopicName("USER", uid) : null;
+    const topicGlobal = GenerateFcmTopicName("GLOBAL");
+    const topicSystem = GenerateFcmTopicName("SYSTEM");
+    const subscribedTopics = await Promise.all(
+      [topicUser, topicGlobal, topicSystem].map(async (topicName) => {
+        if (!topicName) return;
+        return {
+          topicName,
+          ...(await AdminFirebaseMessaging.subscribeToTopic(fcmKey, topicName)),
+        };
+      })
+    );
+
+    return NextResponse.json<ApiResponse>({
+      code: 200,
+      message: "OK",
+      response: {
+        subscribedTopics,
+        fcmKey,
+      },
+    });
   } catch (e) {
     console.log(e);
     return NextResponse.json<ApiResponse>(

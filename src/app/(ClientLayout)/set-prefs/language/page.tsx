@@ -2,6 +2,7 @@
 import { useGeneralFunction } from "@/components/base/GeneralWrapper";
 import GoBackButton from "@/components/GoBackButton";
 import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
+import { Warning } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
 import {
   Alert,
@@ -22,6 +23,7 @@ export default function LanguageSelector() {
   const { languageManager } = useGeneralFunction();
   const [showRefreshRequiredPopup, setShowRefreshRequiredPopup] =
     useState(false);
+  const t = useTranslations("LANGUAGE_MANAGER");
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function LanguageSelector() {
                 color="warning"
                 onClick={() => window.location.reload()}
               >
-                Refresh
+                {t("REFRESH_TEXT")}
               </Button>
               <Button
                 size="small"
@@ -46,12 +48,13 @@ export default function LanguageSelector() {
                 color="warning"
                 onClick={() => setShowRefreshRequiredPopup(false)}
               >
-                Ignore
+                {t("IGNORE_REFRESH_TEXT")}
               </Button>
             </>
           }
+          icon={<Warning />}
         >
-          Page refresh required!
+          {t("REFRESH_REQUIRED_TEXT")}
         </Alert>
       </Collapse>
       <GoBackButton
@@ -59,7 +62,7 @@ export default function LanguageSelector() {
         extendNode={
           <>
             <Typography variant="h4" component="h1" fontWeight="bold">
-              Bahasa
+              {t_settingspage("SIDEBAR_LANGUAGE_MANAGER_TEXT")}
             </Typography>
           </>
         }
@@ -67,8 +70,8 @@ export default function LanguageSelector() {
 
       <List component="nav">
         {[
-          ["id-ID", "Bahasa Indonesia"],
-          ["en-US", "English"],
+          ["id-ID", `${t("NAME_ALIAS.id-ID")} (Bahasa Indonesia)`],
+          ["en-US", `${t("NAME_ALIAS.en-US")} (American English)`],
         ].map((btn) => (
           <ListItemButton
             key={`SETTINGS_BTN_${btn[1]}`}

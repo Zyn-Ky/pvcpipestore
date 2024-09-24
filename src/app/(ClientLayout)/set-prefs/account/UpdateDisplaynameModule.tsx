@@ -33,7 +33,7 @@ export default function UpdateDisplaynameModule({
   async function UpdateDisplayName() {
     if (!userManager.currentUser || newInput.length === 0) return;
     await userManager.method.UpdateInfo({ displayName: newInput });
-    enqueueSnackbar("Updated! Please refresh your page!");
+    enqueueSnackbar(t("REQUIRED_TO_REFRESH"));
     onCloseHandler();
   }
   return (
@@ -61,7 +61,7 @@ export default function UpdateDisplaynameModule({
               autoComplete="on"
               autoCorrect="on"
               fullWidth
-              label="Name"
+              label={t("DISPLAY_NAME_TEXT")}
               type="text"
               name="displayname"
               value={newInput}
@@ -78,7 +78,7 @@ export default function UpdateDisplaynameModule({
               in={!isInputEmpty}
               container={container.current}
             >
-              <Button type="submit">Save</Button>
+              <Button type="submit">{t("EDITOR_SAVE")}</Button>
             </Slide>
             <Button type="reset" onClick={onCloseHandler}>
               {t("EDITOR_CANCEL")}

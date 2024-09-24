@@ -18,6 +18,7 @@ import {
   getDoc,
   getFirestore,
   initializeFirestore,
+  updateDoc,
 } from "firebase/firestore";
 import { firebaseApp } from "@/libs/firebase/config";
 import SITE_BACKEND_CONFIG, { StoredUserConfig } from "@/libs/config";
@@ -26,19 +27,24 @@ import { useEffect, useState } from "react";
 import { useLogger } from "@/components/hooks/logger";
 import { useForm } from "react-hook-form";
 import GoBackButton from "../../../../components/GoBackButton";
+import { enqueueSnackbar } from "notistack";
+import { LoadingButton } from "@mui/lab";
 export default function SetDefaultAddressSettingsUI(params: any) {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   const t_authui = useTranslations("PROMPT_AUTH_UI");
   const { userManager } = useGeneralFunction();
   const { Console } = useLogger();
-  const t = useTranslations("SETTINGS_PAGE");
   const [userConfig, setUserConfig] = useState<{
     loading: boolean;
-    data: StoredUserConfig | null | undefined;
+    data: StoredUserConfig["ShippingAddress"] | null | undefined;
   }>({
     loading: false,
     data: null,
   });
+  const [updateState, setUpdateState] = useState<
+    "idle" | "editing" | "finished" | "error"
+  >("idle");
+  const t_settingspage = useTranslations("SETTINGS_PAGE");
   async function LoadCurrentConfig() {
     if (!userManager.currentUser) return;
     setUserConfig((prev) => ({ ...prev, loading: true }));
@@ -53,24 +59,54 @@ export default function SetDefaultAddressSettingsUI(params: any) {
       userConfigRef
     );
     const exists = userConfigDoc.exists();
+    Console("log", "fetch +1");
     if (!exists) {
       setUserConfig({ loading: false, data: null });
       return;
     }
     const data = userConfigDoc.data();
-    setUserConfig({ loading: false, data });
-    return data;
+    setUserConfig({ loading: false, data: data.ShippingAddress });
   }
-  const { register, handleSubmit } = useForm<StoredUserConfig>({
-    values: { ...userConfig.data },
+
+  async function UpdateUserConfigAddress(
+    value: StoredUserConfig["ShippingAddress"]
+  ) {
+    if (!userManager.currentUser || updateState === "editing") return;
+    setUpdateState("editing");
+    try {
+      const userConfigRef = doc(
+        getFirestore(firebaseApp),
+        `${SITE_BACKEND_CONFIG.FIRESTORE_USER_CONFIG_ROOT_PATH}${
+          userManager.currentUser.uid ?? ""
+        }`
+      );
+      await updateDoc<StoredUserConfig, StoredUserConfig>(userConfigRef, {
+        ShippingAddress: { ...value },
+      });
+      setUpdateState("finished");
+      enqueueSnackbar("Saved!", { variant: "success" });
+      setTimeout(() => {
+        setUpdateState("idle");
+      }, 5000);
+    } catch (e) {
+      enqueueSnackbar(JSON.stringify({ error: e }), { variant: "error" });
+      setUpdateState("error");
+    }
+  }
+  useEffect(() => {
+    if (userManager.currentUser) LoadCurrentConfig();
+  }, [userManager.currentUser]);
+  const { register, handleSubmit } = useForm<
+    Exclude<StoredUserConfig["ShippingAddress"], undefined>
+  >({
+    values:
+      !userConfig.loading && userConfig.data !== undefined
+        ? { ...userConfig.data }
+        : ({} as any),
     resetOptions: {
       keepDirtyValues: true,
     },
   });
-
-  useEffect(() => {
-    if (userManager.currentUser) LoadCurrentConfig();
-  }, [userManager.currentUser]);
   if (userConfig.loading) return <InfiniteCircularProgress />;
   if (!userManager.currentUser)
     return (
@@ -82,8 +118,19 @@ export default function SetDefaultAddressSettingsUI(params: any) {
         message={t_authui("REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT")}
       />
     );
+
   return (
     <>
+      <GoBackButton
+        title={t_settingspage("SIDEBAR_TITLE")}
+        extendNode={
+          <>
+            <Typography variant="h4" component="h1" fontWeight="bold">
+              {t_settingspage("SIDEBAR_ADDRESS_MANAGER_TEXT")}
+            </Typography>
+          </>
+        }
+      />
       <ProtectedHiddenDevelopmentComponent
         fallback={
           <>
@@ -93,27 +140,16 @@ export default function SetDefaultAddressSettingsUI(params: any) {
           </>
         }
       >
-        <GoBackButton
-          title={t("SIDEBAR_TITLE")}
-          extendNode={
-            <>
-              <Typography variant="h4" component="h1" fontWeight="bold">
-                Alamat pengiriman
-              </Typography>
-            </>
-          }
-        />
+        {JSON.stringify({ data: userConfig.data })}
         <FormControl
           className="w-full"
           component="form"
-          onSubmit={handleSubmit((value) => {
-            console.log(value);
-          })}
+          onSubmit={handleSubmit(UpdateUserConfigAddress)}
         >
           <TextField
             type="text"
             label="Nama penerima"
-            {...register("ShippingAddress.ReceiverFullName", {
+            {...register("ReceiverFullName", {
               required: true,
             })}
             margin="normal"
@@ -121,39 +157,65 @@ export default function SetDefaultAddressSettingsUI(params: any) {
           <TextField
             type="text"
             label="Alamat"
-            {...register("ShippingAddress.Address", { required: true })}
+            {...register("Address", {
+              required: true,
+              disabled: updateState === "editing",
+            })}
             margin="normal"
           />
           <TextField
             type="text"
             label="Apartemen, Kamar, No. Rumah, dll"
-            {...register("ShippingAddress.OptionalAddress")}
+            {...register("OptionalAddress", {
+              disabled: updateState === "editing",
+            })}
             margin="normal"
           />
           <TextField
             type="text"
             label="Kota"
-            {...register("ShippingAddress.City", { required: true })}
+            {...register("City", {
+              required: true,
+              disabled: updateState === "editing",
+            })}
             margin="normal"
           />
           <TextField
             type="text"
             label="Negara"
-            {...register("ShippingAddress.Country", { required: true })}
+            {...register("Country", {
+              required: true,
+              disabled: updateState === "editing",
+            })}
             margin="normal"
           />
           <TextField
             type="text"
             label="Kode Zip / Kode Pos"
-            {...register("ShippingAddress.ZipCode", {
+            {...register("ZipCode", {
               required: true,
               valueAsNumber: true,
+              disabled: updateState === "editing",
             })}
             margin="normal"
           />
-          <Button type="submit" variant="contained">
-            Simpan
-          </Button>
+          <LoadingButton
+            loading={updateState === "editing"}
+            color={
+              updateState === "finished"
+                ? "success"
+                : updateState === "error"
+                ? "error"
+                : "primary"
+            }
+            type="submit"
+            variant="contained"
+          >
+            {updateState === "editing" && "Menyimpan..."}
+            {updateState === "error" && "Simpan"}
+            {updateState === "idle" && "Simpan"}
+            {updateState === "finished" && "Tersimpan!"}
+          </LoadingButton>
         </FormControl>
       </ProtectedHiddenDevelopmentComponent>
     </>

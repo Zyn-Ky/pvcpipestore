@@ -5,11 +5,13 @@ import { useGeneralFunction } from "./GeneralWrapper";
 import { Warning } from "@mui/icons-material";
 import { useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import { useTranslations } from "next-intl";
 
 export default function PromptEmailVerification() {
   const { userManager } = useGeneralFunction();
   const [codeSent, setCodeSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const t = useTranslations("ACCOUNT_VERIFICATION");
   async function SendVerification() {
     const sent = await userManager.method.SendVerificationEmail();
     setCodeSent(sent);
@@ -35,13 +37,13 @@ export default function PromptEmailVerification() {
               }}
               loading={loading}
             >
-              {codeSent && "Kirim ulang"}
-              {!codeSent && "Kirim Kode Verifikasi"}
+              {codeSent && t("RESEND_CODE")}
+              {!codeSent && t("SEND_CODE")}
             </LoadingButton>
           }
         >
-          {codeSent && "Cek inbox email anda"}
-          {!codeSent && "Akun anda belum terverifikasi!"}
+          {codeSent && t("CHECK_INBOX")}
+          {!codeSent && t("NOT_VERIFIED")}
         </Alert>
       )}
     </>

@@ -27,7 +27,7 @@ export default function ThemeSettingsClientLayout() {
         extendNode={
           <>
             <Typography variant="h4" component="h1" fontWeight="bold">
-              Tema
+              {t_settingspage("SIDEBAR_THEME_MANAGER_TEXT")}
             </Typography>
           </>
         }
