@@ -22,7 +22,12 @@
      */
 import { useFcmToken } from "@/libs/firebase";
 import { firebaseApp } from "@/libs/firebase/config";
-import { getMessaging, MessagePayload, onMessage } from "firebase/messaging";
+import {
+  getMessaging,
+  MessagePayload,
+  NotificationPayload,
+  onMessage,
+} from "firebase/messaging";
 import {
   createContext,
   PropsWithChildren,
@@ -41,8 +46,9 @@ import { enqueueSnackbar } from "notistack";
 import { useLocalStorage } from "react-use";
 import { IState } from "react-use/lib/usePermission";
 import { useTranslations } from "next-intl";
+import { ExtendedNotificationPayloadMain } from "@/libs/config";
 
-interface NotificationItem {
+export interface NotificationItem {
   collapse_key: string;
   title: string | undefined;
   body: string | undefined;
@@ -50,9 +56,11 @@ interface NotificationItem {
   current_blob_img_url?: string;
   img_src_url?: string;
   message_id: string;
+  timestamp: number;
+  timestampInMs: number;
 }
 
-interface StoredNotificationItem extends NotificationItem {
+export interface StoredNotificationItem extends NotificationItem {
   img_bin?: Blob | null;
 }
 interface NotiManager {
@@ -63,6 +71,7 @@ interface NotiManager {
   unreadCounter: number;
   clearUnread: () => void;
   clearAll: () => void;
+  clearItem: (message_id: string) => void;
   requestPermission: () => void;
 }
 
@@ -74,6 +83,7 @@ const NotiManager = createContext<NotiManager>({
   unreadCounter: 0,
   clearUnread() {},
   clearAll() {},
+  clearItem() {},
   requestPermission() {},
 });
 
@@ -84,8 +94,8 @@ export const useFCMNotification = () => {
 };
 
 export const IDB_NotiCache_DBName = "moonsunstone-x-notification-cache";
-const IDB_NotiCache_DBStoreName = "noti-v1";
-const IDB_NotiCache_Config: IndexedDBConfig = {
+export const IDB_NotiCache_DBStoreName = "noti-v1";
+export const IDB_NotiCache_Config: IndexedDBConfig = {
   databaseName: IDB_NotiCache_DBName,
   version: 1,
   stores: [
@@ -113,6 +123,10 @@ const IDB_NotiCache_Config: IndexedDBConfig = {
 };
 
 const HOW_TO_ENABLE_NOTI_MANUAL_URL = `https://pushassist.com/knowledgebase/how-to-enable-or-disable-push-notifications-on-chrome-firefox-safari-b/`;
+
+export function GenerateNextImageProxy(url: string) {
+  return `/_next/image?url=${encodeURIComponent(url)}&w=1080&q=75`;
+}
 
 export default function NotificationManager(props: PropsWithChildren) {
   const [idbCacheStarted, setIdbCacheStarted] = useState(false);
@@ -143,24 +157,31 @@ export default function NotificationManager(props: PropsWithChildren) {
       if (!idbCache) return;
       const notiList = await idbCache.getAll();
       setListNotifications(
-        notiList.map((noti) => {
-          const { img_bin, img_src_url, current_blob_img_url, ...data } = noti;
-          if (!img_bin)
-            return {
-              ...data,
-              img_src_url: img_src_url ?? "",
-              current_blob_img_url: "",
-            };
-          const url = URL.createObjectURL(img_bin);
-          return { ...data, current_blob_img_url: url, img_src_url };
-        })
+        notiList
+          .sort((item1, item2) => {
+            const timestampA = item1.timestamp ?? 0;
+            const timestampB = item2.timestamp ?? 0;
+            return timestampB - timestampA;
+          })
+          .map((noti) => {
+            const { img_bin, img_src_url, current_blob_img_url, ...data } =
+              noti;
+            if (!img_bin)
+              return {
+                ...data,
+                img_src_url: img_src_url ?? "",
+                current_blob_img_url: "",
+              };
+            const url = URL.createObjectURL(img_bin);
+            return { ...data, current_blob_img_url: url, img_src_url };
+          })
       );
     },
     [idbCache]
   );
   async function SaveAndCacheImage(url: string) {
     try {
-      const imageFetch = fetch(url, {});
+      const imageFetch = fetch(GenerateNextImageProxy(url), {});
       imageFetch.catch(console.error);
       const image = await imageFetch;
       return {
@@ -177,20 +198,23 @@ export default function NotificationManager(props: PropsWithChildren) {
   }
   const HandleNewNotifications = useCallback(
     async function HandleNewNotifications(payload: MessagePayload) {
-      if (!payload.notification) return;
-      Console("log", "Foreground push notification received:", payload);
+      Console("log", "Foreground payload received:", payload);
       const collapseKey =
         payload.collapseKey ?? `NOTI_UNKNOWN_COLLAPSE_KEY_${Date.now()}`;
+      const rawData: ExtendedNotificationPayloadMain = {
+        ...(payload.data || payload.notification),
+      };
       let data: StoredNotificationItem = {
         message_id: payload.messageId,
-        title: payload.notification.title,
-        body: payload.notification.body,
+        title: rawData.title,
+        body: rawData.body,
         collapse_key: collapseKey,
         additional_data: "",
+        timestamp: Math.floor(Date.now() / 1000),
+        timestampInMs: Date.now(),
       };
-      Console("log", payload.notification);
-      if (typeof payload.notification.image === "string") {
-        const bin = await SaveAndCacheImage(payload.notification.image);
+      if (typeof rawData.image === "string") {
+        const bin = await SaveAndCacheImage(rawData.image);
         data = {
           ...data,
           ...bin,
@@ -212,6 +236,10 @@ export default function NotificationManager(props: PropsWithChildren) {
   function clearAll() {
     clearUnread();
     idbCache.deleteAll().then(() => enqueueSnackbar(t("HAS_BEEN_ALL_CLEARED")));
+    UpdateNotificationList();
+  }
+  function clearItem(id: string) {
+    idbCache.deleteByID(id);
     UpdateNotificationList();
   }
   async function requestPermission() {
@@ -241,6 +269,7 @@ export default function NotificationManager(props: PropsWithChildren) {
     ) {
       UpdateNotificationList();
       const messaging = getMessaging(firebaseApp);
+
       const unsubscribe = onMessage(messaging, HandleNewNotifications);
       return () => {
         unsubscribe(); // Unsubscribe from the onMessage event
@@ -263,6 +292,7 @@ export default function NotificationManager(props: PropsWithChildren) {
         unreadCounter,
         clearAll,
         requestPermission,
+        clearItem,
       }}
     >
       {props.children && props.children}

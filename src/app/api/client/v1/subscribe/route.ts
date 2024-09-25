@@ -31,13 +31,18 @@ export async function POST(request: NextRequest) {
     const topicGlobal = GenerateFcmTopicName("GLOBAL");
     const topicSystem = GenerateFcmTopicName("SYSTEM");
     const subscribedTopics = await Promise.all(
-      [topicUser, topicGlobal, topicSystem].map(async (topicName) => {
-        if (!topicName) return;
-        return {
-          topicName,
-          ...(await AdminFirebaseMessaging.subscribeToTopic(fcmKey, topicName)),
-        };
-      })
+      [topicUser, topicGlobal, topicSystem]
+        .filter((val) => val !== null)
+        .map(async (topicName) => {
+          if (!topicName) return;
+          return {
+            topicName,
+            ...(await AdminFirebaseMessaging.subscribeToTopic(
+              fcmKey,
+              topicName
+            )),
+          };
+        })
     );
 
     return NextResponse.json<ApiResponse>({

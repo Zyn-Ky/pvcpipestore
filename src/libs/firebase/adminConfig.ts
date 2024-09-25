@@ -4,7 +4,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getMessaging } from "firebase-admin/messaging";
 import { getStorage } from "firebase-admin/storage";
 import { getRemoteConfig } from "firebase-admin/remote-config";
-import { getDatabase } from "firebase-admin/database";
+import { getAuth } from "firebase-admin/auth";
 
 const AdminFirebaseApp =
   admin.apps.length === 0
@@ -25,5 +25,6 @@ export const AdminFirebaseMessaging = getMessaging(AdminFirebaseApp);
 export const AdminFirebaseStore = getFirestore(AdminFirebaseApp);
 export const AdminFirebaseStorage = getStorage(AdminFirebaseApp);
 export const AdminFirebaseRemoteConfig = getRemoteConfig(AdminFirebaseApp);
+export const AdminFirebaseAuth = getAuth(AdminFirebaseApp);
 
 export default AdminFirebaseApp as App;

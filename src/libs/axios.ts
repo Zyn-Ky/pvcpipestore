@@ -97,19 +97,28 @@ export function SWRFetcher<
   xsrfToken: string,
   props: {
     method: string;
-    data?: CustomData & {
-      authToken?: string;
-      [key: string]: any;
-    };
   }
 ) {
-  return async function (url: string) {
+  return async function (
+    url: string,
+    {
+      arg,
+    }: {
+      arg: Readonly<
+        CustomData & {
+          authToken?: string;
+          [key: string]: any;
+        }
+      >;
+    }
+  ) {
     console.log(xsrfToken, url);
+    // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
     return await AxiosFetchV1Api<CustomData, CustomResponse>(
       props.method,
       url,
       xsrfToken,
-      props.data
+      arg
     );
   };
 }

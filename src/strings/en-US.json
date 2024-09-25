@@ -1,4 +1,7 @@
 {
+  "CONFIG": {
+    "DateFnLocale": "enUS"
+  },
   "BASE": {
     "DISCOVER": "Discover",
     "SHOP_NOW": "Shop Now!",
@@ -59,7 +62,7 @@
   "LANGUAGE_MANAGER": {
     "REFRESH_REQUIRED_TEXT": "Reload this page to see changes",
     "REFRESH_TEXT": "Reload",
-    "REFRESH_IGNORE_TEXT": "Ignore",
+    "IGNORE_REFRESH_TEXT": "Ignore",
     "NAME_ALIAS": {
       "id-ID": "Indonesian",
       "en-US": "English"

@@ -151,6 +151,7 @@ export default function SetDefaultAddressSettingsUI(params: any) {
             label="Nama penerima"
             {...register("ReceiverFullName", {
               required: true,
+              disabled: updateState === "editing",
             })}
             margin="normal"
           />

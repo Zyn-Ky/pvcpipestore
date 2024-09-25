@@ -66,7 +66,7 @@ export default function ProductRenderer({
               style: "currency",
             }).format(productItem.Price ?? 0)}
           </Typography>
-          <HorizontalActionModule />
+          <HorizontalActionModule productID={productID} />
           <Typography
             variant="body1"
             paragraph

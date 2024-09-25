@@ -1,4 +1,7 @@
 {
+  "CONFIG": {
+    "DateFnLocale": "id"
+  },
   "BASE": {
     "DISCOVER": "Jelajahi",
     "SHOP_NOW": "Belanja Sekarang!",
@@ -34,6 +37,7 @@
     "COPY_UID_TO_CLIPBOARD_TEXT": "Salin User ID",
     "EDITOR_ROTATION_TEXT": "Rotasi",
     "EDITOR_ZOOM_TEXT": "Perbesar",
+    "EDITOR_SURE": "Yakin",
     "EDITOR_SAVE": "Simpan",
     "EDITOR_CANCEL": "Batal",
     "EDITOR_UPLOADING": "Mengunggah...",
@@ -58,7 +62,7 @@
   "LANGUAGE_MANAGER": {
     "REFRESH_REQUIRED_TEXT": "Muat ulang halaman ini untuk melihat perubahan",
     "REFRESH_TEXT": "Muat ulang",
-    "REFRESH_IGNORE_TEXT": "Abaikan",
+    "IGNORE_REFRESH_TEXT": "Abaikan",
     "NAME_ALIAS": {
       "id-ID": "Bahasa Indonesia",
       "en-US": "Bahasa Inggris"

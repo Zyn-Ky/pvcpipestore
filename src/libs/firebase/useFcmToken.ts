@@ -15,7 +15,7 @@ const useFcmToken = () => {
   const [token, setToken] = useState("");
 
   const [hasSubscribed, setHasSubscribed] = useState(false);
-  const [userHasNotified, setUserHasNotified] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(false);
   const { userManager, apiManager, swManager } = useGeneralFunction();
   const { Console } = useLogger();
   const t = useTranslations("BASE");
@@ -51,6 +51,8 @@ const useFcmToken = () => {
           });
           if (currentToken) {
             setToken(currentToken);
+            if (isSubscribing) return;
+            setIsSubscribing(true);
             await AxiosFetchV1Api(
               "POST",
               "client/v1/subscribe",
@@ -64,16 +66,18 @@ const useFcmToken = () => {
                   ? "REQUEST_USER_AND_GLOBAL_SYSTEM_NOTIFICATION_CHANNEL"
                   : "REQUEST_GLOBAL_SYSTEM_NOTIFCATION_CHANNEL",
               }
-            ).catch(() =>
+            ).catch(() => {
               Console(
                 "error",
                 "NotiManager: No registration token available. Request permission to generate one."
-              )
-            );
+              );
+              setIsSubscribing(false);
+            });
             enqueueSnackbar(t_manager("ABLE_TO_RECEIVE_NOTIFICATIONS"), {
               persist: false,
               variant: "default",
             });
+            setIsSubscribing(false);
             setHasSubscribed(true);
           } else {
             promptToEnableNotification();

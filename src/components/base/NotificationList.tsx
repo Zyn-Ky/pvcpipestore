@@ -30,6 +30,10 @@ import { useEffectOnce } from "react-use";
 import ProtectedHiddenDevelopmentComponent from "./ProtectedHiddenDevComponent";
 import { useLogger } from "../hooks/logger";
 import { useTranslations } from "next-intl";
+import { getClientLocale } from "@/libs/clientLocale";
+import { format, formatDistanceToNow } from "date-fns";
+import { id, enUS } from "date-fns/locale";
+import NotificationButtonItem from "./NotificationButtonItem";
 
 export default function NotificationList() {
   const { userManager } = useGeneralFunction();
@@ -40,10 +44,12 @@ export default function NotificationList() {
     fcm_token,
     clearUnread,
     clearAll,
+    clearItem,
     requestPermission,
   } = useFCMNotification();
   const t_authui = useTranslations("PROMPT_AUTH_UI");
   const t_base = useTranslations("BASE");
+  const t_config = useTranslations("CONFIG");
   const { Console } = useLogger();
   async function DebugMode() {
     const rc = getRemoteConfig(firebaseApp);
@@ -86,89 +92,25 @@ export default function NotificationList() {
 
   return (
     <>
-      {enableDebug && (
-        <>
-          <details>
-            <summary>FCM Token</summary>
-            <p
-              style={{
-                userSelect: "text",
-                whiteSpace: "wrap",
-                wordWrap: "break-word",
-                width: "100%",
-              }}
-            >
-              {fcm_token}
-            </p>
-          </details>
-        </>
-      )}
-
       <List sx={{ width: "100%" }}>
         {Notifications &&
           Notifications.map((item, i) => (
-            <ListItemButton alignItems="flex-start" key={i}>
-              {item.current_blob_img_url && (
-                <ListItemAvatar>
-                  <Avatar
-                    alt={`Photo Notification of ${item.title}`}
-                    src={item.current_blob_img_url}
-                  />
-                </ListItemAvatar>
-              )}
-              <ListItemText
-                primary={item.title && item.title}
-                secondary={
-                  <>
-                    <Typography
-                      className="inline"
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {item.body && item.body}
-                    </Typography>
-                  </>
-                }
-              />
-            </ListItemButton>
+            <NotificationButtonItem
+              deleteHandler={() => {
+                clearItem(item.message_id);
+              }}
+              item={item}
+              key={i}
+            />
           ))}
 
         {Notifications && Notifications.length === 0 && (
           <>
-            <Typography textAlign="center" p={2}>
+            <Typography textAlign="center" p={4}>
               {t_base("EMPTY_NOTIFICATIONS")}
             </Typography>
           </>
         )}
-        <ProtectedHiddenDevelopmentComponent>
-          {[...new Array(1)].map((i) => (
-            <ListItemButton alignItems="flex-start" key={i}>
-              <ListItemAvatar>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="https://mui.com/static/images/avatar/3.jpg"
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Placeholder"
-                secondary={
-                  <>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      John Doe
-                    </Typography>
-                    {"Placeholder"}
-                  </>
-                }
-              />
-            </ListItemButton>
-          ))}
-        </ProtectedHiddenDevelopmentComponent>
       </List>
     </>
   );

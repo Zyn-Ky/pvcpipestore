@@ -1,4 +1,7 @@
 import type { DocumentReference } from "firebase-admin/firestore";
+import { NotificationPayload } from "firebase/messaging/sw";
+import type { NotificationPayload as NotificationPayloadMain } from "firebase/messaging";
+// import   "firebase/messaging/sw";
 export const CURRENT_API_VERSION = "v1";
 
 const SITE_BACKEND_CONFIG = {
@@ -27,6 +30,7 @@ export const API_PATH = {
   SELLER_ADD_NEW_PRODUCT: `admin/${ADMIN_API_VERSION}/addproduct`,
   PUBLIC_SERVER_TIME: `public/servertime`,
   CALCULATE_TOTAL_PRODUCTS: `client/${CURRENT_API_VERSION}/producttotallookup`,
+  CLIENT_PRODUCT_ACTIONS: `client/${CURRENT_API_VERSION}/productAction/`,
 };
 
 export type AcceptedCurrency = "IDR" | string;
@@ -98,6 +102,13 @@ export interface StoredFeedbackInfo {
   IPAddress: string;
   LinkedUID: string | ("Anonymous" & "Unknown");
 }
+interface ExtendedNotificationPayload {
+  subIcon?: string;
+}
+export type ExtendedNotificationPayloadMain = ExtendedNotificationPayload &
+  NotificationPayloadMain;
+export type ExtendedNotificationPayloadSW = ExtendedNotificationPayload &
+  NotificationPayload;
 export type SortBy = "price" | "brand" | "publishedDate" | "ignore";
 export type SortOrderType = "ascending" | "descending" | "ignore";
 export type OptionalArray<T> = (T | undefined)[];
