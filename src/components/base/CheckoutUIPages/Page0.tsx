@@ -1,5 +1,5 @@
 "use client";
-import { SWRFetcher } from "@/libs/axios";
+import { LegacySWRFetcher, SWRFetcher } from "@/libs/axios";
 import useSWR from "swr";
 import { useGeneralFunction } from "../GeneralWrapper";
 import { API_PATH } from "@/libs/config";
@@ -22,7 +22,7 @@ export default function CheckoutUIPage0() {
     isLoading,
   } = useSWR(
     API_PATH.CALCULATE_TOTAL_PRODUCTS,
-    SWRFetcher<any, ProductTotalLookupAPIResponse>(apiManager.xsrfToken, {
+    LegacySWRFetcher<any, ProductTotalLookupAPIResponse>(apiManager.xsrfToken, {
       method: "POST",
       data: { authToken },
     })

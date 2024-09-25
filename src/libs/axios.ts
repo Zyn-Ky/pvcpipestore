@@ -90,6 +90,29 @@ export async function AxiosFetchV1Api<
   return Result as AxiosResponse<CustomResponse>;
 }
 
+export function LegacySWRFetcher<
+  CustomData = any,
+  CustomResponse = any & ApiResponse
+>(
+  xsrfToken: string,
+  props: {
+    method: string;
+    data?: CustomData & {
+      authToken?: string;
+      [key: string]: any;
+    };
+  }
+) {
+  return async function (url: string) {
+    console.log(xsrfToken, url);
+    return await AxiosFetchV1Api<CustomData, CustomResponse>(
+      props.method,
+      url,
+      xsrfToken,
+      props.data
+    );
+  };
+}
 export function SWRFetcher<
   CustomData = any,
   CustomResponse = any & ApiResponse
