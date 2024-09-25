@@ -42,7 +42,7 @@ export default function NotificationButtonItem({
               {item.body && item.body}
             </Typography>
             <span>
-              {formatDistanceToNow(item.timestampInMs, {
+              {formatDistanceToNow(item.timestampInMs ?? 0, {
                 addSuffix: true,
                 locale: id,
               })}

@@ -97,7 +97,7 @@ export const IDB_NotiCache_DBName = "moonsunstone-x-notification-cache";
 export const IDB_NotiCache_DBStoreName = "noti-v1";
 export const IDB_NotiCache_Config: IndexedDBConfig = {
   databaseName: IDB_NotiCache_DBName,
-  version: 1,
+  version: 2,
   stores: [
     {
       name: IDB_NotiCache_DBStoreName,
