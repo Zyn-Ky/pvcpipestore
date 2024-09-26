@@ -43,7 +43,7 @@ export default function AccountSummary() {
         </Paper>
       </div>
       <List component="nav">
-        <ProtectedSellerOnlyRoute>
+        <ProtectedSellerOnlyRoute disableLoginPrompt>
           <ListItemButton>
             <ListItemIcon>
               <Dashboard />

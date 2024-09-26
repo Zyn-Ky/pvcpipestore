@@ -21,6 +21,7 @@ export default function ProtectedSellerOnlyRoute(
   props: PropsWithChildren<{
     isNotSellerFallback?: ReactNode;
     userLoadingFallback?: ReactNode;
+    disableLoginPrompt?: boolean;
   }>
 ) {
   const { userManager } = useGeneralFunction();
@@ -58,9 +59,11 @@ export default function ProtectedSellerOnlyRoute(
       {roleState === "ACTIVE_SELLER" && props.children && props.children}
     </>
   ) : (
-    <PromptAuth
-      redirectPath={pathname}
-      message="Login untuk melihat penjualan anda!"
-    />
+    !props.disableLoginPrompt && (
+      <PromptAuth
+        redirectPath={pathname}
+        message="Login untuk melihat penjualan anda!"
+      />
+    )
   );
 }
