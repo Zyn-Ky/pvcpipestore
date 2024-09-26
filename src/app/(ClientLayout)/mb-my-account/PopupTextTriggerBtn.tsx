@@ -36,7 +36,7 @@ export default function PopupTextTriggerBtn({
       </ListItemButton>
       <Dialog
         fullScreen={isSmallerSmallScreen}
-        open={isOpened ? !isBiggerScreen : false}
+        open={isOpened}
         onClose={() => setIsOpened(false)}
         PaperProps={{
           className: `${
