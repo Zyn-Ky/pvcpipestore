@@ -22,7 +22,10 @@
     "ENABLE_NOTIFICATION": "Turn on notifications for a better experience",
     "NOTIFICATIONS": "Notifications",
     "NOTIFICATION": "Notification",
-    "EMPTY_NOTIFICATIONS": "No notifications"
+    "EMPTY_NOTIFICATIONS": "No notifications",
+    "SELLER_CENTER_TEXT": "Dasbor Produk",
+    "SERVICE_TOS_BTN_TEXT": "Terms and Condition",
+    "SERVICE_PP_BTN_TEXT": "Privacy policy"
   },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Don't miss out on new stuff! Sign in to receive notifications",

@@ -1,4 +1,4 @@
-import paths from "@/components/paths";
+import paths, { GeneratePpPage, GenerateTosPage } from "@/components/paths";
 import {
   Divider,
   List,
@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import CSS from "@/scss/ClientMyAccount.module.scss";
-import { InfoOutlined } from "@mui/icons-material";
+import { Dashboard, Info, InfoOutlined, PrivacyTip } from "@mui/icons-material";
 import SITE_CONFIG from "@/components/config";
 import { Metadata } from "next";
 import { AvailableUserAction, SummaryCurrentUser } from "./HeaderModule";
@@ -19,6 +19,8 @@ import { useTranslations } from "next-intl";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 import ProtectedSellerOnlyRoute from "@/components/base/ProtectedSellerOnlyRoute";
+import PopupTextTriggerBtn from "./PopupTextTriggerBtn";
+import { getUserLocale } from "@/libs/locale";
 
 export const metadata: Metadata = {
   title: `Akun`,
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 
 export default function AccountSummary() {
   const t = useTranslations("BASE");
+  const locale = getUserLocale();
   return (
     <div className={CSS.Container}>
       <div>
@@ -40,51 +43,33 @@ export default function AccountSummary() {
         </Paper>
       </div>
       <List component="nav">
-        <ProtectedHiddenDevelopmentComponent>
-          <ProtectedSellerOnlyRoute>
-            <ListItemButton>
-              <ListItemIcon>
-                <InfoOutlined />
-              </ListItemIcon>
-              <ListItemText primary="SELLER_CENTER_LINK" />
-            </ListItemButton>
-          </ProtectedSellerOnlyRoute>
+        <ProtectedSellerOnlyRoute>
           <ListItemButton>
             <ListItemIcon>
-              <InfoOutlined />
+              <Dashboard />
             </ListItemIcon>
-            <ListItemText primary="STATUS_LINK" />
+            <ListItemText primary={t("SELLER_CENTER_TEXT")} />
           </ListItemButton>
-        </ProtectedHiddenDevelopmentComponent>
+        </ProtectedSellerOnlyRoute>
         <ListItemButton LinkComponent={Link} href={paths.SETTINGS_PAGE}>
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>
           <ListItemText primary={t("SETTINGS_TEXT")} />
         </ListItemButton>
-        <ProtectedHiddenDevelopmentComponent>
-          <ListItemButton>
-            <ListItemIcon>
-              <InfoOutlined />
-            </ListItemIcon>
-            <ListItemText primary="CARTS_LINK" />
-          </ListItemButton>
-        </ProtectedHiddenDevelopmentComponent>
-        <Divider className="my-4" />
         <LogoutBtn />
+        <Divider className="my-4" />
         <ProtectedHiddenDevelopmentComponent>
-          <ListItemButton>
-            <ListItemIcon>
-              <InfoOutlined />
-            </ListItemIcon>
-            <ListItemText primary="GO_TOS_LINK" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <InfoOutlined />
-            </ListItemIcon>
-            <ListItemText primary="GO_PRIVACY_LINK" />
-          </ListItemButton>
+          <PopupTextTriggerBtn
+            icon={<Info />}
+            text={t("SERVICE_TOS_BTN_TEXT")}
+            iframeURL={GenerateTosPage(locale)}
+          />
+          <PopupTextTriggerBtn
+            text={t("SERVICE_PP_BTN_TEXT")}
+            icon={<PrivacyTip />}
+            iframeURL={GeneratePpPage(locale)}
+          />
         </ProtectedHiddenDevelopmentComponent>
       </List>
     </div>

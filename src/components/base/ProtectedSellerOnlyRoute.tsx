@@ -3,17 +3,27 @@
 import { StoredUserClaimsFB, UserRoleState } from "@/libs/axios";
 import { firebaseApp } from "@/libs/firebase/config";
 import { getAuth } from "firebase/auth";
-import { PropsWithChildren, useCallback, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PromptAuth from "./GeneratePromptAuth";
 import paths, { RedirectLoginPage } from "../paths";
 import { usePathname } from "next/navigation";
 import SellerCenterSplashScreen from "../custom/SellerCenter/SellerCenterSplashScreen";
+import { useGeneralFunction } from "./GeneralWrapper";
 
-export default function ProtectedSellerOnlyRoute(props: PropsWithChildren) {
-  const [userState, userLoading, userLoadError] = useAuthState(
-    getAuth(firebaseApp)
-  );
+export default function ProtectedSellerOnlyRoute(
+  props: PropsWithChildren<{
+    isNotSellerFallback?: ReactNode;
+    userLoadingFallback?: ReactNode;
+  }>
+) {
+  const { userManager } = useGeneralFunction();
   const [roleState, setRoleState] = useState<UserRoleState | undefined>(
     undefined
   );
@@ -21,33 +31,29 @@ export default function ProtectedSellerOnlyRoute(props: PropsWithChildren) {
   const pathname = usePathname();
   const LoadUser = useCallback(
     async function LoadUser() {
-      if (!userState) {
+      if (!userManager.currentUser) {
         setLoading(false);
         return;
       }
-      const tokenResult = (await userState.getIdTokenResult(true))
+      const tokenResult = (await userManager.currentUser.getIdTokenResult(true))
         .claims as StoredUserClaimsFB;
       setRoleState(tokenResult.userRole);
       setLoading(false);
       console.log(tokenResult);
     },
-    [userState]
+    [userManager.currentUser]
   );
   useEffect(() => {
     LoadUser();
-  }, [LoadUser]);
+  }, [userManager.currentUser]);
   const isPendingSeller = roleState === "PENDING_SELLER";
   const isNotSeller = !roleState || roleState !== "ACTIVE_SELLER";
-  return userLoading ? (
-    <>
-      <h1>Memuat...</h1>
-    </>
-  ) : userState ? (
+  return userManager.loading ? (
+    <>{props.userLoadingFallback && props.userLoadingFallback}</>
+  ) : userManager.currentUser ? (
     <>
       {isNotSeller && (
-        <>
-          <h1>Registrasi sebagai seller</h1>
-        </>
+        <>{props.isNotSellerFallback && props.isNotSellerFallback}</>
       )}
       {roleState === "ACTIVE_SELLER" && props.children && props.children}
     </>

@@ -22,6 +22,8 @@ const paths = {
   FEEDBACKS_LIST_ADMIN_PAGE: "/admin/feedbacks",
   PRODUCTS_LIST_ADMIN_PAGE: "/admin/products",
   PRODUCT_ITEM_ADMIN_PAGE: "/admin/products/",
+  STATIC_TOS_TEXT: "/static/tos-text/",
+  STATIC_PP_TEXT: "/static/pp-text/",
 };
 export function GetAdminProductUrl(id: string) {
   return `${paths.PRODUCT_ITEM_ADMIN_PAGE}${id}`;
@@ -53,6 +55,12 @@ export function GenerateShopFilterUrl({ filterID }: { filterID?: number[] }) {
 
 export function GeneratePostURL(id: string, absolute?: boolean) {
   return `${paths.ARTICLE_PAGE}/${id}`;
+}
+export function GenerateTosPage(locale: string) {
+  return `${paths.STATIC_TOS_TEXT}${locale}-tos.html`;
+}
+export function GeneratePpPage(locale: string) {
+  return `${paths.STATIC_PP_TEXT}${locale}-pp.html`;
 }
 
 export default paths;

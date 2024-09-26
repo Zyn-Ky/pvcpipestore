@@ -22,7 +22,10 @@
     "ENABLE_NOTIFICATION": "Nyalakan notifikasi untuk pengalaman yang lebih baik",
     "NOTIFICATIONS": "Notifikasi",
     "NOTIFICATION": "Notifikasi",
-    "EMPTY_NOTIFICATIONS": "Notifikasi anda bersih"
+    "EMPTY_NOTIFICATIONS": "Notifikasi anda bersih",
+    "SELLER_CENTER_TEXT": "Dasbor Produk",
+    "SERVICE_TOS_BTN_TEXT": "Syarat & Ketentuan",
+    "SERVICE_PP_BTN_TEXT": "Kebijakan Privasi"
   },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",

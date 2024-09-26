@@ -1,5 +1,3 @@
-"use server";
-
 import { cookies } from "next/headers";
 import SITE_CONFIG from "@/components/config";
 
@@ -8,7 +6,7 @@ import SITE_CONFIG from "@/components/config";
 const COOKIE_NAME = SITE_CONFIG.CLIENT_LANGUAGE_KEY_NAME;
 const defaultLocale = "id-ID";
 
-export async function getUserLocale() {
+export function getUserLocale() {
   return cookies().get(COOKIE_NAME)?.value || defaultLocale;
 }
 

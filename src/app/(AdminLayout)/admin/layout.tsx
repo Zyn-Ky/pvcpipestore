@@ -11,6 +11,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import SellerAppBar from "@/components/SellerAppBar";
 import NProgressWrapper from "@/components/base/NProgress";
+import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,7 +39,18 @@ export default async function SellerRootLayout({
           <NextIntlClientProvider messages={messages}>
             <GeneralFunctionWrapper apiXsrf={csrfToken}>
               <NProgressWrapper />
-              <ProtectedSellerOnlyRoute>
+              <ProtectedSellerOnlyRoute
+                userLoadingFallback={
+                  <div className="w-full h-full">
+                    <InfiniteCircularProgress />
+                  </div>
+                }
+                isNotSellerFallback={
+                  <>
+                    <h1>Registrasi sebagai seller</h1>
+                  </>
+                }
+              >
                 <Box className="flex">
                   <SellerAppBar>
                     <Toolbar />
