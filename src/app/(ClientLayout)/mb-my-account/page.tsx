@@ -59,18 +59,16 @@ export default function AccountSummary() {
         </ListItemButton>
         <LogoutBtn />
         <Divider className="my-4" />
-        <ProtectedHiddenDevelopmentComponent>
-          <PopupTextTriggerBtn
-            icon={<Info />}
-            text={t("SERVICE_TOS_BTN_TEXT")}
-            iframeURL={GenerateTosPage(locale)}
-          />
-          <PopupTextTriggerBtn
-            text={t("SERVICE_PP_BTN_TEXT")}
-            icon={<PrivacyTip />}
-            iframeURL={GeneratePpPage(locale)}
-          />
-        </ProtectedHiddenDevelopmentComponent>
+        <PopupTextTriggerBtn
+          icon={<Info />}
+          text={t("SERVICE_TOS_BTN_TEXT")}
+          iframeURL={GenerateTosPage(locale)}
+        />
+        <PopupTextTriggerBtn
+          text={t("SERVICE_PP_BTN_TEXT")}
+          icon={<PrivacyTip />}
+          iframeURL={GeneratePpPage(locale)}
+        />
       </List>
     </div>
   );
