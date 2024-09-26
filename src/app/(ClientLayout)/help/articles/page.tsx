@@ -17,9 +17,13 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { Metadata } from "next";
 import { unstable_cache } from "next/cache";
 import { DynamicParamTypes } from "next/dist/server/app-render/types";
 import Link from "next/link";
+import ShareButton from "./ShareButton";
+
+export const metadata: Metadata = { title: "Artikel" };
 
 export default async function HelpArticlesPage() {
   const articles = await getDateSortedPostsData();
@@ -73,11 +77,7 @@ export default async function HelpArticlesPage() {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Tooltip title="Share">
-                  <IconButton>
-                    <Share />
-                  </IconButton>
-                </Tooltip>
+                <ShareButton data={{ id, date, title, description }} />
               </CardActions>
             </Card>
           </Grid2>

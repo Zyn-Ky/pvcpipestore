@@ -1,4 +1,5 @@
 import { MDXProvider } from "@mdx-js/react";
+import { Divider } from "@mui/material";
 import Link from "next/link";
 
 const components: React.ComponentProps<typeof MDXProvider>["components"] = {
@@ -15,6 +16,11 @@ const components: React.ComponentProps<typeof MDXProvider>["components"] = {
         className="text-blue-400 underline"
       />
     );
+  },
+  hr: (props) => {
+    const { ref, ...cleanProps } = props;
+
+    return <Divider {...cleanProps} />;
   },
 };
 
