@@ -69,10 +69,9 @@ export default function SettingsUISharedLayout({
                 </ActiveSidebarButton>
               ))}
               <ListItem>
-                BUILD_VERSION :{" "}
+                Version :{" "}
                 {process.env.BUILD_VERSION && `v${process.env.BUILD_VERSION}`}
               </ListItem>
-              <ListItem>BUILD_STATE : {process.env.BUILD_STATE}</ListItem>
             </List>
           </div>
           <Divider

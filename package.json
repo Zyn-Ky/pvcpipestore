@@ -1,6 +1,6 @@
 {
   "name": "belajarjualanpipapvc",
-  "version": "5.6.16-coming.0",
+  "version": "6.1.0-demo.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,8 +9,11 @@
     "start": "next start",
     "lint": "next lint",
     "increment-major:coming": "npm version premajor --no-git-tag-version --preid coming",
+    "increment-major:demo": "npm version premajor --no-git-tag-version --preid demo",
     "increment-patch:coming": "npm version prepatch --no-git-tag-version --preid coming",
-    "increment-minor:coming": "npm version preminor --no-git-tag-version --preid coming"
+    "increment-patch:demo": "npm version prepatch --no-git-tag-version --preid demo",
+    "increment-minor:coming": "npm version preminor --no-git-tag-version --preid coming",
+    "increment-minor:demo": "npm version preminor --no-git-tag-version --preid demo"
   },
   "dependencies": {
     "@edge-csrf/nextjs": "^2.2.2",

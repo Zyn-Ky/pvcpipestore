@@ -27,6 +27,11 @@
     "SERVICE_TOS_BTN_TEXT": "Terms and Condition",
     "SERVICE_PP_BTN_TEXT": "Privacy policy"
   },
+  "SEARCH_UI": {
+    "TITLE": "Search a product or others",
+    "CHECK_INTERNET_TEXT": "Check your internet connection. Maybe you are offline.",
+    "REFRESH_INTERNET_TEXT": "Reload"
+  },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Don't miss out on new stuff! Sign in to receive notifications",
     "REQUEST_NOTI_PERMISSION": "Press 'Allow' in order to receive new notifications",

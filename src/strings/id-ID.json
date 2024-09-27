@@ -27,6 +27,11 @@
     "SERVICE_TOS_BTN_TEXT": "Syarat & Ketentuan",
     "SERVICE_PP_BTN_TEXT": "Kebijakan Privasi"
   },
+  "SEARCH_UI": {
+    "TITLE": "Cari produk dan lain-lainnya",
+    "CHECK_INTERNET_TEXT": "Periksa koneksi internet Anda. Mungkin Anda offline",
+    "REFRESH_INTERNET_TEXT": "Muat ulang"
+  },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",
     "REQUEST_NOTI_PERMISSION": "Izinkan pemberitahuan untuk menerima pemberitahuan baru",

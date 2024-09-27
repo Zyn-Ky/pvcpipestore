@@ -146,6 +146,7 @@ function AutocompleteResultBox({
     escapeHTML: true,
   });
   const t = useTranslations();
+  const t_searchui = useTranslations("SEARCH_UI");
   useEffect(() => {
     refine(keyword);
   }, [keyword]);
@@ -160,14 +161,14 @@ function AutocompleteResultBox({
         <>
           {status === "error" ? (
             <>
-              <div className="h-32">
-                <p>Periksa Koneksi Internet Anda</p>
+              <div className="min-h-32 p-4 justify-center items-center flex flex-col gap-3">
+                <p>{t("CHECK_INTERNET_TEXT")}</p>
                 <Button
                   onClick={() => {
                     refresh();
                   }}
                 >
-                  Segarkan
+                  {t("REFRESH_INTERNET_TEXT")}
                 </Button>
               </div>
             </>
@@ -206,6 +207,7 @@ function AutocompleteResultBox({
 function SearchButton({ searchProps, indexes }: SearchButtonProps) {
   const theme = useTheme();
   const text = useTranslations("BASE");
+  const t_searchui = useTranslations("SEARCH_UI");
   const [searchVal, setSearchVal] = useState("");
   const [prevOpenedState, setPrevOpenedState] = useState(false);
   const [isInputEmpty, setIsInputEmpty] = useState(true);
@@ -323,9 +325,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
                     <CloseIcon />
                   </IconButton>
                 </div>
-                <h1 className="text-3xl font-bold">
-                  Cari produk dan lain-lainnya
-                </h1>
+                <h1 className="text-3xl font-bold">{t_searchui("TITLE")}</h1>
                 <TextField
                   label={text("SEARCH_TEXT")}
                   value={searchVal}
@@ -352,10 +352,6 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
                   status === "loading" && "overflow-hidden"
                 }`}
               >
-                <ProtectedHiddenDevelopmentComponent>
-                  {searchVal && <p>Mencari {searchVal}</p>}
-                  {status}
-                </ProtectedHiddenDevelopmentComponent>
                 {indexes.map((val, i) => (
                   <Index indexName={val} key={`SEARCH_INDICE_${i}`}>
                     <AutocompleteResultBox
