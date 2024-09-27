@@ -166,10 +166,6 @@ export default function Home() {
               textContent:
                 "Saya merekomendasikan pipa ini. Kuat, tahan lama, dan fleksibel, ideal untuk proyek saya",
             },
-            {
-              authorName: "Nopal market1",
-              textContent: "yes king yes",
-            },
           ]}
         />
       </div>
