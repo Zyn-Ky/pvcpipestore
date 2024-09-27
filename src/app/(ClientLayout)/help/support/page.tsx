@@ -3,7 +3,7 @@ import { Button, TextField, Typography } from "@mui/material";
 import HelpFormModule from "./FormModule";
 import { useTranslations } from "next-intl";
 
-export default async function HelpSupportPage() {
+export default function HelpSupportPage() {
   // const [user, loading, error] = useAuthState(FirebaseAuth);
   // if (await IsComingSoonSSR())
   //   return <iframe className="fullscreen_cmp_w_navbar" src="/cmp.html" />;
