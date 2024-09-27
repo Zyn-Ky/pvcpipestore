@@ -32,6 +32,14 @@
     "CHECK_INTERNET_TEXT": "Periksa koneksi internet Anda. Mungkin Anda offline",
     "REFRESH_INTERNET_TEXT": "Muat ulang"
   },
+  "FEEDBACK_UI": {
+    "PAGE_TITLE": "Dukungan",
+    "TITLE_PLACEHOLDER": "Judul",
+    "EMAIL_PLACEHOLDER": "Email",
+    "DESCRIPTION_PLACEHOLDER": "Jelaskan Keluhan...",
+    "SEND_TEXT": "Kirim",
+    "PRIVACY_NOTICE_TEXT": "Dengan mengirim masukan Anda, kami akan mengambil data sistem anda menurut Kebijakan Privasi kami."
+  },
   "PROMPT_AUTH_UI": {
     "ENABLE_NOTIFICATION": "Jangan lewatkan notifikasi anda! Masuk untuk melihat notifikasi",
     "REQUEST_NOTI_PERMISSION": "Izinkan pemberitahuan untuk menerima pemberitahuan baru",

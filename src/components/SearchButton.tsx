@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { css } from "@emotion/css";
 import {
+  memo,
   PropsWithChildren,
   useCallback,
   useContext,
@@ -134,7 +135,7 @@ function GroupItem({
   );
 }
 
-function AutocompleteResultBox({
+const AutocompleteResultBox = memo(function AutocompleteResultBox({
   keyword,
   indiceName,
 }: {
@@ -162,13 +163,13 @@ function AutocompleteResultBox({
           {status === "error" ? (
             <>
               <div className="min-h-32 p-4 justify-center items-center flex flex-col gap-3">
-                <p>{t("CHECK_INTERNET_TEXT")}</p>
+                <p>{t_searchui("CHECK_INTERNET_TEXT")}</p>
                 <Button
                   onClick={() => {
                     refresh();
                   }}
                 >
-                  {t("REFRESH_INTERNET_TEXT")}
+                  {t_searchui("REFRESH_INTERNET_TEXT")}
                 </Button>
               </div>
             </>
@@ -202,9 +203,12 @@ function AutocompleteResultBox({
       )}
     </>
   );
-}
+});
 
-function SearchButton({ searchProps, indexes }: SearchButtonProps) {
+const SearchButton = memo(function SearchButton({
+  searchProps,
+  indexes,
+}: SearchButtonProps) {
   const theme = useTheme();
   const text = useTranslations("BASE");
   const t_searchui = useTranslations("SEARCH_UI");
@@ -367,7 +371,7 @@ function SearchButton({ searchProps, indexes }: SearchButtonProps) {
       </Portal>
     </>
   );
-}
+});
 
 export default function SearchButtonWrapper(props: SearchButtonProps) {
   return (

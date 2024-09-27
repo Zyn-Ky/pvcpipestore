@@ -39,6 +39,14 @@
     "REQUEST_LOGIN_TO_ACCOUNT_MANAGER_TEXT": "Sign in to change your account preferences",
     "REQUEST_LOGIN_TO_ADDRESS_MANAGER_TEXT": "Sign in to change your default shipping address"
   },
+  "FEEDBACK_UI": {
+    "PAGE_TITLE": "Support",
+    "TITLE_PLACEHOLDER": "Title",
+    "EMAIL_PLACEHOLDER": "E-mail",
+    "DESCRIPTION_PLACEHOLDER": "Description",
+    "SEND_TEXT": "Send",
+    "PRIVACY_NOTICE_TEXT": "By submitting your feedback, we will collect your system data according to our Privacy Policy."
+  },
   "ACCOUNT_MANAGER": {
     "EDIT_PHOTO_URL_TEXT": "Change profile photo",
     "EDIT_DISPLAY_NAME_TEXT": "Change display name",

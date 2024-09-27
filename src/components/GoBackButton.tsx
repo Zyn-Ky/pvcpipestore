@@ -9,13 +9,13 @@ import {
 } from "@mui/material";
 import { useRouter } from "next-nprogress-bar";
 import { useGeneralFunction } from "./base/GeneralWrapper";
-import { ReactNode } from "react";
+import { memo, ReactNode } from "react";
 const CustBtn = styled(ButtonBase)<{ href?: string }>(({ theme }) => ({
   fontWeight: "bold",
   padding: 6,
   border: `1px solid ${theme.palette.text.primary}`,
 }));
-export default function GoBackButton({
+export default memo(function GoBackButton({
   title,
   extendNode,
   className,
@@ -69,4 +69,4 @@ export default function GoBackButton({
       {!showButton && extendNode && <div className="">{extendNode}</div>}
     </>
   );
-}
+});

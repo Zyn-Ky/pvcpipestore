@@ -18,6 +18,7 @@ import {
   AvailableLoginMethod,
   useGeneralFunction,
 } from "@/components/base/GeneralWrapper";
+import ProtectedHiddenDevelopmentComponent from "@/components/base/ProtectedHiddenDevComponent";
 const GoogleIcon = dynamic(() => import("@mui/icons-material/Google"));
 const EmailIcon = dynamic(() => import("@mui/icons-material/Email"));
 export default function RegisterClient() {
@@ -60,64 +61,67 @@ export default function RegisterClient() {
           Anda telah login! Anda akan teralihkan...
         </Alert>
       )}
-      {userManager.authError && (
-        <Alert severity="error" className="mb-2 mt-1">
-          {(userManager.authError as any).code === "auth/invalid-credential" ? (
-            <>Email / password anda salah</>
-          ) : (
-            <>
-              Terjadi kesalahan!
-              {userManager.authError.message as string}
-            </>
-          )}
-        </Alert>
-      )}
-      <FormControl component="form" onSubmit={OnSubmitEmailPassword}>
-        <FormGroup className="mb-3">
-          <TextField
-            type="email"
-            autoComplete="on"
-            name="email_address"
-            required
-            aria-required="true"
-            label="Email"
-          />
-        </FormGroup>
-        <FormGroup className="mb-3">
-          <TextField
-            type="password"
-            name="pwd"
-            autoComplete="on"
-            required
-            aria-required="true"
-            label="Password"
-          />
-        </FormGroup>
+      <ProtectedHiddenDevelopmentComponent>
+        {userManager.authError && (
+          <Alert severity="error" className="mb-2 mt-1">
+            {(userManager.authError as any).code ===
+            "auth/invalid-credential" ? (
+              <>Email / password anda salah</>
+            ) : (
+              <>
+                Terjadi kesalahan!
+                {userManager.authError.message as string}
+              </>
+            )}
+          </Alert>
+        )}
+        <FormControl component="form" onSubmit={OnSubmitEmailPassword}>
+          <FormGroup className="mb-3">
+            <TextField
+              type="email"
+              autoComplete="on"
+              name="email_address"
+              required
+              aria-required="true"
+              label="Email"
+            />
+          </FormGroup>
+          <FormGroup className="mb-3">
+            <TextField
+              type="password"
+              name="pwd"
+              autoComplete="on"
+              required
+              aria-required="true"
+              label="Password"
+            />
+          </FormGroup>
+          <LoadingButton
+            loading={userManager.loading}
+            disabled={Boolean(userManager.currentUser)}
+            variant="contained"
+            type="submit"
+          >
+            Masuk
+          </LoadingButton>
+        </FormControl>
+        <Divider
+          orientation="horizontal"
+          flexItem
+          className="w-full mt-4 self-center"
+        />
         <LoadingButton
+          onClick={async () => {
+            SignIn("google");
+          }}
           loading={userManager.loading}
           disabled={Boolean(userManager.currentUser)}
-          variant="contained"
-          type="submit"
+          startIcon={<GoogleIcon />}
+          variant="outlined"
         >
-          Masuk
+          Masuk dengan Google
         </LoadingButton>
-      </FormControl>
-      <Divider
-        orientation="horizontal"
-        flexItem
-        className="w-full mt-4 self-center"
-      />
-      <LoadingButton
-        onClick={async () => {
-          SignIn("google");
-        }}
-        loading={userManager.loading}
-        disabled={Boolean(userManager.currentUser)}
-        startIcon={<GoogleIcon />}
-        variant="outlined"
-      >
-        Masuk dengan Google
-      </LoadingButton>
+      </ProtectedHiddenDevelopmentComponent>
     </div>
   );
 }
