@@ -244,8 +244,15 @@ export default function Home() {
               [
                 <BusinessIcon key="BUSINESS_ICON" />,
                 <>
-                  Perumahan The Quality Residence No. A16-17 Jatikalang Krian
-                  Sidoarjo
+                  <Typography gutterBottom component="p">
+                    Perumahan The Quality Residence No. A16-17 Jatikalang Krian
+                    Sidoarjo
+                  </Typography>
+                  <iframe
+                    loading="lazy"
+                    className="w-full h-[400px] border-none"
+                    src="https://www.google.com/maps/embed/v1/place?q=Pipa+HDPE,+Pipa+PVC,+Pipa+PPR,+Fitting+dan+Mesin+Jawa+Timur&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                  />
                 </>,
               ],
               [
@@ -270,7 +277,9 @@ export default function Home() {
               ],
             ].map((val, i) => (
               <tr key={i}>
-                <td className="text-right">{val[0]}</td>
+                <td className={`text-right ${i === 0 && "align-top"}`}>
+                  {val[0]}
+                </td>
                 <td className="align-baseline">{val[1]}</td>
               </tr>
             ))}

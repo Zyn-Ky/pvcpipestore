@@ -111,7 +111,8 @@ export default function CheckoutUI({
       selectedPage[0].element,
       clientBoundingRect
     );
-    setCurrentPageHeight(clientBoundingRect.height);
+    clientBoundingRect.height !== 0 &&
+      setCurrentPageHeight(clientBoundingRect.height);
   }
   function updateHeightStepper({
     disableAnimation,
@@ -256,7 +257,7 @@ export default function CheckoutUI({
       }}
     >
       <div
-        className="w-full flex flex-col"
+        className="w-full h-full flex flex-col "
         onClick={() => updatePageHeight()}
         onMouseEnter={() => updatePageHeight()}
         onMouseMove={() => updatePageHeight()}
@@ -335,79 +336,81 @@ export default function CheckoutUI({
             )}
           </div>
         </div>
-        <div
-          className="w-full h-full overflow-x-hidden relative transition-[height]"
-          style={{
-            height: currentPageHeight,
-            overflowY: pageHeightAnimating ? "hidden" : "auto",
-          }}
-          ref={containerFormRef}
-        >
-          <AnimatePresence>
-            {(
-              [
-                [Page0, 0],
-                [Page1, 1],
-                [Page2, 2],
-                [Page3, 3],
-              ] as [JSX.Element, number][]
-            ).map((el) => (
-              <motion.div
-                key={el[1]}
-                className="w-full h-max absolute"
-                ref={(element) => {
-                  const current = pageElements.current;
-                  pageElements.current = [...current, { element, id: el[1] }];
-                }}
-                onAnimationStart={() => {
-                  setPageHeightAnimating(true);
-                  Console("log", "start");
-                }}
-                onAnimationComplete={() => {
-                  setPageHeightAnimating(false);
-                  Console("log", "complete");
-                }}
-                onAnimationEnd={() => {
-                  setPageHeightAnimating(false);
-                  Console("log", "end");
-                }}
-                initial={
-                  currentCheckoutPage !== el[1]
-                    ? {
-                        x: "0%",
-                        visibility: "visible",
-                        opacity: 1,
-                        display: "block",
-                      }
-                    : {
-                        x: currentCheckoutPage > el[1] ? "100%" : "-100%",
-                        visibility: "hidden",
-                        display: "none",
-                        opacity: 0,
-                      }
-                }
-                animate={
-                  currentCheckoutPage !== el[1]
-                    ? {
-                        x: currentCheckoutPage > el[1] ? "-100%" : "100%",
-                        visibility: "hidden",
-                        opacity: 0,
-                        display: "none",
-                      }
-                    : {
-                        x: "0%",
-                        visibility: "visible",
-                        opacity: 1,
-                        display: "block",
-                      }
-                }
-                transition={{ type: "tween", duration: 0.35 }}
-                exit={{ x: "100%" }}
-              >
-                {el[0]}
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        <div className="flex-1 overflow-y-auto">
+          <div
+            className="w-full h-full overflow-x-hidden relative transition-[height]"
+            style={{
+              height: currentPageHeight,
+              overflowY: pageHeightAnimating ? "hidden" : "auto",
+            }}
+            ref={containerFormRef}
+          >
+            <AnimatePresence>
+              {(
+                [
+                  [Page0, 0],
+                  [Page1, 1],
+                  [Page2, 2],
+                  [Page3, 3],
+                ] as [JSX.Element, number][]
+              ).map((el) => (
+                <motion.div
+                  key={el[1]}
+                  className="w-full h-max absolute"
+                  ref={(element) => {
+                    const current = pageElements.current;
+                    pageElements.current = [...current, { element, id: el[1] }];
+                  }}
+                  onAnimationStart={() => {
+                    setPageHeightAnimating(true);
+                    Console("log", "start");
+                  }}
+                  onAnimationComplete={() => {
+                    setPageHeightAnimating(false);
+                    Console("log", "complete");
+                  }}
+                  onAnimationEnd={() => {
+                    setPageHeightAnimating(false);
+                    Console("log", "end");
+                  }}
+                  initial={
+                    currentCheckoutPage !== el[1]
+                      ? {
+                          x: "0%",
+                          visibility: "visible",
+                          opacity: 1,
+                          display: "block",
+                        }
+                      : {
+                          x: currentCheckoutPage > el[1] ? "100%" : "-100%",
+                          visibility: "hidden",
+                          display: "none",
+                          opacity: 0,
+                        }
+                  }
+                  animate={
+                    currentCheckoutPage !== el[1]
+                      ? {
+                          x: currentCheckoutPage > el[1] ? "-100%" : "100%",
+                          visibility: "hidden",
+                          opacity: 0,
+                          display: "none",
+                        }
+                      : {
+                          x: "0%",
+                          visibility: "visible",
+                          opacity: 1,
+                          display: "block",
+                        }
+                  }
+                  transition={{ type: "tween", duration: 0.35 }}
+                  exit={{ x: "100%" }}
+                >
+                  {el[0]}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </CheckoutUIContext.Provider>

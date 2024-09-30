@@ -44,7 +44,7 @@ export default function AccountSummary() {
       </div>
       <List component="nav">
         <ProtectedSellerOnlyRoute disableLoginPrompt>
-          <ListItemButton>
+          <ListItemButton LinkComponent={Link} href={paths.SELLER_ADMIN_PAGE}>
             <ListItemIcon>
               <Dashboard />
             </ListItemIcon>

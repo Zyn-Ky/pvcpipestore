@@ -77,9 +77,12 @@ export default function CheckoutUIPage0() {
         </tbody>
       </table>
       <ProtectedHiddenDevelopmentComponent>
-        <details>
-          <summary>Debug Info</summary>
-          <pre className="whitespace-break-spaces break-words">
+        <details onClick={() => forceSetPageHeight()}>
+          <summary onClick={() => forceSetPageHeight()}>Debug Info</summary>
+          <pre
+            className="whitespace-break-spaces break-words"
+            onClick={() => forceSetPageHeight()}
+          >
             {JSON.stringify(response?.data, null, 2)}
           </pre>
         </details>

@@ -65,7 +65,7 @@ export async function AxiosFetchV1Api<
               i !== 0 && i !== dataKeys.length - 1 ? "&" : ""
             }`
         )
-        .join("")
+        .join("&")
     : "";
   console.log(dataToQueryParams);
   const Result = await AxiosClient({
@@ -120,6 +120,12 @@ export function SWRFetcher<
   xsrfToken: string,
   props: {
     method: string;
+    defaultArg?: Readonly<
+      CustomData & {
+        authToken?: string;
+        [key: string]: any;
+      }
+    >;
   }
 ) {
   return async function (
@@ -127,7 +133,7 @@ export function SWRFetcher<
     {
       arg,
     }: {
-      arg: Readonly<
+      arg?: Readonly<
         CustomData & {
           authToken?: string;
           [key: string]: any;
@@ -137,11 +143,13 @@ export function SWRFetcher<
   ) {
     console.log(xsrfToken, url);
     // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const data: any = { ...arg, ...props.defaultArg };
+
     return await AxiosFetchV1Api<CustomData, CustomResponse>(
       props.method,
       url,
       xsrfToken,
-      arg
+      data
     );
   };
 }
