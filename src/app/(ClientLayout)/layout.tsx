@@ -28,7 +28,7 @@ const ResizeToContinue = dynamic(() => import("./ResizeToContinue"), {
   ssr: false,
 });
 
-const font = Inter({ preload: true, adjustFontFallback: true });
+const font = Inter({ adjustFontFallback: true });
 
 export const metadata: Metadata = {
   applicationName: SITE_CONFIG.SEO.AliasAppTitle,
