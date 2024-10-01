@@ -7,7 +7,7 @@ export default async function ShopLayout(props: {
   params: { params?: string[] };
 }) {
   return (
-    <main className={CSS.ShopContainer}>
+    <main className={`${CSS.ShopContainer} p-4`}>
       <SidebarFilterModule />
       <div className={CSS.Content}>{props.children}</div>
     </main>

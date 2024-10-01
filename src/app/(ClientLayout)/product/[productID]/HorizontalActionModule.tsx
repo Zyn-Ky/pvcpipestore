@@ -8,25 +8,38 @@ import ProtectedHiddenDevelopmentComponent, {
   IsDisabledOnProduction,
 } from "@/components/base/ProtectedHiddenDevComponent";
 import { useProductActions } from "@/components/hooks/productManager";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { ProductCardInfo } from "@/libs/config";
+import { useGeneralFunction } from "@/components/base/GeneralWrapper";
+import { useLogger } from "@/components/hooks/logger";
 export default function HorizontalActionModule({
-  productID,
+  productData,
 }: {
-  productID: string;
+  productData: ProductCardInfo;
 }) {
-  const { triggerLike, likeButtonLoading } = useProductActions(productID);
+  const { triggerLike, likeButtonLoading } = useProductActions(
+    productData.ProductID
+  );
   const [fakeIsLiked, setIsLiked] = useState(false);
+  const { userManager } = useGeneralFunction();
+  const { Console } = useLogger();
+  useEffect(() => {
+    if (userManager.currentUser && productData.LikedByUID) {
+      setIsLiked(productData.LikedByUID.includes(userManager.currentUser.uid));
+    }
+  }, [userManager.currentUser, productData, productData.LikedByUID]);
+
   return (
     <>
       <div className={CSS.Actions}>
         <Tooltip title="Suka">
           <IconButton
             disabled={likeButtonLoading}
-            onClick={() => {
+            onClick={async () => {
               if (!likeButtonLoading) {
-                triggerLike();
-                setIsLiked((prev) => !prev);
+                setIsLiked(await triggerLike(!fakeIsLiked));
+                Console("log", "fakeIsLiked", fakeIsLiked);
               }
             }}
           >

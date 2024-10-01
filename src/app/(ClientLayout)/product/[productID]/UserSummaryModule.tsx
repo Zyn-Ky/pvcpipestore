@@ -13,6 +13,7 @@ import {
   useTheme,
 } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function UserSummaryModule({
   userInfo,
@@ -60,7 +61,15 @@ export default function UserSummaryModule({
               </div>
 
               <Typography flex={1}>{userInfo.displayName}</Typography>
-              <Button variant="contained">Telepon</Button>
+              {userInfo.email && (
+                <Button
+                  variant="contained"
+                  component={Link}
+                  href={`mailto:${userInfo.email}`}
+                >
+                  E-mail
+                </Button>
+              )}
             </Box>
           </Paper>
         )}

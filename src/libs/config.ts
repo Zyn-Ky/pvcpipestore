@@ -56,6 +56,7 @@ export interface StoredProductCardInfo {
   CreatedAt?: number;
   LastModifiedAt?: number;
   UrlID?: string;
+  LikedByUID?: string[];
 }
 
 export interface ProductCardInfo extends StoredProductCardInfo {

@@ -118,7 +118,7 @@ export default async function ShopPage({
 
   return (
     <OfflineWarningWrapper>
-      <ProtectedHiddenDevelopmentComponent>
+      <ProtectedHiddenDevelopmentComponent forceFallback fallback={<></>}>
         <p>{JSON.stringify(isInFilterMode)}</p>
         <Link href="/shop">shop</Link>
         <ContentCategoryModule />
@@ -137,10 +137,12 @@ export default async function ShopPage({
             .map((fquery) => parseInt(fquery.split("=")[1] ?? "0"))
         )}
       </ProtectedHiddenDevelopmentComponent>
-      <h1>Selamat Berbelanja!</h1>
+      <Typography variant="h4" fontWeight="bold" component="h1" gutterBottom>
+        Toko Kami
+      </Typography>
       {isInFilterMode && (
         <>
-          <Typography variant="h4" gutterBottom>
+          {/* <Typography variant="h4" gutterBottom>
             Hasil Filter
           </Typography>
           <ProductList
@@ -154,7 +156,7 @@ export default async function ShopPage({
                 })
               ).ResolvedProducts
             }
-          />
+          /> */}
         </>
       )}
       {!isInFilterMode && (

@@ -73,7 +73,7 @@ const FetchProducts = cache(FetchItemImpl, ["FETCH_PRODUCT_ITEM"], {
   revalidate:
     process.env.NODE_ENV === "development"
       ? parseInt(process.env.DEVMODE_PRODUCT_DB_CACHE_REVALIDATE_TIME || "300")
-      : 60 * 5,
+      : 60 * 2,
   // revalidate: 1,
 });
 
@@ -127,7 +127,7 @@ export async function generateMetadata({
   };
 }
 export default async function ProductPage({ params, searchParams }: Props) {
-  const { productItem, ...codeResponse } = await FetchProducts(
+  const { productItem, ...codeResponse } = await FetchItemImpl(
     params.productID,
     searchParams.force_view_product_for_approved_users === "1"
       ? searchParams._token
@@ -172,8 +172,6 @@ export default async function ProductPage({ params, searchParams }: Props) {
     );
   if (!productItem) return notFound();
   return (
-    <>
-      <ProductRenderer productID={params.productID} productItem={productItem} />
-    </>
+    <ProductRenderer productID={params.productID} productItem={productItem} />
   );
 }

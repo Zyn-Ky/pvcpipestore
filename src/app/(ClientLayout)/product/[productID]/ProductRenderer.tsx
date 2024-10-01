@@ -66,7 +66,7 @@ export default function ProductRenderer({
               style: "currency",
             }).format(productItem.Price ?? 0)}
           </Typography>
-          <HorizontalActionModule productID={productID} />
+          <HorizontalActionModule productData={productItem} />
           <Typography
             variant="body1"
             paragraph
@@ -74,19 +74,21 @@ export default function ProductRenderer({
               __html: productItem.Description ?? "",
             }}
           />
-          <br />
+          <div className="flex gap-4">
+            <Button
+              variant="contained"
+              className="mr-4"
+              LinkComponent={NextLink}
+              href={`${paths.CHECKOUT_PAGE}?direct_buy_id=${productItem.ProductID}`}
+              disabled={IsDisabledOnProduction()}
+            >
+              Beli
+            </Button>
+            <Button variant="outlined" disabled={IsDisabledOnProduction()}>
+              Tambahkan ke Keranjang
+            </Button>
+          </div>
 
-          <Button
-            variant="contained"
-            className="mr-4"
-            LinkComponent={NextLink}
-            href={`${paths.CHECKOUT_PAGE}?direct_buy_id=${productItem.ProductID}`}
-          >
-            Beli
-          </Button>
-          <Button variant="outlined" disabled={IsDisabledOnProduction()}>
-            Tambahkan ke Keranjang
-          </Button>
           <br />
         </div>
         <UserSummaryModule userInfo={productItem.ResolvedPublisherInfo} />

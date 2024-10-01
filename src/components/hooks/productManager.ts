@@ -9,28 +9,63 @@ import { useDocumentOnce } from "react-firebase-hooks/firestore";
 import { useLogger } from "./logger";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
-import { SWRFetcher } from "@/libs/axios";
+import { AxiosFetchV1Api, SWRFetcher } from "@/libs/axios";
 import { useGeneralFunction } from "../base/GeneralWrapper";
-import { ProductActionRequest } from "@/app/api/client/v1/productAction/[id]/route";
+import {
+  ProductActionRequest,
+  ProductActionResponse,
+} from "@/app/api/client/v1/productAction/[id]/route";
+import { ProductActionLikedAPIResponse } from "@/app/api/client/v1/productAction/[id]/toggleLike";
+import { enqueueSnackbar } from "notistack";
 
 export function useProductActions(id: string) {
   const { apiManager, userManager } = useGeneralFunction();
-
-  const { isMutating: likeButtonLoading, trigger } = useSWRMutation(
-    id ? `${API_PATH.CLIENT_PRODUCT_ACTIONS}${id}` : null,
-    SWRFetcher<ProductActionRequest>(apiManager.xsrfToken, {
-      method: "POST",
-    })
-  );
-
+  const apiUrl = id ? `${API_PATH.CLIENT_PRODUCT_ACTIONS}${id}` : null;
+  // const {
+  //   data: rawData,
+  //   reset,
+  //   isMutating: likeButtonLoading,
+  //   trigger,
+  // } = useSWRMutation(
+  //   id ? `${API_PATH.CLIENT_PRODUCT_ACTIONS}${id}` : null,
+  //   SWRFetcher<ProductActionRequest, ProductActionResponse>(
+  //     apiManager.xsrfToken,
+  //     {
+  //       method: "POST",
+  //     }
+  //   )
+  // );
+  const [likeButtonLoading, setLikeButtonLoading] = useState(false);
   return {
-    async triggerLike() {
-      trigger({
+    async triggerLike(liked?: boolean) {
+      // trigger({
+
+      // });
+      if (!apiUrl) return false;
+      if (!userManager.currentUser) {
+        enqueueSnackbar("Masuk untuk melanjutkan", {
+          preventDuplicate: false,
+        });
+        return false;
+      }
+      setLikeButtonLoading(true);
+      const rawData = await AxiosFetchV1Api<
+        ProductActionRequest,
+        ProductActionLikedAPIResponse
+      >("POST", apiUrl, apiManager.xsrfToken, {
+        action:
+          typeof liked === "undefined"
+            ? "TOGGLE_FAVORITE_STATUS"
+            : liked === true
+            ? "ADD_TO_USER_FAVORITE"
+            : "REMOVE_FROM_USER_FAVORITE",
         authToken: userManager.currentUser
           ? await userManager.currentUser.getIdToken()
           : "MISSING",
-        action: "ADD_TO_USER_FAVORITES_LIST",
       });
+      const data = rawData?.data;
+      setLikeButtonLoading(false);
+      return data.response?.currentState ?? false;
     },
     likeButtonLoading,
   };

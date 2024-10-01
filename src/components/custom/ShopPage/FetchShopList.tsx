@@ -14,27 +14,14 @@ type ProductListProps = {
   serverData: (ProductCardInfo | undefined)[];
 };
 
-const ProductContainer = styled(Box)(({ theme }) => ({
-  display: "flex",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  marginBottom: 8,
-}));
-
 export default function ProductList(props: ProductListProps) {
   return (
-    <>
-      <ProductContainer>
-        {props.serverData &&
-          props.serverData.map(
-            (doc, index) =>
-              doc && (
-                <>
-                  <ItemProductCard data={doc} key={doc?.Name || ""} />
-                </>
-              )
-          )}
-      </ProductContainer>
-    </>
+    <div className="flex flex-wrap justify-around mb-2 gap-4 sm:gap-8">
+      {props.serverData &&
+        props.serverData.map(
+          (doc, index) =>
+            doc && <ItemProductCard data={doc} key={doc?.Name || ""} />
+        )}
+    </div>
   );
 }

@@ -18,6 +18,7 @@ import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
 import NotificationManager from "@/components/base/NotificationManager";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import localFont from "next/font/local";
 
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
@@ -27,7 +28,7 @@ const ResizeToContinue = dynamic(() => import("./ResizeToContinue"), {
   ssr: false,
 });
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Inter({ preload: true, adjustFontFallback: true });
 
 export const metadata: Metadata = {
   applicationName: SITE_CONFIG.SEO.AliasAppTitle,
@@ -92,7 +93,7 @@ export default async function RootLayout(
     <ColorModeProvider>
       <html lang={locale}>
         <CssBaseline enableColorScheme />
-        <body className={inter.className} data-smooth-color-transition>
+        <body className={font.className} data-smooth-color-transition>
           <AppRouterCacheProvider>
             <SpeedInsights />
             <Analytics />
