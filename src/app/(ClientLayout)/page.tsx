@@ -31,18 +31,18 @@ const TestimonialModule = dynamic(
   () => import("@/components/custom/HomePage/TestimonialModule"),
   { ssr: false }
 );
-// const FancySeperator = dynamic(
-//   () => import("@/components/custom/HomePage/FancySeperator"),
-//   { ssr: true }
-// );
+const FancySeperator = dynamic(
+  () => import("@/components/custom/HomePage/FancySeperator"),
+  { ssr: true }
+);
 
 export default function Home() {
   const text = useTranslations("HOME_UI");
   return (
     <div itemType="https://schema.org/Organization" itemScope>
       <div className={CSS.HeroBox}>
-        {/* <CarouselModule /> */}
-        {/* <FancySeperator /> */}
+        <CarouselModule />
+        <FancySeperator />
       </div>
       <div className="p-2 mt-4 min-h-[200px] text-center my-4">
         <Typography fontWeight="bold" variant="h4" gutterBottom>
