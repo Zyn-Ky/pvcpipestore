@@ -8,11 +8,9 @@ import { useEffect, useState } from "react";
 import { useEffectOnce } from "react-use";
 import { useLogger } from "../hooks/logger";
 import { enqueueSnackbar } from "notistack";
-const Snackbar = dynamic(() => import("@mui/material/Snackbar"));
 export default function WordpressMigration() {
   const param = useSearchParams();
   useEffectOnce(() => {
-    if (typeof window !== "object") return;
     if (param.get("sc_path") === "WORDPRESS_OLD_SITE_REDIRECT")
       enqueueSnackbar(
         <>

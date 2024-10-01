@@ -99,7 +99,9 @@ export default async function RootLayout(
             <ResizeToContinue />
             <NextIntlClientProvider messages={messages}>
               <GeneralFunctionWrapper apiXsrf={csrfToken}>
-                <WordpressMigration />
+                {referer === "https://belajarjualan.com/pipapvc" && (
+                  <WordpressMigration />
+                )}
                 <XAppBar />
                 <div id="root-content-ui">{props.children}</div>
                 <NProgressWrapper />
