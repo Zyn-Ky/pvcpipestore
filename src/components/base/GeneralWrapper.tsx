@@ -26,7 +26,7 @@ import {
 import NotificationManager, {
   IDB_NotiCache_DBName,
 } from "./NotificationManager";
-import paths from "../paths";
+import paths, { BTM_NAVIGATION_ENABLED_PATHS } from "../paths";
 import { useEffectOnce, usePrevious, useTitle } from "react-use";
 import { StoredUserClaimsFB } from "@/libs/axios";
 import { InstantSearch } from "react-instantsearch";
@@ -44,7 +44,6 @@ import {
 } from "firebase/firestore";
 import { usePathname } from "next/navigation";
 import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
-import { ENABLED_PATHS } from "../custom/UXNavbar/BottomNavigation";
 
 export type AvailableLoginMethod = "google" | "email";
 // document.querySelector("a");
@@ -359,11 +358,10 @@ export default function GeneralFunctionWrapper(
           classes={
             isSmallScreen
               ? {
-                  containerAnchorOriginBottomLeft: ENABLED_PATHS.includes(
-                    currentPathname
-                  )
-                    ? "pb-16"
-                    : "pb-0",
+                  containerAnchorOriginBottomLeft:
+                    BTM_NAVIGATION_ENABLED_PATHS.includes(currentPathname)
+                      ? "pb-16"
+                      : "pb-0",
                 }
               : { containerAnchorOriginTopRight: "pt-16" }
           }

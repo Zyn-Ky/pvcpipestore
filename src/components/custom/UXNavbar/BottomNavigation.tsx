@@ -4,7 +4,7 @@ import { useFCMNotification } from "@/components/base/NotificationManager";
 import BetterBottomNavigation, {
   BetterBottomNavigationAction,
 } from "@/components/BetterBtmBar";
-import paths from "@/components/paths";
+import paths, { BTM_NAVIGATION_ENABLED_PATHS } from "@/components/paths";
 import { Badge, Fade, Portal, Toolbar, useTheme } from "@mui/material";
 import { Slide, useMediaQuery } from "@mui/material";
 import { useTranslations } from "next-intl";
@@ -20,13 +20,6 @@ const StoreIcon = dynamic(() => import("@mui/icons-material/Store"));
 const NotificationsIcon = dynamic(
   () => import("@mui/icons-material/Notifications")
 );
-
-export const ENABLED_PATHS = [
-  paths.ACTUAL_SHOP,
-  paths.MOBILE_NOTIFICATION,
-  paths.CARTS_ITEM_LIST,
-  paths.MOBILE_MY_ACCOUNT,
-];
 
 export default function BottomNavigation() {
   const { unreadCounter } = useFCMNotification();
@@ -45,7 +38,8 @@ export default function BottomNavigation() {
   return (
     <>
       {isSmallScreen &&
-        ENABLED_PATHS.filter((path) => path === URLPathname).length !== 0 && (
+        BTM_NAVIGATION_ENABLED_PATHS.filter((path) => path === URLPathname)
+          .length !== 0 && (
           <>
             {/* BUG_DETECTED EXPECTED TO BE BROKEN ON THE FUTURE */}
             <Portal container={() => document.getElementById("down")}>
@@ -57,7 +51,8 @@ export default function BottomNavigation() {
         unmountOnExit
         in={
           isSmallScreen &&
-          ENABLED_PATHS.filter((path) => path === URLPathname).length !== 0
+          BTM_NAVIGATION_ENABLED_PATHS.filter((path) => path === URLPathname)
+            .length !== 0
         }
       >
         <BetterBottomNavigation

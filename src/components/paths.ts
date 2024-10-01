@@ -25,6 +25,12 @@ const paths = {
   STATIC_TOS_TEXT: "/static/tos-text/",
   STATIC_PP_TEXT: "/static/pp-text/",
 };
+export const BTM_NAVIGATION_ENABLED_PATHS = [
+  paths.ACTUAL_SHOP,
+  paths.MOBILE_NOTIFICATION,
+  paths.CARTS_ITEM_LIST,
+  paths.MOBILE_MY_ACCOUNT,
+];
 export function GetAdminProductUrl(id: string) {
   return `${paths.PRODUCT_ITEM_ADMIN_PAGE}${id}`;
 }
