@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/scss/globals.scss";
 import "react-photo-view/dist/react-photo-view.css";
-import { CssBaseline, StyledEngineProvider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { XAppBar } from "@/components";
 import SITE_CONFIG from "@/components/config";
 import ColorModeProvider from "@/components/base/ClientThemeWrapper";
@@ -14,7 +14,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import GeneralFunctionWrapper from "@/components/base/GeneralWrapper";
 import NProgressWrapper from "@/components/base/NProgress";
-import { SnackbarProvider } from "notistack";
 import { InstantSearch } from "react-instantsearch";
 import algoliasearch from "algoliasearch";
 import NotificationManager from "@/components/base/NotificationManager";
@@ -83,8 +82,11 @@ export default async function RootLayout(
     children: React.ReactNode;
   }>
 ) {
-  const csrfToken = headers().get("X-CSRF-Token") || "MISSING";
+  const headersList = headers();
+  const csrfToken = headersList.get("X-CSRF-Token") || "MISSING";
   const messages = await getMessages();
+  const referer = headersList.get("referer");
+
   const locale = await getLocale();
   return (
     <ColorModeProvider>

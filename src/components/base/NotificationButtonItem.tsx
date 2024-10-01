@@ -20,7 +20,7 @@ export default function NotificationButtonItem({
   deleteHandler: (id: string) => void;
 }) {
   return (
-    <ListItemButton alignItems="flex-start">
+    <ListItemButton alignItems="flex-start" className="px-6">
       {item.current_blob_img_url && (
         <ListItemAvatar>
           <Avatar

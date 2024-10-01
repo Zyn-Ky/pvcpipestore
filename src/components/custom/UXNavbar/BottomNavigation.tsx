@@ -21,6 +21,13 @@ const NotificationsIcon = dynamic(
   () => import("@mui/icons-material/Notifications")
 );
 
+export const ENABLED_PATHS = [
+  paths.ACTUAL_SHOP,
+  paths.MOBILE_NOTIFICATION,
+  paths.CARTS_ITEM_LIST,
+  paths.MOBILE_MY_ACCOUNT,
+];
+
 export default function BottomNavigation() {
   const { unreadCounter } = useFCMNotification();
   const router = useRouter();
@@ -34,12 +41,7 @@ export default function BottomNavigation() {
   const isMediumScreen = !isBigScreen && ScreenUp_md;
   const isSmallScreen =
     isBigScreen === false && isMediumScreen === false && ScreenDown_sm;
-  const ENABLED_PATHS = [
-    paths.ACTUAL_SHOP,
-    paths.MOBILE_NOTIFICATION,
-    paths.CARTS_ITEM_LIST,
-    paths.MOBILE_MY_ACCOUNT,
-  ];
+
   return (
     <>
       {isSmallScreen &&

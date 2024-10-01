@@ -88,6 +88,7 @@ export default function XAppBar() {
       {URLPathname === paths.HOME_PAGE && (
         <ImmersiveAppBar
           notiBtnRef={refTriggerBtnNotfPopUp}
+          openNotificationBar={openNotificationBar}
           onToggleNotiBtn={() => {
             setOpenNotificationBar(!openNotificationBar);
           }}

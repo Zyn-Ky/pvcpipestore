@@ -67,9 +67,11 @@ const BigButton = styled(ButtonBase)<BigButtonProps>(({ theme }) => ({
 export default function ImmersiveAppBar({
   notiBtnRef,
   onToggleNotiBtn,
+  openNotificationBar,
 }: {
   notiBtnRef: React.MutableRefObject<HTMLElement | null>;
   onToggleNotiBtn: () => void;
+  openNotificationBar: boolean;
 }) {
   const theme = useTheme();
   const contentUIRef = useRootContentUIRef();
@@ -199,7 +201,9 @@ export default function ImmersiveAppBar({
           </Tooltip>
           <Tooltip
             title={mainNavbarText("NOTIFICATION_TEXT")}
-            className={`hidden ${unreadCounter > 0 && "sm:block"}`}
+            className={`hidden ${
+              (unreadCounter > 0 || openNotificationBar) && "sm:block"
+            }`}
           >
             <IconButton
               size="large"

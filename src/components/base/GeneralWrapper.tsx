@@ -44,6 +44,7 @@ import {
 } from "firebase/firestore";
 import { usePathname } from "next/navigation";
 import { getClientLocale, setClientLocale } from "@/libs/clientLocale";
+import { ENABLED_PATHS } from "../custom/UXNavbar/BottomNavigation";
 
 export type AvailableLoginMethod = "google" | "email";
 // document.querySelector("a");
@@ -357,7 +358,13 @@ export default function GeneralFunctionWrapper(
           }
           classes={
             isSmallScreen
-              ? { containerAnchorOriginBottomLeft: "pb-16" }
+              ? {
+                  containerAnchorOriginBottomLeft: ENABLED_PATHS.includes(
+                    currentPathname
+                  )
+                    ? "pb-16"
+                    : "pb-0",
+                }
               : { containerAnchorOriginTopRight: "pt-16" }
           }
           preventDuplicate

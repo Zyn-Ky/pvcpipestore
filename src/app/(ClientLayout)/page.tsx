@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import OurServices from "@/components/custom/HomePage/OurServices";
 import OurPartners from "@/components/custom/HomePage/OurPartners";
 import {
+  HomePage_CoverImg,
   HomePage_CoverPipaPVC_Img,
   HomePage_KelebihanPipaPVC_Img,
   PartnerHocoImg,
@@ -42,6 +43,15 @@ export default function Home() {
     <div itemType="https://schema.org/Organization" itemScope>
       <div className={CSS.HeroBox}>
         <CarouselModule />
+        {/* <div className="w-full h-full relative">
+          <Image
+            src={HomePage_CoverImg}
+            fill
+            alt="Product Cover"
+            sizes="27vw"
+            priority
+          />
+        </div> */}
         <FancySeperator />
       </div>
       <div className="p-2 mt-4 min-h-[200px] text-center my-4">
@@ -72,7 +82,7 @@ export default function Home() {
             src={HomePage_CoverPipaPVC_Img}
             alt="Foto Pipa Paralon PVC"
             fill
-            sizes="40vw"
+            sizes="35vw"
             className={CSS.Image}
             draggable={false}
           />
@@ -115,13 +125,13 @@ export default function Home() {
             src={HomePage_KelebihanPipaPVC_Img}
             alt="Foto Pipa Paralon PVC"
             fill
-            sizes="40vw"
+            sizes="35vw"
             className={CSS.Image}
             draggable={false}
           />
         </div>
       </div>
-      <ProtectedHiddenDevelopmentComponent>
+      {/* <ProtectedHiddenDevelopmentComponent>
         <Typography
           fontWeight="bold"
           variant="h4"
@@ -133,7 +143,7 @@ export default function Home() {
         <div className={CSS.ProductRecommended}>
           <ProductRecommendModule />
         </div>
-      </ProtectedHiddenDevelopmentComponent>
+      </ProtectedHiddenDevelopmentComponent> */}
       <div className="p-5 max-w-[960px] mx-auto">
         <Typography
           fontWeight="bold"
@@ -244,16 +254,20 @@ export default function Home() {
               [
                 <BusinessIcon key="BUSINESS_ICON" />,
                 <>
-                  <Typography gutterBottom component="p">
+                  <Typography component="p">
                     Perumahan The Quality Residence No. A16-17 Jatikalang Krian
                     Sidoarjo
                   </Typography>
-                  <iframe
-                    loading="lazy"
-                    className="w-full h-[400px] border-none"
-                    src="https://www.google.com/maps/embed/v1/place?q=Pipa+HDPE,+Pipa+PVC,+Pipa+PPR,+Fitting+dan+Mesin+Jawa+Timur&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
-                  />
                 </>,
+              ],
+              [
+                <></>,
+                <iframe
+                  key="IFRAME_GOOGLE_MAPS"
+                  loading="lazy"
+                  className="w-full h-[400px] border-none rounded-2xl"
+                  src="https://www.google.com/maps/embed/v1/place?q=Pipa+HDPE,+Pipa+PVC,+Pipa+PPR,+Fitting+dan+Mesin+Jawa+Timur&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"
+                />,
               ],
               [
                 <CallIcon key="CALL_ICON" />,

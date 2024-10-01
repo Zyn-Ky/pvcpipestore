@@ -12,7 +12,8 @@ export default function ResizeToContinue() {
         >
           <Image
             src={AnimResizeIcon}
-            priority
+            priority={false}
+            loading="lazy"
             width={80}
             height={80}
             alt="Enlarge animated icons created by Freepik - Flaticon"

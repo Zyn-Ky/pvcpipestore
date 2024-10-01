@@ -1,9 +1,9 @@
-import { Button, Paper } from "@mui/material";
-import { ContainerItemTextCarousel } from "./HeroBox";
+import { Button, Paper, Typography } from "@mui/material";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import dynamic from "next/dynamic";
 import { Key, memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 type ItemImageCarousel = {
   src: string | StaticImport;
   alt: string;
@@ -16,9 +16,6 @@ type ItemImageCarousel = {
   }[];
   key?: Key | null | undefined;
 };
-const BetterBgImg = dynamic(
-  () => import("@/components/custom/HomePage/BetterBgImg")
-);
 
 const ItemImageCarousel = memo(function ItemImageCarousel(
   props: ItemImageCarousel
@@ -26,16 +23,26 @@ const ItemImageCarousel = memo(function ItemImageCarousel(
   return (
     <>
       <div className="relative w-full h-[60vh] min-h-[575px] max-h-[1080px]">
-        <BetterBgImg
+        <Image
+          className="w-full h-full absolute inset-0 object-cover pointer-events-none blur-sm brightness-75"
           src={props.src}
           alt={props.alt}
           fill
-          sizes="27vw"
+          sizes="25vw"
           priority
         />
-        <ContainerItemTextCarousel>
-          <h1>{props.title && props.title}</h1>
-          <p>{props.description && props.description}</p>
+        <div className="absolute inset-0 text-white p-12 flex justify-center items-center flex-col text-center ">
+          <Typography
+            fontWeight="bold"
+            variant="h4"
+            component="h1"
+            gutterBottom
+          >
+            {props.title && props.title}
+          </Typography>
+          <Typography component="p" gutterBottom>
+            {props.description && props.description}
+          </Typography>
           <div>
             {props.actionButton &&
               props.actionButton.map((action, i) => (
@@ -51,7 +58,7 @@ const ItemImageCarousel = memo(function ItemImageCarousel(
                 </Button>
               ))}
           </div>
-        </ContainerItemTextCarousel>
+        </div>
       </div>
     </>
   );

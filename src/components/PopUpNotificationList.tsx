@@ -15,23 +15,6 @@ import { useFCMNotification } from "./base/NotificationManager";
 import ClearAllOutlinedIcon from "@mui/icons-material/ClearAllOutlined";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-const OuterBox = styled(Box)(({ theme }) => ({
-  position: "relative",
-  display: "flex",
-  flexDirection: "column",
-}));
-
-const WrapperBox = styled(Box)(({ theme }) => ({
-  width: 400,
-  height: 400,
-  paddingInline: 8,
-  overflow: "auto",
-}));
-const Header = styled(CardHeader)(({ theme }) => ({
-  width: "100%",
-  paddingLeft: 24,
-  paddingRight: 24,
-}));
 
 export default function PopUpNotifcationList(props: {
   open: boolean;
@@ -60,8 +43,9 @@ export default function PopUpNotifcationList(props: {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <OuterBox>
-          <Header
+        <div className="relative flex flex-col">
+          <CardHeader
+            className="w-full px-6"
             title={t("NOTIFICATIONS")}
             action={
               <div className="flex items-center mr-4">
@@ -97,10 +81,13 @@ export default function PopUpNotifcationList(props: {
               </div>
             }
           />
-          <WrapperBox style={{ height: currentHeight() + "px" }}>
+          <div
+            className="w-[400px] h-[400px] overflow-auto"
+            style={{ height: currentHeight() + "px" }}
+          >
             <NotificationList />
-          </WrapperBox>
-        </OuterBox>
+          </div>
+        </div>
       </Popover>
     </>
   );
