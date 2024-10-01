@@ -28,7 +28,7 @@ const ResizeToContinue = dynamic(() => import("./ResizeToContinue"), {
   ssr: false,
 });
 
-const font = Inter({});
+const font = Inter({ subsets: ["latin", "latin-ext"] });
 
 export const metadata: Metadata = {
   applicationName: SITE_CONFIG.SEO.AliasAppTitle,
