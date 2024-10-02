@@ -10,7 +10,10 @@ import { Slide, useMediaQuery } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next-nprogress-bar";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { useEffectOnce } from "react-use";
 const HomeIcon = dynamic(() => import("@mui/icons-material/Home"));
 const PersonIcon = dynamic(() => import("@mui/icons-material/Person"));
 const ShoppingCartIcon = dynamic(
@@ -34,7 +37,27 @@ export default function BottomNavigation() {
   const isMediumScreen = !isBigScreen && ScreenUp_md;
   const isSmallScreen =
     isBigScreen === false && isMediumScreen === false && ScreenDown_sm;
-
+  const [paddingBottomEnabled, setPaddingBottomEnabled] = useState(false);
+  useEffectOnce(() => {
+    const isIOSMobile =
+      [
+        "iPad Simulator",
+        "iPhone Simulator",
+        "iPod Simulator",
+        "iPad",
+        "iPhone",
+        "iPod",
+      ].includes(navigator.platform) ||
+      (navigator.userAgent.includes("Mac") && "ontouchend" in document);
+    const isStandalone = matchMedia("(display-mode: standalone)");
+    setPaddingBottomEnabled(
+      (((window.navigator as any).standalone ||
+        (window.clientInformation as any).standalone ||
+        isStandalone.matches) ??
+        false) &&
+        isIOSMobile
+    );
+  });
   return (
     <>
       {isSmallScreen &&
@@ -57,6 +80,14 @@ export default function BottomNavigation() {
       >
         <BetterBottomNavigation
           className="fixed bottom-0 left-0 w-full justify-evenly"
+          style={
+            paddingBottomEnabled
+              ? {
+                  paddingBottom: "calc(env(safe-area-inset-bottom))",
+                  height: "calc(env(safe-area-inset-bottom) * 2.75)",
+                }
+              : {}
+          }
           showLabels
           value={`/${URLPathname.split("/")[1]}`}
           onChange={(event, newValue) => {
@@ -64,6 +95,7 @@ export default function BottomNavigation() {
           }}
         >
           <BetterBottomNavigationAction
+            LinkComponent={Link}
             value={paths.HOME_PAGE}
             label={text("HOME_PAGE")}
             icon={<HomeIcon />}

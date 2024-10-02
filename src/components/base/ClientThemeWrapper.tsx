@@ -41,7 +41,9 @@ export const GlobalSettings = createContext<GlobalSettingsProps>(DefaultProps);
 
 export const useGlobalThemeSettings = () => useContext(GlobalSettings);
 
-export default function ClientThemeWrapper(props: PropsWithChildren) {
+export default function ClientThemeWrapper(
+  props: PropsWithChildren<{ fontFamily?: string[] }>
+) {
   const [themeMode, setThemeMode] = useState<AvailableThemeMode>(DefaultTheme);
   const systemThemeIsDark = useMediaQuery("(prefers-color-scheme: dark)");
   function SetThemeFirstTime() {
@@ -99,7 +101,9 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
         container: body,
       },
     };
+    console.log(props.fontFamily);
     return createTheme({
+      typography: { fontFamily: props.fontFamily?.join(", ") },
       palette: { mode: DetectCurrentTheme(themeMode, systemThemeIsDark) },
       components: {
         MuiAppBar: SmoothColorTransitionProp,
@@ -125,7 +129,7 @@ export default function ClientThemeWrapper(props: PropsWithChildren) {
         },
       },
     });
-  }, [systemThemeIsDark, themeMode, DetectCurrentTheme]);
+  }, [systemThemeIsDark, themeMode, DetectCurrentTheme, props.fontFamily]);
   useEffectOnce(() => {
     RefreshTheme();
   });

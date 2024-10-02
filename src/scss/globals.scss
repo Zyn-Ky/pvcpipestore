@@ -15,7 +15,8 @@ body {
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
   user-select: none;
-  height: 100%;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
   @layer base {
     & {
       @apply dangerWidth:overflow-hidden dangerHeight:overflow-hidden;
@@ -28,7 +29,8 @@ body {
 }
 
 #root-content-ui {
-  height: 100%;
+  min-height: 100%;
+  min-height: -webkit-fill-available;
   overflow: auto;
 }
 

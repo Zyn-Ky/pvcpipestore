@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/scss/globals.scss";
 import "react-photo-view/dist/react-photo-view.css";
@@ -7,7 +7,7 @@ import { XAppBar } from "@/components";
 import SITE_CONFIG from "@/components/config";
 import ColorModeProvider from "@/components/base/ClientThemeWrapper";
 import dynamic from "next/dynamic";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { getLocale, getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -19,6 +19,8 @@ import algoliasearch from "algoliasearch";
 import NotificationManager from "@/components/base/NotificationManager";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import localFont from "next/font/local";
+import SITE_BACKEND_CONFIG from "@/libs/config";
+import { YTSans, YTSansDark } from "@/fonts";
 
 const WordpressMigration = dynamic(
   () => import("@/components/base/WordpressMigration"),
@@ -28,8 +30,7 @@ const ResizeToContinue = dynamic(() => import("./ResizeToContinue"), {
   ssr: false,
 });
 
-const font = Inter({ subsets: ["latin", "latin-ext"] });
-
+// const font = Inter({ subsets: ["latin", "latin-ext"] });
 export const metadata: Metadata = {
   applicationName: SITE_CONFIG.SEO.AliasAppTitle,
   title: {
@@ -77,7 +78,27 @@ export const metadata: Metadata = {
     telephone: false,
   },
 };
+export function generateViewport(): Viewport {
+  const cookieStore = cookies();
+  const theme = cookieStore.get(SITE_CONFIG.CLIENT_THEME_KEY_NAME);
+  const darkTheme = "#121212";
+  const lightTheme = "#ffffff";
 
+  const systemTheme = [
+    { media: "(prefers-color-scheme: light)", color: lightTheme },
+    { media: "(prefers-color-scheme: dark)", color: darkTheme },
+  ];
+
+  return {
+    themeColor:
+      theme?.value === "system"
+        ? systemTheme
+        : theme?.value === "dark"
+        ? darkTheme
+        : lightTheme,
+    viewportFit: "cover",
+  };
+}
 export default async function RootLayout(
   props: Readonly<{
     children: React.ReactNode;
@@ -90,10 +111,15 @@ export default async function RootLayout(
 
   const locale = await getLocale();
   return (
-    <ColorModeProvider>
+    <ColorModeProvider
+      fontFamily={["var(--yt-sans-default)", "var(--yt-sans-dark)"]}
+    >
       <html lang={locale}>
         <CssBaseline enableColorScheme />
-        <body className={font.className} data-smooth-color-transition>
+        <body
+          className={`${YTSans.className} ${YTSansDark.className}`}
+          data-smooth-color-transition
+        >
           <AppRouterCacheProvider>
             <SpeedInsights />
             <Analytics />

@@ -75,7 +75,8 @@ export default function ImmersiveAppBar({
 }) {
   const theme = useTheme();
   const contentUIRef = useRootContentUIRef();
-  const { y } = useScroll(contentUIRef);
+  // const { y } = useScroll(contentUIRef);
+  const { y } = useWindowScroll();
   const text = useTranslations("BASE");
   const mainNavbarText = useTranslations("NAVBAR");
   const isUpperMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -143,6 +144,7 @@ export default function ImmersiveAppBar({
         className="fixed top-0 left-0 w-full h-[70px] px-20 py-20 flex items-center max-[415px]:px-1 transition-[padding] z-muiAppBar"
         style={{
           padding: `${padding}rem`,
+          "-webkit-backdrop-filter": `blur(${blur}px)`,
           backdropFilter: `blur(${blur}px)`,
           backgroundColor: isClient
             ? opacity < 0.2
