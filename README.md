@@ -1,6 +1,6 @@
 # pvcpipestore
 
-~~Bahasa Indonesia~~ [Bahasa Inggris](https://github.com/Zyn-Ky/pvcpipestore/README-EN.md)
+~~Bahasa Indonesia~~ [Bahasa Inggris](https://github.com/Zyn-Ky/pvcpipestore/blob/main/README-EN.md)
 
 Projek ini dibuat saat saya masih magang di PT SIB
 
