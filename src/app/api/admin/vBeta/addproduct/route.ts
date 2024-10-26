@@ -25,11 +25,11 @@ export async function POST(request: NextRequest) {
     if (isActiveSeller) {
       const auth = getAuth(AdminFirebaseApp);
       const currentUser = await auth.getUser(uid);
-      if (currentUser.email !== "er12345.ky@gmail.com")
-        return NextResponse.json<ApiResponse>(
-          { code: 403, message: "USER_NOT_SUPERUSER_APPROVED" },
-          { status: 403 }
-        );
+      // if (currentUser.email !== "")
+      //   return NextResponse.json<ApiResponse>(
+      //     { code: 403, message: "USER_NOT_SUPERUSER_APPROVED" },
+      //     { status: 403 }
+      //   );
 
       if (requestJSON.condition === "checkImageServerStatus") {
         const { ok } = await CheckCloudinaryStatus();

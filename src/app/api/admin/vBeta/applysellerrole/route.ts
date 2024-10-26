@@ -19,11 +19,11 @@ export async function POST(request: NextRequest) {
     if (UserExists && IsValid) {
       const auth = getAuth(AdminFirebaseApp);
       const currentUser = await auth.getUser(uid);
-      if (currentUser.email !== "er12345.ky@gmail.com")
-        return NextResponse.json(
-          { code: 403, message: "USER_NOT_SUPERUSER_APPROVED" },
-          { status: 403 }
-        );
+      // if (currentUser.email !== "")
+      //   return NextResponse.json(
+      //     { code: 403, message: "USER_NOT_SUPERUSER_APPROVED" },
+      //     { status: 403 }
+      //   );
 
       await auth.setCustomUserClaims(uid, {
         userRole: "ACTIVE_SELLER",

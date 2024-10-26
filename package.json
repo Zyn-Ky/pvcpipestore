@@ -46,6 +46,7 @@
     "firebase": "^10.12.3",
     "firebase-admin": "^12.2.0",
     "framer-motion": "^11.5.4",
+    "github-fork-ribbon-css": "^0.2.3",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.5",
     "idborm": "^1.0.1",

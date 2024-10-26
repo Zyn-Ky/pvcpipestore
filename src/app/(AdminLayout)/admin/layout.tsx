@@ -12,6 +12,7 @@ import { NextIntlClientProvider } from "next-intl";
 import SellerAppBar from "@/components/SellerAppBar";
 import NProgressWrapper from "@/components/base/NProgress";
 import InfiniteCircularProgress from "@/components/InfiniteCircularProgress";
+import "github-fork-ribbon-css/gh-fork-ribbon.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -61,6 +62,15 @@ export default async function SellerRootLayout({
                 </Box>
               </ProtectedSellerOnlyRoute>
             </GeneralFunctionWrapper>
+            <a
+              className="github-fork-ribbon right-bottom fixed"
+              href="https://github.com/Zyn-Ky/pvcpipestore/"
+              target="_blank"
+              data-ribbon="Fork me on GitHub"
+              title="Fork me on GitHub"
+            >
+              Fork me on GitHub
+            </a>
           </NextIntlClientProvider>
         </body>
       </ClientThemeWrapper>

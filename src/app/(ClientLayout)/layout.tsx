@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "@/scss/globals.scss";
+import "github-fork-ribbon-css/gh-fork-ribbon.css";
 import "react-photo-view/dist/react-photo-view.css";
 import { CssBaseline } from "@mui/material";
 import { XAppBar } from "@/components";
@@ -130,7 +131,18 @@ export default async function RootLayout(
                   <WordpressMigration />
                 )}
                 <XAppBar />
-                <div id="root-content-ui">{props.children}</div>
+                <div id="root-content-ui">
+                  {props.children}
+                  <a
+                    className="github-fork-ribbon right-bottom fixed"
+                    href="https://github.com/Zyn-Ky/pvcpipestore/"
+                    target="_blank"
+                    data-ribbon="Fork me on GitHub"
+                    title="Fork me on GitHub"
+                  >
+                    View / Fork me on GitHub
+                  </a>
+                </div>
                 <NProgressWrapper />
               </GeneralFunctionWrapper>
             </NextIntlClientProvider>
