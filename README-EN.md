@@ -1,6 +1,6 @@
 # pvcpipestore
 
-~~English~~ [Indonesian](https://github.com/Zyn-Ky/pvcpipestore/README.md)
+~~English~~ [Indonesian](https://github.com/Zyn-Ky/pvcpipestore/blob/main/README.md)
 
 This project is created when I was still an intern at PT SIB
 
